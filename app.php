@@ -459,7 +459,8 @@ HERE_DOC;
     if ($not_found) {
       $javascript = 'document.getElementById("hello").innerHTML = "<strong>This URL does not have any code saved to it.</strong>";';
     } else {
-      $javascript = "if (document.getElementById('hello')) {\n  document.getElementById('hello').innerHTML = 'Hello World - this was inserted using JavaScript';\n}\n";
+      // $javascript = "if (document.getElementById('hello')) {\n  document.getElementById('hello').innerHTML = 'Hello World - this was inserted using JavaScript';\n}\n";
+      $javascript = "#hello {\n  color: red;\n  font-size: 30px;\n}";
     }    
   }
 
