@@ -272,9 +272,9 @@ if (!$action) {
     // using new str_lreplace to ensure only the *last* </body> is replaced.
     // FIXME there's still a bug here if </body> appears in the script and not in the
     // markup - but I'll fix that later
-    if (!$quiet) {
-      $html = str_lreplace('</body>', '<script src="/js/render/edit.js"></script>' . "\n</body>", $html);
-    }
+    // if (!$quiet) {
+    //   $html = str_lreplace('</body>', '<script src="/js/render/edit.js"></script>' . "\n</body>", $html);
+    // }
 
     if ($no_code_found == false) {
       $html = str_lreplace('</body>', googleAnalytics() . '</body>', $html);
@@ -360,10 +360,10 @@ function formatCompletedCode($html, $javascript, $code_id, $revision) {
   } 
   
   if ($html && stripos($html, '%code%') === false && strlen($javascript)) {
-    $parts = explode("</body>", $html);
+    $parts = explode("</head>", $html);
     $html = $parts[0];
-    $close = count($parts) == 2 ? '</body>' . $parts[1] : '';
-    $html .= "<script>\n" . $javascript . "\n</script>\n" . $close;
+    $close = count($parts) == 2 ? '</head>' . $parts[1] : '';
+    $html .= "<style>\n" . $javascript . "\n</style>\n" . $close;
   } else if ($javascript) {
     // removed the regex completely to try to protect $n variables in JavaScript
     $htmlParts = explode("%code%", $html);
@@ -374,7 +374,7 @@ function formatCompletedCode($html, $javascript, $code_id, $revision) {
 
   if (!$ajax && $code_id != 'jsbin') {
     $code_id .= $revision == 1 ? '' : '/' . $revision;
-    $html = preg_replace('/<html(.*)/', "<html$1\n<!--\n\n  Created using " . $host . ROOT . "\n  Source can be edited via " . $host . ROOT . "$code_id/edit\n\n-->", $html);            
+    //$html = preg_replace('/<html(.*)/', "<html$1\n<!--\n\n  Created using " . $host . ROOT . "\n  Source can be edited via " . $host . ROOT . "$code_id/edit\n\n-->", $html);            
   }
 
   return array($html, $javascript);
@@ -434,7 +434,8 @@ function defaultCode($not_found = false) {
     <title>My Title</title>
   </head>
   <body>
-    <p id="hello">Hello World</p>
+    <h1>Hello World</h1>
+    <p>This is my new web page.</p>
   </body>
 </html>
 HERE_DOC;
@@ -453,7 +454,7 @@ HERE_DOC;
       $javascript = 'document.getElementById("hello").innerHTML = "<strong>This URL does not have any code saved to it.</strong>";';
     } else {
       // $javascript = "if (document.getElementById('hello')) {\n  document.getElementById('hello').innerHTML = 'Hello World - this was inserted using JavaScript';\n}\n";
-      $javascript = "#hello {\n  color: red;\n  font-size: 30px;\n}";
+      $javascript = "h1 {\n  font-size: 60px;\n  font-weight: bold;\n  font-family: Helvetica, Arial, sans-serif;\n  text-align: center;\n  color: orange;\n}\n\np {\n\n}";
     }    
   }
 
@@ -502,7 +503,7 @@ function generateURL() {
 
 function googleAnalytics() {
   return <<<HERE_DOC
-<script>var _gaq=[['_setAccount','UA-1656750-13'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)})(document,'script')</script>
+<script>var _gaq=[['_setAccount','UA-26530551-1'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)})(document,'script')</script>
 HERE_DOC;
 }
 
