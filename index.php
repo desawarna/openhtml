@@ -46,7 +46,7 @@ if ($code_id) {
 <html lang="en">
 <head>
 <meta charset=utf-8 />
-<title>JS Bin - Collaborative JavaScript Debugging</title>
+<title>openHTML</title>
 <link rel="stylesheet" href="<?php echo ROOT?>css/style.css?<?php echo VERSION?>" type="text/css" />
 </head>
 <!--[if lt IE 7 ]><body class="source ie ie6"><![endif]--> 
@@ -85,7 +85,7 @@ if ($code_id) {
   <div class="help">
     <ul class="flat">
       <li><a target="_blank" href="http://jsbin.tumblr.com">Help &amp; tutorials</a></li>
-      <li class="prefsButton"><a href="#"><img src="/images/gear.png"></a></li>
+      <li class="prefsButton"><a href="#"><img src="images/gear.png"></a></li>
     </ul>
   </div>
 </div>
