@@ -76,9 +76,9 @@ if ($code_id) {
       </div>
 
       <span id="panelsvisible" class="gap">View: 
-        <input type="checkbox" data-panel="javascript" id="showjavascript"><label for="showjavascript">JavaScript</label>
+        <input type="checkbox" data-panel="javascript" id="showjavascript"><label for="showjavascript">CSS</label>
         <input type="checkbox" data-panel="html" id="showhtml"><label for="showhtml">HTML</label>
-        <input type="checkbox" data-panel="live" id="showlive"><label for="showlive">Real-time preview</label>
+        <input type="checkbox" data-panel="live" id="showlive"><label for="showlive">Preview</label>
       </span>
     </div>
   </div>
@@ -92,27 +92,13 @@ if ($code_id) {
 <div id="bin" class="stretch" style="opacity: 0; filter:alpha(opacity=0);">
   <div id="source" class="binview stretch">
     <div class="code stretch javascript">
-      <div class="label"><p><strong id="jslabel">JavaScript</strong></p></div>
+      <div class="label"><p><strong id="jslabel">CSS</strong></p></div>
       <div class="editbox">
         <textarea spellcheck="false" autocapitalize="off" autocorrect="off" id="javascript"></textarea>
       </div>
     </div>
     <div class="code stretch html">
-      <div class="label">
-        <p>HTML</p>
-        <label for="library">Include</label>
-        <select id="library">
-          <option value="none">None</option>
-          <option value="jquery">jQuery</option>
-          <option value="jquery+jqueryui">jQuery UI</option>
-          <option value="yui">YUI</option>
-          <option value="prototype">Prototype</option>
-          <option value="prototype+scriptaculous">Scriptaculous</option>
-          <option value="mootools">Mootools</option>
-          <option value="dojo">Dojo</option>
-          <option value="ext">Ext js</option>
-        </select>
-      </div>
+      <div class="label"><p>HTML</p></div>
       <div class="editbox">
         <textarea spellcheck="false" autocapitalize="off" autocorrect="off" id="html"></textarea>
       </div>
