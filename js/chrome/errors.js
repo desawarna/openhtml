@@ -101,7 +101,7 @@ var checkForErrors = function () {
   }
 };
 
-$(document).bind('codeChange', throttle(checkForErrors, 1000));
-$(document).bind('jsbinReady', checkForErrors);
+// $(document).bind('codeChange', throttle(checkForErrors, 1000));
+// $(document).bind('jsbinReady', checkForErrors);
 
 // })();
