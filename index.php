@@ -80,6 +80,12 @@ if ($code_id) {
         <input type="checkbox" data-panel="html" id="showhtml"><label for="showhtml">HTML</label>
         <input type="checkbox" data-panel="live" id="showlive"><label for="showlive">Preview</label>
       </span>
+
+      <div id="userinfo">
+        <a id="account" class="button group light left" href="<?php echo ROOT?>account"><?php echo $_SESSION['username']; ?></a>
+        <a id="logout" class="button group light right" href="<?php echo ROOT?>logout">Logout</a>
+      <span id="logo">openHTML</span>
+    </div>
     </div>
   </div>
 

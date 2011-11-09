@@ -1041,6 +1041,18 @@ details li, .details li {
   cursor: pointer;
 }
 
+#userinfo {
+ position: absolute;
+ right: 30px;
+}
+
+#logo {
+  font-size: 18px;
+  font-weight: bold;
+  color: #555;
+  margin-left: 20px;
+}
+
 .keyboardHelp #keyboardHelp {
   display: block;
 }
