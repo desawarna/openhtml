@@ -16,7 +16,7 @@
     jsbin.settings.home = name; // will save later
 
     $.ajax({
-      url: '/sethome',
+      url: 'sethome',
       data: { name: name, key: key },
       type: 'post',
       dataType: 'json',
