@@ -3,7 +3,7 @@
 # $Id: .htaccess,v 1.3 2006/11/09 09:08:14 remy Exp $
 Options +FollowSymLinks +ExecCGI
 RewriteEngine On
-RewriteBase /
+RewriteBase /openhtml/
 
 # strip www. from the domain
 RewriteCond %{HTTP_HOST} ^www\.jsbin\.com$ [NC]
