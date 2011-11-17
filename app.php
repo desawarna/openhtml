@@ -1,6 +1,26 @@
 <?php
 include('config.php'); // contains DB & important versioning
 
+include('auth.php'); // contains user auth
+$log = new logmein(); // instantiate the class
+$log->dbconnect();  // connect to the database
+$log->encrypt = true;   // set to true if password is md5 encrypted. Default is false.
+// parameters are (SESSION, name of the table, name of the password field, name of the username field)
+if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false){
+    //do something if NOT logged in. For example, redirect to login page or display message.
+
+  $pre = '<!DOCTYPE html><html><head><title>openHTML - Login</title><link rel="stylesheet" href="' . ROOT . 'css/style.css" type="text/css" /></head><body><div id="control"><div class="control"><div class="buttons"><div id="auth"><span id="logo">openHTML</span></div></div></div></div><div id="bin" class="stretch">';
+  
+  $post = '</div></body></html>';
+  
+  $log->loginform("loginformname", "loginformid", ROOT."login.php", $pre, $post);
+  
+  die();
+}else{
+    //do something else if logged in.
+
+}
+
 $host = 'http://' . $_SERVER['HTTP_HOST'];
 
 $pos = strpos($_SERVER['REQUEST_URI'], ROOT);
@@ -132,6 +152,7 @@ if (!$action) {
 } else if ($action == 'logout') {
   setcookie ('home', '', time() - 3600, '/');
   setcookie ('key', '', time() - 3600, '/');
+  $log->logout();
   header('Location: ./');
 
 } else if ($action == 'save' || $action == 'clone') {
