@@ -1041,7 +1041,7 @@ details li, .details li {
   cursor: pointer;
 }
 
-#userinfo {
+#userinfo, #auth #logo {
  position: absolute;
  right: 30px;
 }
@@ -1052,6 +1052,45 @@ details li, .details li {
   color: #555;
   margin-left: 20px;
 }
+
+/* login forms */
+
+#loginformname {
+  width: 220px;
+  padding: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 150px;
+  
+  background-color: #eeeeee;
+  border-width: 1px 2px 3px 1px;
+  border-style: solid;
+  border-color: #bbb;
+}
+
+input#username, input#password {
+  font-size: 20px;
+  height: 20px;
+  width: 210px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.warning {
+  color: #A3120C;
+  font-size: 16px;
+  width: 220px;
+  padding: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  
+  background-color: #eeeeee;
+  border-width: 1px 2px 3px 1px;
+  border-style: solid;
+  border-color: #bbb;
+}
+
 
 .keyboardHelp #keyboardHelp {
   display: block;
@@ -1135,7 +1174,6 @@ details li, .details li {
 .html .CodeMirror-scroll > div {
   margin-top: 25px;
 }
-
 
 .editor .CodeMirror {
   height: 100%;

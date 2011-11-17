@@ -48,7 +48,12 @@ body {
   font-family: MenschRegular, Menlo, Monaco, consolas, monospace;
   padding: 0;
   margin: 0;
+  font-size: 13px;
+  min-width: 976px;
+  overflow: hidden;
+  background: url(images/jsbin-bg.gif) repeat-x 0 -10px;
 }
+
 .thumb {
   border: 1px solid #ccc;
   overflow: hidden;
@@ -82,6 +87,7 @@ iframe {
   font-size: 13px;
   padding: 10px 0;
   position: relative;
+  margin-top: 51px;
 }
 #preview {
   border-left: 1px solid #ccc;
@@ -91,6 +97,7 @@ iframe {
   right: 0;
   height: 100%;
   padding-top: 10px;
+  margin-top: 51px;
   background: #fff;
 }
 h2 {
@@ -180,9 +187,163 @@ iframe {
   font-size: 10px;
   margin-left: 20px;
 }
+
+/* for bar */
+
+#control {
+  z-index: 199999;
+  min-width: 865px;
+  height: 51px;
+  position: absolute;
+/*  width: 100%;*/
+top: 0;
+  left: 0;
+  right: 0;
+  padding: 0;
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial;
+}
+
+#control, .label {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.control, .help, .starting {
+/*  width: 100px;*/
+  padding: 13px 10px;
+  float: left;
+  white-space: nowrap;
+}
+
+.buttons {
+  min-width: 732px;
+  min-width: 100%;
+  float: left;
+  display: block;
+  margin-right: 10px;
+}
+
+#userinfo  {
+ position: absolute;
+ right: 30px;
+}
+
+#logo {
+  font-size: 18px;
+  font-weight: bold;
+  color: #555;
+  margin-left: 20px;
+}
+
+.button {
+  border: 1px solid #ccc;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  height: 12px;
+  line-height: 12px;
+  padding: 6px 10px;
+  display: block;
+  float: left;
+  text-decoration: none;
+  margin: 0px 0px;
+  background: #fff;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.group {
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  border-left: 0;
+}
+
+div.group {
+  margin-left: -1px;
+  border-left: 1px solid #ccc;
+  float: left;
+  display: block;
+  width: 104px;
+  position: relative; 
+  z-index: 20;
+  padding: 0;
+  height: 24px;
+  overflow: hidden;
+}
+
+div.group:hover {
+  background: #fff;
+  height: 102px;
+  overflow: visible;
+  -moz-border-radius-bottomleft: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  -webkit-box-shadow: 1px 1px 2px #ccc;
+  -moz-box-shadow: 1px 1px 2px #ccc;
+  -o-box-shadow: 1px 1px 2px #ccc;
+  box-shadow: 1px 1px 2px #ccc;
+}
+
+a {
+  font-weight: bold;
+}
+
+a.button:hover {
+  -moz-box-shadow: #fff 0px 0px 5px;
+  -webkit-box-shadow: #fff 0px 0px 5px;
+  box-shadow: #fff 0px 0px 5px;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+a.button:active, .button:focus {
+  -moz-box-shadow: #C8C8C8 0px 0px 3px;
+  -webkit-box-shadow: #C8C8C8 0px 0px 3px;
+  box-shadow: #C8C8C8 0px 0px 3px;
+  border-color: #fff;
+  outline: 0;
+  text-shadow: none;
+}
+
+.light {
+  font-weight: normal;
+  text-decoration: none;
+}
+
+.left {
+  border-left: 1px solid #ccc;
+  -moz-border-radius-topleft: 3px;
+  -webkit-border-top-left-radius: 3px;
+  border-top-left-radius: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.right {
+  border-right: 1px solid #ccc;
+  -moz-border-radius-topright: 3px;
+  -webkit-border-top-right-radius: 3px;
+  -moz-border-radius-bottomright: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
 </style>
 </head>
 <body>
+<div id="control"><div class="control">
+    <div class="buttons">
+
+    <a class="tab button source group left" accesskey="1" href="./">New Page</a>
+    <div id="userinfo">
+        <a id="account" class="button group light left" href="<?php echo ROOT?>list"><?php echo $_SESSION['name']; ?></a>
+        <a id="logout" class="button group light right" href="<?php echo ROOT?>logout">Logout</a><span id="logo">openHTML</span>
+    </div></div></div></div>
 <div id="bins">
 <h2>Open</h2>
 <table>
