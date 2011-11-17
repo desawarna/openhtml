@@ -82,7 +82,7 @@ if ($code_id) {
       </span>
 
       <div id="userinfo">
-        <a id="account" class="button group light left" href="<?php echo ROOT?>account"><?php echo $_SESSION['username']; ?></a>
+        <a id="account" class="button group light left" href="<?php echo ROOT?>list"><?php echo $_COOKIE['home']; ?></a>
         <a id="logout" class="button group light right" href="<?php echo ROOT?>logout">Logout</a>
       <span id="logo">openHTML</span>
     </div>
@@ -129,7 +129,7 @@ if ($code_id) {
 <?php if (!OFFLINE) : ?>
 <script>
 var _gaq = _gaq || [];
-_gaq.push(['_setAccount', 'UA-1656750-13']);
+_gaq.push(['_setAccount', 'UA-26530551-1']);
 _gaq.push(['_trackPageview']);
 
 (function() {
