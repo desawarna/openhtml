@@ -97,7 +97,7 @@ ul.flat li {
 
 #control > *, a {
   color: #232323;
-  text-shadow: #fff 1px 1px 1px;
+  /* text-shadow: #fff 1px 1px 1px; */
 }
 
 a {
@@ -306,7 +306,8 @@ a.popout:hover {
 }
 
 body.source a.source,
-body.preview a.preview {
+body.preview a.preview,
+body.list a.list {
   background: #aaa;
   background: rgba(0, 0, 0, 0.25);
   text-shadow: none;
