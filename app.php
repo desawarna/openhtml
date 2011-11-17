@@ -130,6 +130,9 @@ if (!$action) {
     
   }
 } else if ($action == 'logout') {
+  setcookie ('home', '', time() - 3600, '/');
+  setcookie ('key', '', time() - 3600, '/');
+  header('Location: ./');
 
 } else if ($action == 'save' || $action == 'clone') {
   list($code_id, $revision) = getCodeIdParams($request);
