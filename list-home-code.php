@@ -31,6 +31,7 @@ function getRelativeTime($date) {
 <head>
 <meta charset=utf-8 />
 <title><?php echo $name ?>'s bins</title>
+<link rel="stylesheet" href="<?php echo ROOT?>css/style.css?<?php echo VERSION?>" type="text/css" />
 <style>
 /* Font via http://robey.lag.net/2010/06/21/mensch-font.html */
 @font-face {
@@ -54,6 +55,16 @@ body {
   background: url(images/jsbin-bg.gif) repeat-x 0 -10px;
 }
 
+#bins a {
+  font-weight: normal;
+  text-decoration: none;
+  color: #000;
+}
+
+#bins a:hover {
+  text-shadow: none;
+}
+
 .thumb {
   border: 1px solid #ccc;
   overflow: hidden;
@@ -61,6 +72,7 @@ body {
   width: 193px;
   margin: 10px 0;
 }
+
 iframe {
   -moz-transform:    scale(0.8);
   -o-transform:      scale(0.8);
@@ -82,6 +94,7 @@ iframe {
   width: 100%;
   height: 100%;
 }
+
 #bins {
   width: 70%;
   font-size: 13px;
@@ -89,6 +102,7 @@ iframe {
   position: relative;
   margin-top: 51px;
 }
+
 #preview {
   border-left: 1px solid #ccc;
   position: fixed;
@@ -100,6 +114,7 @@ iframe {
   margin-top: 51px;
   background: #fff;
 }
+
 h2 {
   margin: 0;
   font-size: 14px;
@@ -107,65 +122,61 @@ h2 {
   font-size: 13px;
   padding: 0 20px;
 }
+
 #bins h2 {
   margin-bottom: 10px;
 }
 
-table {
+#bins table {
   border-collapse: collapse;
   table-layout: fixed;
   width: 100%;
   position: relative;
 }
 
-td {
+#bins td {
   margin: 0;
   padding: 3px 0;
 }
 
-a {
-  text-decoration: none;
-  color: #000;
-}
-
-.url {
+#bins .url {
   text-align: right;
   width: 25%;
   padding-left: 20px;
   padding-right: 20px;
 }
 
-.url a {
+#bins .url a {
   color: #0097fe;
 }
 
-.url a span {
+#bins .url a span {
   color: #000;
   visibility: hidden;
 }
 
-.url span.first {
+#bins .url span.first {
   visibility: visible;
 }
 
-.created {
+#bins .created {
   width: 25%;
 }
 
-.created a {
+#bins .created a {
   color: #ccc;
 }
 
-.title {
+#bins .title {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
 
-tr:hover *,
-tr.hover *,
-tr:hover span,
-tr.hover span {
+#bins tr:hover *,
+#bins tr.hover *,
+#bins tr:hover span,
+#bins tr.hover span {
   background: #0097fe;
   color: #fff;
   /*cursor: pointer;*/
@@ -191,157 +202,20 @@ iframe {
 /* for bar */
 
 #control {
-  z-index: 199999;
-  min-width: 865px;
-  height: 51px;
-  position: absolute;
-/*  width: 100%;*/
-top: 0;
-  left: 0;
-  right: 0;
-  padding: 0;
-  margin: 0;
+  top: 0;
   font-family: "Helvetica Neue", Helvetica, Arial;
 }
 
-#control, .label {
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -o-user-select: none;
-  user-select: none;
-}
-
-.control, .help, .starting {
-/*  width: 100px;*/
-  padding: 13px 10px;
-  float: left;
-  white-space: nowrap;
-}
-
-.buttons {
-  min-width: 732px;
-  min-width: 100%;
-  float: left;
-  display: block;
-  margin-right: 10px;
-}
-
-#userinfo  {
- position: absolute;
- right: 30px;
-}
-
-#logo {
-  font-size: 18px;
-  font-weight: bold;
-  color: #555;
-  margin-left: 20px;
-}
-
-.button {
-  border: 1px solid #ccc;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  height: 12px;
-  line-height: 12px;
-  padding: 6px 10px;
-  display: block;
-  float: left;
-  text-decoration: none;
-  margin: 0px 0px;
-  background: #fff;
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.group {
-  -moz-border-radius: 0;
-  -webkit-border-radius: 0;
-  border-radius: 0;
-  border-left: 0;
-}
-
-div.group {
-  margin-left: -1px;
-  border-left: 1px solid #ccc;
-  float: left;
-  display: block;
-  width: 104px;
-  position: relative; 
-  z-index: 20;
-  padding: 0;
-  height: 24px;
-  overflow: hidden;
-}
-
-div.group:hover {
-  background: #fff;
-  height: 102px;
-  overflow: visible;
-  -moz-border-radius-bottomleft: 3px;
-  -webkit-border-bottom-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-  -webkit-box-shadow: 1px 1px 2px #ccc;
-  -moz-box-shadow: 1px 1px 2px #ccc;
-  -o-box-shadow: 1px 1px 2px #ccc;
-  box-shadow: 1px 1px 2px #ccc;
-}
-
-a {
-  font-weight: bold;
-}
-
-a.button:hover {
-  -moz-box-shadow: #fff 0px 0px 5px;
-  -webkit-box-shadow: #fff 0px 0px 5px;
-  box-shadow: #fff 0px 0px 5px;
-  background: rgba(0, 0, 0, 0.05);
-}
-
-a.button:active, .button:focus {
-  -moz-box-shadow: #C8C8C8 0px 0px 3px;
-  -webkit-box-shadow: #C8C8C8 0px 0px 3px;
-  box-shadow: #C8C8C8 0px 0px 3px;
-  border-color: #fff;
-  outline: 0;
-  text-shadow: none;
-}
-
-.light {
-  font-weight: normal;
-  text-decoration: none;
-}
-
-.left {
-  border-left: 1px solid #ccc;
-  -moz-border-radius-topleft: 3px;
-  -webkit-border-top-left-radius: 3px;
-  border-top-left-radius: 3px;
-  -moz-border-radius-bottomleft: 3px;
-  -webkit-border-bottom-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-}
-
-.right {
-  border-right: 1px solid #ccc;
-  -moz-border-radius-topright: 3px;
-  -webkit-border-top-right-radius: 3px;
-  -moz-border-radius-bottomright: 3px;
-  -webkit-border-bottom-right-radius: 3px;
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-}
 
 </style>
 </head>
-<body>
+<body class="list">
 <div id="control"><div class="control">
     <div class="buttons">
 
     <a class="tab button source group left" accesskey="1" href="./">New Page</a>
     <div id="userinfo">
-        <a id="account" class="button group light left" href="<?php echo ROOT?>list"><?php echo $_SESSION['name']; ?></a>
+        <a id="account" class="button group light left list" href="<?php echo ROOT?>list"><?php echo $_SESSION['name']; ?></a>
         <a id="logout" class="button group light right" href="<?php echo ROOT?>logout">Logout</a><span id="logo">openHTML</span>
     </div></div></div></div>
 <div id="bins">
