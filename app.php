@@ -129,6 +129,8 @@ if (!$action) {
     $edit_mode = false;
     
   }
+} else if ($action == 'logout') {
+
 } else if ($action == 'save' || $action == 'clone') {
   list($code_id, $revision) = getCodeIdParams($request);
 
