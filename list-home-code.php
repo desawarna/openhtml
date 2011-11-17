@@ -30,7 +30,7 @@ function getRelativeTime($date) {
 <html lang="en">
 <head>
 <meta charset=utf-8 />
-<title><?php echo $name ?>'s bins</title>
+<title>openHTML: <?php echo $name ?>'s Pages</title>
 <link rel="stylesheet" href="<?php echo ROOT?>css/style.css?<?php echo VERSION?>" type="text/css" />
 <style>
 /* Font via http://robey.lag.net/2010/06/21/mensch-font.html */
