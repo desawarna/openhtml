@@ -24,7 +24,7 @@
         // cookie is required to share with the server so we can do a redirect on new bin
         if (data.ok) {
           var date = new Date();
-          date.setTime(date.getTime()+(365*24*60*60*1000)); // set for a year
+          date.setTime(date.getTime()+(7*24*60*60*1000)); // set for a week
           document.cookie = 'home=' + name + '; expires=' + date.toGMTString() + '; path=/';
           // also store encoded key - this is used to authenticate on save
           // this key doesn't provide security, but provides a way to declare
