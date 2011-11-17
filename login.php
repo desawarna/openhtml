@@ -6,6 +6,7 @@ $log->encrypt = true; //set encryption
 if($_REQUEST['action'] == "login"){
     if($log->login("ownership", $_POST['username'], $_POST['password']) == true){
         //do something on successful login
+        
 			header('Location: ./list');
     }else{
         //do something on FAILED login
