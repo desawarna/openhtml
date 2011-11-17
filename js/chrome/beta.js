@@ -38,7 +38,11 @@
     });
     return '...';
   };
-  
+
+  this.cookies = function () {
+    console.log(document.cookie);
+  }
+
   this.nojumpkeys = function () {
     
   };
