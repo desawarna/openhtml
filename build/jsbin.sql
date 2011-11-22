@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `owners` (
 CREATE TABLE IF NOT EXISTS `ownership` (
   `name` char(255) NOT NULL,
   `key` char(255) NOT NULL,
+  `email` char(255) NOT NULL,
 
   PRIMARY KEY (`name`),
   KEY `name_key` (`name`, `key`)
