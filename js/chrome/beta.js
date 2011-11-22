@@ -7,7 +7,7 @@
   
   //= require "stream"  
 
-  this.home = function (name, key) {
+  this.home = function (name, key, email) {
     if (!key) {
       console.log('A key is required to declare some sort of ownership.');
       return false;
@@ -17,7 +17,7 @@
 
     $.ajax({
       url: 'sethome',
-      data: { name: name, key: key },
+      data: { name: name, key: key, email: email },
       type: 'post',
       dataType: 'json',
       success: function (data) {

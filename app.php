@@ -88,6 +88,7 @@ if (!$action) {
     
     $key = sha1($_POST['key']);
     $name = $_POST['name'];
+    $email = $_POST['email'];
     $sql = sprintf('select * from ownership where name="%s"', mysql_real_escape_string($name));
     $result = mysql_query($sql);
 
@@ -95,7 +96,7 @@ if (!$action) {
   
     if (!mysql_num_rows($result)) {
       // store and okay (note "key" is a reserved word - typical!)
-      $sql = sprintf('insert into ownership (name, `key`) values ("%s", "%s")', mysql_real_escape_string($name), mysql_real_escape_string($key));
+      $sql = sprintf('insert into ownership (name, `key`, email) values ("%s", "%s", "%s")', mysql_real_escape_string($name), mysql_real_escape_string($key), mysql_real_escape_string($email));
       $ok = mysql_query($sql);
       if ($ok) {
         echo json_encode(array('ok' => true, 'key' => $key, 'created' => true));
