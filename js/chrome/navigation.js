@@ -58,7 +58,7 @@ function updatePanel(panel, show, noinit) {
   }
   
   var hash = $panelsvisible.filter(':checked').map(function () {
-    return this.getAttribute('data-panel');
+    return this.getAttribute('data-uri');
   }).get().join(',');
   
   // TODO use history API properly - listen for popstate to update columns, and preview

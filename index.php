@@ -76,9 +76,9 @@ if ($code_id) {
       </div>
 
       <span id="panelsvisible" class="gap">View: 
-        <input type="checkbox" data-panel="javascript" id="showjavascript"><label for="showjavascript">CSS</label>
-        <input type="checkbox" data-panel="html" id="showhtml"><label for="showhtml">HTML</label>
-        <input type="checkbox" data-panel="live" id="showlive"><label for="showlive">Preview</label>
+        <input type="checkbox" data-panel="javascript" data-uri="css" id="showjavascript"><label for="showjavascript">CSS</label>
+        <input type="checkbox" data-panel="html" data-uri="html" id="showhtml"><label for="showhtml">HTML</label>
+        <input type="checkbox" data-panel="live" data-uri="preview" id="showlive"><label for="showlive">Preview</label>
       </span>
 
       <div id="userinfo">
