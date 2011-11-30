@@ -182,7 +182,7 @@ h2 {
   /*cursor: pointer;*/
 }
 
-tr[data-type=spacer]:hover * {
+#bins tr[data-type=spacer]:hover * {
   background: #fff;
   cursor: default;
 }
