@@ -116,7 +116,8 @@ if (!$action) {
     exit;
   }
 } else if ($action == 'list' || $action == 'show') {
-  showSaved($request[0] ? $request[0] : $home);
+  // showSaved($request[0] ? $request[0] : $home);
+  showSaved($home);
   // could be listed under a user OR could be listing all the revisions for a particular bin
   
   exit();
