@@ -36,11 +36,11 @@ function getRelativeTime($date) {
 /* Font via http://robey.lag.net/2010/06/21/mensch-font.html */
 @font-face {
   font-family: 'MenschRegular';
-  src: url('font/mensch-webfont.eot');
-  src: url('font/mensch-webfont.eot?#iefix') format('eot'),
-       url('font/mensch-webfont.woff') format('woff'),
-       url('font/mensch-webfont.ttf') format('truetype'),
-       url('font/mensch-webfont.svg#webfont0UwCC656') format('svg');
+  src: url('/openhtml/font/mensch-webfont.eot');
+  src: url('/openhtml/font/mensch-webfont.eot?#iefix') format('eot'),
+       url('/openhtml/font/mensch-webfont.woff') format('woff'),
+       url('/openhtml/font/mensch-webfont.ttf') format('truetype'),
+       url('/openhtml/font/mensch-webfont.svg#webfont0UwCC656') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -52,7 +52,7 @@ body {
   font-size: 13px;
   min-width: 976px;
   overflow: hidden;
-  background: url(images/jsbin-bg.gif) repeat-x 0 -10px;
+  background: url(/openhtml/images/jsbin-bg.gif) repeat-x 0 -10px;
 }
 
 #bins a {
