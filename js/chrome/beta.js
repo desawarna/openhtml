@@ -206,6 +206,6 @@
   // lazy cookie parsing.
   try {
     jsbin.settings.home = document.cookie.split('home=')[1].split(';')[0];
-    document.title = jsbin.settings.home + '@' + document.title;
+    // document.title = jsbin.settings.home + '@' + document.title;
   } catch (e) {};
 }).call(jsbin);
