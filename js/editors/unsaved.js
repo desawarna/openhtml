@@ -9,6 +9,12 @@ $(document).bind('codeChange', function (event, revert, onload) {
   updateTitle(revert, onload);
 });
 
+$(window).bind('beforeunload', function(revert){
+  if (document.title.indexOf('[unsaved]') != -1){
+    return 'You should stay and save your page first.\n';
+  }
+});
+
 function updateTitle(revert, onload) {
   var title = !documentTitle ? 'openHTML' : documentTitle;
   // if (jsbin.settings.home) title = jsbin.settings.home + '@' + title;
