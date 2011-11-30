@@ -219,7 +219,7 @@ iframe {
         <a id="logout" class="button group light right" href="<?php echo ROOT?>logout">Logout</a><span id="logo">openHTML</span>
     </div></div></div></div>
 <div id="bins">
-<h2>Open</h2>
+<h2>Saved Pages</h2>
 <table>
 <tbody>
 <?php 
