@@ -387,7 +387,7 @@ div.group:hover {
 }
 
 div.tall:hover {
-  height: 126px; /* single height 24px */
+  height: 102px; /* single height 24px */
 }
 
 #control div.group .title {
