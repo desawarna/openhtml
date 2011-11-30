@@ -561,11 +561,11 @@ function showSaved($name) {
     }
   }
 
-  if (count($bins)) {
+  // if (count($bins)) {
     include_once('list-home-code.php');
-  } else {
-    echo 'nothing found :(';
-  } 
+  // } else {
+  //   echo 'nothing found :(';
+  // } 
   
 }
 
