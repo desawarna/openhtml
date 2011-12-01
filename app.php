@@ -35,7 +35,8 @@ $home = isset($_COOKIE['home']) ? $_COOKIE['home'] : '';
 //   exit;
 // }
 
-$request = split('/', preg_replace('/^\//', '', preg_replace('/\/$/', '', preg_replace('/\?.*$/', '', $request_uri ))));
+// $request = split('/', preg_replace('/^\//', '', preg_replace('/\/$/', '', preg_replace('/\?.*$/', '', $request_uri ))));
+$request = preg_split('/\//', preg_replace('/^\//', '', preg_replace('/\/$/', '', preg_replace('/\?.*$/', '', $request_uri ))));
 
 $action = array_pop($request);
 
@@ -117,7 +118,7 @@ if (!$action) {
     exit;
   }
 } else if ($action == 'list' || $action == 'show') {
-  showSaved($request[0] ? $request[0] : $home);
+  showSaved($request ? $request[0] : $home);
   // showSaved($home);
   // could be listed under a user OR could be listing all the revisions for a particular bin
   
