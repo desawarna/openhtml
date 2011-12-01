@@ -1,5 +1,6 @@
 <?php
 include('config.php'); // contains DB & important versioning
+include('logger.php'); // contains activity logger
 
 include('auth.php'); // contains user auth
 $log = new logmein(); // instantiate the class
@@ -120,6 +121,8 @@ if (!$action) {
   // showSaved($home);
   // could be listed under a user OR could be listing all the revisions for a particular bin
   
+  logger('list');
+
   exit();
 } else if ($action == 'source' || $action == 'js') {
   header('Content-type: text/javascript');
@@ -145,6 +148,7 @@ if (!$action) {
   }
 } else if ($action == 'edit') {
   list($code_id, $revision) = getCodeIdParams($request);
+  logger('open');
   if ($revision == 'latest') {
     $latest_revision = getMaxRevision($code_id);
     header('Location: /' . $code_id . '/' . $latest_revision . '/edit');
@@ -152,6 +156,7 @@ if (!$action) {
     
   }
 } else if ($action == 'logout') {
+  logger("logout");
   $log->logout();
 
 } else if ($action == 'save' || $action == 'clone') {
