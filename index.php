@@ -60,11 +60,11 @@ if ($code_id) {
       <a class="tab button preview group right gap" accesskey="2" href="#preview">Preview</a>
       <a title="Revert" class="button light group left" id="revert" href="#"><img class="enabled" src="<?php echo ROOT?>images/revert.png" /><img class="disabled" src="<?php echo ROOT?>images/revert-disabled.png" /></a>
     <?php if ($code_id) : ?>
-      <a id="jsbinurl" target="<?php echo $code_id?>" class="button group light left" href="http://<?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?>"><?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?></a>
+      <a id="jsbinurl" target="<?php echo $code_id?>" class="button group light left" href="http://<?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?>"><?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id ?></a>
 
       <div class="button group gap right tall">
         <a href="<?php echo ROOT?>save" class="save title">Save</a>
-        <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Clone</a>
+        <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
         <a id="save" title="Save new a new revision" class="button light save group" href="<?php echo $code_id_path?>save">Save</a>
       <?php else : ?>
         <div class="button group gap left right">
