@@ -55,11 +55,11 @@ if (location.hash.indexOf('html') !== -1) {
   jsbin.settings.show.html = true;
 }
 
-if (location.hash.indexOf('javascript') !== -1) {
+if (location.hash.indexOf('css') !== -1) {
   jsbin.settings.show.javascript = true;
 }
 
-if (location.hash.indexOf('live') !== -1) {
+if (location.hash.indexOf('preview') !== -1) {
   jsbin.settings.show.live = true;
 }
 
