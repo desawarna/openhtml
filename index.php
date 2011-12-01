@@ -57,7 +57,7 @@ if ($code_id) {
   <div class="control">
     <div class="buttons">
       <a class="tab button source group left" accesskey="1" href="#source">Code</a>
-      <a class="tab button preview group right gap" accesskey="2" href="#preview" title="Run with alerts, prompts, etc">Render</a>
+      <a class="tab button preview group right gap" accesskey="2" href="#preview">Render</a>
       <a title="Revert" class="button light group left" id="revert" href="#"><img class="enabled" src="<?php echo ROOT?>images/revert.png" /><img class="disabled" src="<?php echo ROOT?>images/revert-disabled.png" /></a>
     <?php if ($code_id) : ?>
       <a id="jsbinurl" target="<?php echo $code_id?>" class="button group light left" href="http://<?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?>"><?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?></a>
