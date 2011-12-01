@@ -160,6 +160,7 @@ if (!$action) {
   $log->logout();
 
 } else if ($action == 'save' || $action == 'clone') {
+
   list($code_id, $revision) = getCodeIdParams($request);
 
   $javascript = @$_POST['javascript'];
@@ -186,6 +187,9 @@ if (!$action) {
     
     if (stripos($method, 'new') !== false) {
       $code_id = false;
+      logger('clone');
+    } else {
+      logger('save');
     }
     
     if (!$code_id) {
@@ -276,6 +280,7 @@ if (!$action) {
   
 } else if ($action) { // this should be an id
   $subaction = array_pop($request);
+  logger('view');
 
   if ($action == 'latest') {
     // find the latest revision and redirect to that.
