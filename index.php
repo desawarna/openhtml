@@ -57,7 +57,7 @@ if ($code_id) {
   <div class="control">
     <div class="buttons">
       <a class="tab button source group left" accesskey="1" href="#source">Code</a>
-      <a class="tab button preview group right gap" accesskey="2" href="#preview">Render</a>
+      <a class="tab button preview group right gap" accesskey="2" href="#preview">Preview</a>
       <a title="Revert" class="button light group left" id="revert" href="#"><img class="enabled" src="<?php echo ROOT?>images/revert.png" /><img class="disabled" src="<?php echo ROOT?>images/revert-disabled.png" /></a>
     <?php if ($code_id) : ?>
       <a id="jsbinurl" target="<?php echo $code_id?>" class="button group light left" href="http://<?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?>"><?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?></a>
@@ -78,7 +78,7 @@ if ($code_id) {
       <span id="panelsvisible" class="gap">View: 
         <input type="checkbox" data-panel="javascript" data-uri="css" id="showjavascript"><label for="showjavascript">CSS</label>
         <input type="checkbox" data-panel="html" data-uri="html" id="showhtml"><label for="showhtml">HTML</label>
-        <input type="checkbox" data-panel="live" data-uri="preview" id="showlive"><label for="showlive">Preview</label>
+        <input type="checkbox" data-panel="live" data-uri="live" id="showlive"><label for="showlive">Live</label>
       </span>
 
       <div id="userinfo">

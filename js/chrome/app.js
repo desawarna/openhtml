@@ -44,7 +44,7 @@ if ($.browser.opera) {
 
 /* Boot code */
 // if the user linked to a code or live panel - hide them all by default to reset the current stte
-if (location.hash && location.hash !== '#preview' && location.hash !== '#source') {
+if (location.hash && location.hash !== '#live' && location.hash !== '#source') {
   jsbin.settings.show.html = false;
   jsbin.settings.show.javascript = false;
   jsbin.settings.show.live = false;
@@ -59,7 +59,7 @@ if (location.hash.indexOf('css') !== -1) {
   jsbin.settings.show.javascript = true;
 }
 
-if (location.hash.indexOf('preview') !== -1) {
+if (location.hash.indexOf('live') !== -1) {
   jsbin.settings.show.live = true;
 }
 
