@@ -51,8 +51,7 @@ body {
   margin: 0;
   font-size: 13px;
   min-width: 976px;
-  overflow: hidden;
-  background: url(/openhtml/images/jsbin-bg.gif) repeat-x 0 -10px;
+  overflow-y: scroll;
 }
 
 #bins a {
@@ -204,6 +203,10 @@ iframe {
 #control {
   top: 0;
   font-family: "Helvetica Neue", Helvetica, Arial;
+  position: fixed;
+  
+  background: url(/openhtml/images/jsbin-bg.gif) repeat-x 0 -10px;
+  background-attachment:fixed;
 }
 
 
