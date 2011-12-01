@@ -1062,7 +1062,7 @@ details li, .details li {
   margin-left: auto;
   margin-right: auto;
   margin-top: 150px;
-  
+
   background-color: #eeeeee;
   border-width: 1px 2px 3px 1px;
   border-style: solid;
@@ -1070,7 +1070,7 @@ details li, .details li {
 }
 
 input#username, input#password {
-  font-size: 20px;
+  font-size: 16px;
   height: 20px;
   width: 210px;
   margin-top: 5px;
