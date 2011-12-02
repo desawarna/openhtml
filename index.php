@@ -46,6 +46,7 @@ if ($code_id) {
 <html lang="en">
 <head>
 <meta charset=utf-8 />
+<meta name="robots" content="noindex">
 <title>openHTML</title>
 <link rel="stylesheet" href="<?php echo ROOT?>css/style.css?<?php echo VERSION?>" type="text/css" />
 </head>
