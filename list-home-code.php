@@ -72,11 +72,17 @@ body {
   margin: 10px 0;
 }
 
-iframe {
-  -moz-transform:    scale(0.8);
+#iframe {
+  width: 100%;
+  height: 100%;
+/*  -moz-transform:    scale(0.8);
+  -moz-transform-origin: 0 0;
   -o-transform:      scale(0.8);
+  -o-transform-origin: 0 0;
   -webkit-transform: scale(0.8);
+  -webkit-transform-origin: 0 0;
   transform:         scale(0.8);
+  transform-origin: 0 0;
   /* IE8+ - must be on one line, unfortunately */ 
   -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.8, M12=0, M21=0, M22=0.8, SizingMethod='auto expand')";
   
@@ -87,11 +93,7 @@ iframe {
            M21=0,
            M22=0.8,
            SizingMethod='auto expand');
-  
-  -webkit-transform-origin: 0 0;
-  
-  width: 100%;
-  height: 100%;
+  overflow: visible;*/
 }
 
 #bins {
