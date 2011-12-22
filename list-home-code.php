@@ -217,7 +217,7 @@ iframe {
 
 
 </style>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+    <script type="text/javascript" src="js/vendor/jquery.js"></script>
     <script type="text/javascript">
         $().ready(function() {
             $('.child').hide();
@@ -299,7 +299,7 @@ foreach ($order as $key => $value) {
 function render(url) {
   iframe.src = url + 'quiet';
   iframe.removeAttribute('hidden');
-  viewing.innerHTML = '<?=$_SERVER['HTTP_HOST']?>' + url;
+  viewing.innerHTML = '<?=$_SERVER['HTTP_HOST']?>/' + url;
 }
 
 function matchNode(el, nodeName) {
