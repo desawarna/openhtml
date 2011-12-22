@@ -326,7 +326,7 @@ if (!$action) {
     }
 
     if (!$html && !$ajax) {
-      $javascript = "/*\n  Created using " . $host . ROOT . "\n  Source can be edit via " . $host . ROOT . "$code_id/edit\n*/\n\n" . $javascript;
+      // $javascript = "/*\n  Created using " . $host . ROOT . "\n  Source can be edit via " . $host . ROOT . "$code_id/edit\n*/\n\n" . $javascript;
     }
 
     if (!$html) {
