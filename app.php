@@ -313,7 +313,7 @@ if (!$action) {
     // }
 
     if ($no_code_found == false) {
-      $html = str_lreplace('</body>', googleAnalytics() . '</body>', $html);
+      // $html = str_lreplace('</body>', googleAnalytics() . '</body>', $html);
     }
 
     if (false) {
