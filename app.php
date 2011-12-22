@@ -250,7 +250,8 @@ if (!$action) {
     if (array_key_exists('callback', $_REQUEST)) {
       echo $_REQUEST['callback'] . '("';
     }
-    $url = $host . ROOT . $code_id . ($revision == 1 ? '' : '/' . $revision);
+    $latest_revision = getMaxRevision($code_id);
+    $url = $host . ROOT . $code_id . ($revision == $latest_revision ? '' : '/' . $revision);
     if (isset($_REQUEST['format']) && strtolower($_REQUEST['format']) == 'plain') {
       echo $url;
     } else {
@@ -297,7 +298,8 @@ if (!$action) {
       $revision = $action;
     } else {
       $code_id = $action;
-      $revision = 1;
+      $latest_revision = getMaxRevision($code_id);
+      $revision = $latest_revision;
     }
     
     list($latest_revision, $html, $javascript) = getCode($code_id, $revision);
@@ -373,8 +375,8 @@ function getCodeIdParams($request) {
   
   if ($code_id == null || ($home && $home == $code_id)) {
     $code_id = $revision;
-    $revision = 1;
-    // $revision = getMaxRevision($code_id);
+    // $revision = 1;
+    $revision = getMaxRevision($code_id);
   }
   
   return array($code_id, $revision);
@@ -583,7 +585,8 @@ function showSaved($name) {
 }
 
 function formatURL($code_id, $revision) {
-  if ($revision != 1 && $revision) {
+  $latest_revision = getMaxRevision($code_id);
+  if ($revision != $latest_revision && $revision) {
     $code_id .= '/' . $revision;
   }
   $code_id_path = ROOT;
