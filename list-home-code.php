@@ -200,6 +200,10 @@ iframe {
   margin-left: 20px;
 }
 
+.action {
+  cursor: pointer;
+}
+
 /* for bar */
 
 #control {
@@ -213,6 +217,22 @@ iframe {
 
 
 </style>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        $().ready(function() {
+            $('.child').hide();
+            $('.action').click(function(){
+                var id = $(this).closest('.parent').attr('id');
+                $("."+id).toggle();
+                if($(this).html() == '▶') {
+                  $(this).html('▼');
+                } else {
+                  $(this).html('▶');
+                }
+            });
+        });
+
+    </script>
 </head>
 <body class="list">
 <div id="control"><div class="control">
@@ -232,6 +252,8 @@ $last = null;
 arsort($order);
 foreach ($order as $key => $value) {
   foreach ($bins[$key] as $bin) {
+    $code = $bin['url'];
+    $revision = $bin['revision'];
     $url = formatURL($bin['url'], $bin['revision']);
     preg_match('/<title>(.*?)<\/title>/', $bin['html'], $match);
     preg_match('/<body.*?>(.*)/s', $bin['html'], $body);
@@ -256,8 +278,8 @@ foreach ($order as $key => $value) {
     if ($firstTime && $last !== null) : ?>
   <tr data-type="spacer"><td colspan=3></td></tr>
     <?php endif ?>
-  <tr data-url="<?=$url?>">
-    <td class="url"><a href="<?=$url?>edit"><span<?=($firstTime ? ' class="first"' : '') . '>' . $bin['url']?>/</span><?=$bin['revision']?>/</a></td>
+  <tr data-url="<?=$url?>" <?=($firstTime ? ' class="parent" id="' : ' class="child ')  . $code . '">' ?>
+    <td class="url"><?=($firstTime && $revision > 1) ? '<span class="action">▶</span>': ''?> <a href="<?=$url?>edit"><span<?=($firstTime ? ' class="first"' : '') . '>' . $bin['url']?>/</span><?=$bin['revision']?>/</a></td>
     <td class="created"><a pubdate="<?=$bin['created']?>" href="<?=$url?>edit"><?=getRelativeTime($bin['created'])?></a></td>
     <td class="title"><a href="<?=$url?>edit"><?=substr($title, 0, 200)?></a></td>
   </tr>
@@ -291,10 +313,11 @@ function matchNode(el, nodeName) {
 }
 
 function removeHighlight() {
-  var i = trs.length;
-  while (i--) {
-    trs[i].className = '';
-  }
+  // var i = trs.length;
+  // while (i--) {
+  //   // trs[i].className = '';
+  // }
+  $('.hover').removeClass('hover');
 }
 
 function visit() {
@@ -318,7 +341,8 @@ bins.onmouseover = function (event) {
   if (target = matchNode(event.target, 'TR')) {
     removeHighlight();
     if (target.getAttribute('data-type') !== 'spacer') {
-      target.className = 'hover';
+      // target.className = 'hover';
+      $(target).addClass('hover');
       // target.onclick = visit;
       url = target.getAttribute('data-url');
       if (current !== url) {
