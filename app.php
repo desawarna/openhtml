@@ -588,7 +588,8 @@ function formatURL($code_id, $revision) {
   }
   $code_id_path = ROOT;
   if ($code_id) {
-    $code_id_path = ROOT . $code_id . '/';
+    // $code_id_path = ROOT . $code_id . '/';
+    $code_id_path = $code_id . '/';
   }
   return $code_id_path;
 }
