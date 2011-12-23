@@ -33,7 +33,8 @@ if (false && (@$_POST['html'] || @$_POST['javascript'])) {
   } 
 }
 
-if ($revision != 1 && $revision) {
+$latest_revision = getMaxRevision($code_id);
+if ($revision != $latest_revision && $revision) {
   $code_id .= '/' . $revision;
 }
 $code_id_path = ROOT;
@@ -119,7 +120,8 @@ if ($code_id) {
 <script>
 <?php
   // assumes http - if that's not okay, this need to be changed
-  $url = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $code_id . ($revision == 1 ? '' : '/' . $revision);
+  $latest_revision = getMaxRevision($code_id);
+  $url = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $code_id . ($revision == $latest_revision ? '' : '/' . $revision);
   if (!$ajax) {
     echo 'var template = ';
   }
