@@ -217,7 +217,7 @@ iframe {
 
 
 </style>
-    <script type="text/javascript" src="js/vendor/jquery.js"></script>
+    <script type="text/javascript" src="../js/vendor/jquery.js"></script>
     <script type="text/javascript">
         $().ready(function() {
             $('.child').hide();
@@ -237,14 +237,14 @@ iframe {
 <body class="list">
 <div id="control"><div class="control">
     <div class="buttons">
-
-    <a class="tab button source group left" accesskey="1" href="./">New Page</a>
+      <a class="button source group light left list" accesskey="1">Page List</a>
+      <a class="button source group light right" accesskey="1" href="./">New</a>
     <div id="userinfo">
-        <a id="account" class="button group light left list" href="<?php echo ROOT?>list"><?php echo $_SESSION['name']; ?></a>
+        <a id="account" class="button group light left" href="<?php echo ROOT?><?php echo $_SESSION['name'] ?>/list"><?php echo $_SESSION['name'] ?></a>
         <a id="logout" class="button group light right" href="<?php echo ROOT?>logout">Logout</a><span id="logo">openHTML</span>
     </div></div></div></div>
 <div id="bins">
-<h2><?php echo $name ?>'s Pages</h2>
+<!--<h2><?php echo $name ?>'s Pages</h2>-->
 <table>
 <tbody>
 <?php 
@@ -279,7 +279,7 @@ foreach ($order as $key => $value) {
   <tr data-type="spacer"><td colspan=3></td></tr>
     <?php endif ?>
   <tr data-url="<?=$url?>" <?=($firstTime ? ' class="parent" id="' : ' class="child ')  . $code . '">' ?>
-    <td class="url"><?=($firstTime && $revision > 1) ? '<span class="action">▶</span>': ''?> <a href="<?=$url?>edit"><span<?=($firstTime ? ' class="first"' : '') . '>' . $bin['url']?>/</span><?=$bin['revision']?>/</a></td>
+    <td class="url"><?=($firstTime && $revision > 1) ? '<span class="action">▶</span> ': ''?> <a href="<?=$url?>edit"><span<?=($firstTime ? ' class="first"' : '') . '>' . $bin['url']?>/</span><?=$bin['revision']?>/</a></td>
     <td class="created"><a pubdate="<?=$bin['created']?>" href="<?=$url?>edit"><?=getRelativeTime($bin['created'])?></a></td>
     <td class="title"><a href="<?=$url?>edit"><?=substr($title, 0, 200)?></a></td>
   </tr>
