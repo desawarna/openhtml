@@ -58,7 +58,7 @@ if ($code_id) {
 <div id="control">
   <div class="control">
     <div class="buttons">
-      <a id="account" class="tab button group light left" href="<?php echo ROOT?><?php echo $_SESSION['name']; ?>/list">Page List</a>
+      <a id="account" class="tab button group light left" href="<?php echo ROOT?>list">Page List</a>
       <a id="account" class="tab button group light right gap" href="../">New</a>
       <!--<a class="tab button source group left" accesskey="1" href="#source">Code</a>
       <a class="tab button preview group right gap" accesskey="2" href="#preview">Preview</a>-->
@@ -86,7 +86,7 @@ if ($code_id) {
       </span>
 
       <div id="userinfo">
-        <a id="account" class="button group light left" href="<?php echo ROOT?><?php echo $_SESSION['name']; ?>/list"><?php echo $_SESSION['name']; ?></a>
+        <a id="account" class="button group light left" href="<?php echo ROOT?>list"><?php echo $_SESSION['name']; ?></a>
         <a id="logout" class="button group light right" href="<?php echo ROOT?>logout">Logout</a>
       <span id="logo">openHTML</span>
     </div>

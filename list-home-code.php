@@ -217,7 +217,7 @@ iframe {
 
 
 </style>
-    <script type="text/javascript" src="../js/vendor/jquery.js"></script>
+    <script type="text/javascript" src="<?php echo ROOT?>js/vendor/jquery.js"></script>
     <script type="text/javascript">
         $().ready(function() {
             $('.child').hide();
@@ -240,7 +240,7 @@ iframe {
       <a class="button source group light left list" accesskey="1">Page List</a>
       <a class="button source group light right" accesskey="1" href="./">New</a>
     <div id="userinfo">
-        <a id="account" class="button group light left" href="<?php echo ROOT?><?php echo $_SESSION['name'] ?>/list"><?php echo $_SESSION['name'] ?></a>
+        <a id="account" class="button group light left" href="<?php echo ROOT?>list"><?php echo $_SESSION['name'] ?></a>
         <a id="logout" class="button group light right" href="<?php echo ROOT?>logout">Logout</a><span id="logo">openHTML</span>
     </div></div></div></div>
 <div id="bins">
