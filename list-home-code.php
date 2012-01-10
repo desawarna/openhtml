@@ -142,13 +142,14 @@ h2 {
 
 #bins .url {
   text-align: right;
-  width: 25%;
+  width: 35%;
   padding-left: 20px;
   padding-right: 20px;
 }
 
-#bins .url a {
+#bins .url .revision {
   color: #0097fe;
+  visibility: visible;
 }
 
 #bins .url a span {
@@ -158,6 +159,11 @@ h2 {
 
 #bins .url span.first {
   visibility: visible;
+}
+
+#bins .rename {
+  cursor: pointer;
+  color: #ddd !important;
 }
 
 #bins .created {
@@ -177,7 +183,8 @@ h2 {
 #bins tr:hover *,
 #bins tr.hover *,
 #bins tr:hover span,
-#bins tr.hover span {
+#bins tr.hover span,
+#bins tr.hover span.revision {
   background: #0097fe;
   color: #fff;
   /*cursor: pointer;*/
@@ -224,9 +231,25 @@ iframe {
             $('.rename').hide();
             
             $('.rename').click(function(){
-              var currentName = $(this).parent().parent().attr('data-url').slice(0, -1);
+              var currentName = $(this).siblings('a').children('.first').text();
               var newName = prompt('What would you like to name this page?', currentName);
-              if (newName) {
+
+              if ((newName) && (newName !== currentName)) {
+                var url = $(this).parent().parent().attr('id');
+                var revision = $(this).siblings('a').children('.revision').text();
+                var maxLength = 22;
+
+                $.post("update.php", {
+                    customName: newName,
+                    url: url,
+                    revision: revision
+                  });
+
+                if (newName.length > maxLength+1) {
+                  $(this).siblings('a').children('span.first').html(newName.substr(0, maxLength) + '&hellip;');
+                } else {
+                  $(this).siblings('a').children('span.first').html(newName);
+                }
                 
               }
 
@@ -267,6 +290,8 @@ foreach ($order as $key => $value) {
   foreach ($bins[$key] as $bin) {
     $code = $bin['url'];
     $revision = $bin['revision'];
+    $customName = $bin['customname'];
+
     $url = formatURL($bin['url'], $bin['revision']);
     preg_match('/<title>(.*?)<\/title>/', $bin['html'], $match);
     preg_match('/<body.*?>(.*)/s', $bin['html'], $body);
@@ -292,7 +317,7 @@ foreach ($order as $key => $value) {
   <tr data-type="spacer"><td colspan=3></td></tr>
     <?php endif ?>
   <tr data-url="<?=$url?>" <?=($firstTime ? ' class="parent" id="' : ' class="child ')  . $code . '">' ?>
-    <td class="url"><?=($firstTime) ? '<span class="rename">Rename</span> ': ''?><?=($firstTime && $revision > 1) ? '<span class="action">▶</span> ': '<span class="inaction">&nbsp;</span>'?> <a href="<?=$url?>edit"><span<?=($firstTime ? ' class="first"' : '') . '>' . $bin['url']?></span> <?=$bin['revision']?></a></td>
+    <td class="url"><?=($firstTime) ? '<span class="rename">Rename</span> ': ''?><?=($firstTime && $revision > 1) ? '<span class="action">▶</span> ': '<span class="inaction">&nbsp;</span>'?> <a href="<?=$url?>edit"><span<?=($firstTime ? ' class="first"' : '') . '>' . ($bin['customname'] ? $bin['customname'] : $bin['url']) ?></span> <span class="revision"><?=$bin['revision']?></span></a></td>
     <td class="created"><a pubdate="<?=$bin['created']?>" href="<?=$url?>edit"><?=getRelativeTime($bin['created'])?></a></td>
     <td class="title"><a href="<?=$url?>edit"><?=substr($title, 0, 200)?></a></td>
   </tr>

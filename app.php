@@ -196,12 +196,14 @@ if (!$action) {
     if (!$code_id) {
       $code_id = generateCodeId();
       $revision = 1;
+      $custom_name = $code_id;
     } else {
       $revision = getMaxRevision($code_id);
+      $custom_name = getCustomName($code_id, $revision);
       $revision++;
     }
 
-    $sql = sprintf('insert into sandbox (javascript, html, created, last_viewed, url, revision) values ("%s", "%s", now(), now(), "%s", "%s")', mysql_real_escape_string($javascript), mysql_real_escape_string($html), mysql_real_escape_string($code_id), mysql_real_escape_string($revision));
+    $sql = sprintf('insert into sandbox (javascript, html, created, last_viewed, url, revision, customname) values ("%s", "%s", now(), now(), "%s", "%s", "%s")', mysql_real_escape_string($javascript), mysql_real_escape_string($html), mysql_real_escape_string($code_id), mysql_real_escape_string($revision), mysql_real_escape_string($custom_name));
 
     // a few simple tests to pass before we save
     if (($html == '' && $html == $javascript)) {
@@ -387,6 +389,13 @@ function getMaxRevision($code_id) {
   $result = mysql_query($sql);
   $row = mysql_fetch_object($result);
   return $row->rev ? $row->rev : 0;
+}
+
+function getCustomName($code_id, $revision) {
+  $sql = sprintf('select customname from sandbox where url="%s" and revision="%s"', mysql_real_escape_string($code_id),  mysql_real_escape_string($revision));
+  $result = mysql_query($sql);
+  $row = mysql_fetch_object($result);
+  return $row->customname ? $row->customname : "";
 }
 
 function formatCompletedCode($html, $javascript, $code_id, $revision) {
