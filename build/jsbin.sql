@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS `sandbox` (
   `created` datetime default NULL,
   `last_viewed` datetime default NULL,
   `url` char(255) default NULL,
+  `customname` char(255) default NULL,
   `streaming` char(1) default 'n',
   `streaming_key` char(32) NOT NULL,
   `streaming_read_key` char(32) NOT NULL,
