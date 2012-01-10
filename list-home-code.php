@@ -221,6 +221,18 @@ iframe {
     <script type="text/javascript">
         $().ready(function() {
             $('.child').hide();
+            $('.rename').hide();
+            
+            $('.rename').click(function(){
+              var currentName = $(this).parent().parent().attr('data-url').slice(0, -1);
+              var newName = prompt('What would you like to name this page?', currentName);
+              if (newName) {
+                
+              }
+
+
+            });
+
             $('.action').click(function(){
                 var id = $(this).closest('.parent').attr('id');
                 $("."+id).toggle();
@@ -230,6 +242,7 @@ iframe {
                   $(this).html('▶');
                 }
             });
+
         });
 
     </script>
@@ -279,7 +292,7 @@ foreach ($order as $key => $value) {
   <tr data-type="spacer"><td colspan=3></td></tr>
     <?php endif ?>
   <tr data-url="<?=$url?>" <?=($firstTime ? ' class="parent" id="' : ' class="child ')  . $code . '">' ?>
-    <td class="url"><?=($firstTime && $revision > 1) ? '<span class="action">▶</span> ': ''?> <a href="<?=$url?>edit"><span<?=($firstTime ? ' class="first"' : '') . '>' . $bin['url']?>/</span><?=$bin['revision']?>/</a></td>
+    <td class="url"><?=($firstTime) ? '<span class="rename">Rename</span> ': ''?><?=($firstTime && $revision > 1) ? '<span class="action">▶</span> ': '<span class="inaction">&nbsp;</span>'?> <a href="<?=$url?>edit"><span<?=($firstTime ? ' class="first"' : '') . '>' . $bin['url']?></span> <?=$bin['revision']?></a></td>
     <td class="created"><a pubdate="<?=$bin['created']?>" href="<?=$url?>edit"><?=getRelativeTime($bin['created'])?></a></td>
     <td class="title"><a href="<?=$url?>edit"><?=substr($title, 0, 200)?></a></td>
   </tr>
@@ -317,6 +330,8 @@ function removeHighlight() {
   // while (i--) {
   //   // trs[i].className = '';
   // }
+
+  $('.hover .rename').hide();
   $('.hover').removeClass('hover');
 }
 
@@ -342,7 +357,10 @@ bins.onmouseover = function (event) {
     removeHighlight();
     if (target.getAttribute('data-type') !== 'spacer') {
       // target.className = 'hover';
+      $('.rename', target).show();
       $(target).addClass('hover');
+
+
       // target.onclick = visit;
       url = target.getAttribute('data-url');
       if (current !== url) {
