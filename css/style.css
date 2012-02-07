@@ -227,6 +227,10 @@ iframe.javascript {
   border-right: 1px solid #ccc !important;
 }
 
+.javascript > details {
+	display: none !important;
+}
+
 .buttons {
   min-width: 732px;
   min-width: 100%;
