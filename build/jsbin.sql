@@ -40,3 +40,11 @@ CREATE TABLE IF NOT EXISTS `ownership` (
   PRIMARY KEY (`name`),
   KEY `name_key` (`name`, `key`)
 );
+
+CREATE TABLE IF NOT EXISTS `pagenames` (
+  `url` char(255) NOT NULL,
+  `customname` char(255)  NULL,
+  `name` char(255) NOT NULL,
+
+  PRIMARY KEY (`url`)
+);
