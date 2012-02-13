@@ -97,7 +97,7 @@ body {
 }
 
 #bins {
-  width: 70%;
+  width: 40%;
   font-size: 13px;
   padding: 10px 0;
   position: relative;
@@ -108,7 +108,7 @@ body {
   border-left: 1px solid #ccc;
   position: fixed;
   top: 0;
-  width: 30%;
+  width: 60%;
   right: 0;
   height: 100%;
   padding-top: 10px;
@@ -167,7 +167,7 @@ h2 {
 }
 
 #bins .created {
-  width: 25%;
+  width: 20%;
 }
 
 #bins .created a {
