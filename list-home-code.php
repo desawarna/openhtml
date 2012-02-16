@@ -97,7 +97,7 @@ body {
 }
 
 #bins {
-  width: 40%;
+  width: 35%;
   font-size: 13px;
   padding: 10px 0;
   position: relative;
@@ -108,7 +108,7 @@ body {
   border-left: 1px solid #ccc;
   position: fixed;
   top: 0;
-  width: 60%;
+  width: 65%;
   right: 0;
   height: 100%;
   padding-top: 10px;
@@ -142,7 +142,7 @@ h2 {
 
 #bins .url {
   text-align: right;
-  width: 35%;
+  width: 70%;
   padding-left: 20px;
   padding-right: 20px;
 }
@@ -167,7 +167,7 @@ h2 {
 }
 
 #bins .created {
-  width: 20%;
+  width: 30%;
 }
 
 #bins .created a {
@@ -320,7 +320,7 @@ foreach ($order as $key => $value) {
   <tr data-url="<?=$url?>" <?=($firstTime ? ' class="parent" id="' : ' class="child ')  . $code . '">' ?>
     <td class="url"><?=($firstTime) ? '<span class="rename">Rename</span> ': ''?><?=($firstTime && $revision > 1) ? '<span class="action">▶</span> ': '<span class="inaction">&nbsp;</span>'?> <a href="<?=$url?>edit"><span<?=($firstTime ? ' class="first"' : '') . '>' . ($bin['customname'] ? $bin['customname'] : $bin['url']) ?></span> <span class="revision"><?=$bin['revision']?></span></a></td>
     <td class="created"><a pubdate="<?=$bin['created']?>" href="<?=$url?>edit"><?=getRelativeTime($bin['created'])?></a></td>
-    <td class="title"><a href="<?=$url?>edit"><?=substr($title, 0, 200)?></a></td>
+   <!--<td class="title"><a href="<?=$url?>edit"><?=substr($title, 0, 200)?></a></td>-->
   </tr>
 <?php
     $last = $bin['url'];
