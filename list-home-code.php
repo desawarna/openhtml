@@ -288,6 +288,7 @@ $last = null;
 arsort($order);
 foreach ($order as $key => $value) {
   foreach ($bins[$key] as $bin) {
+	if ($bin == null) {break;}
     $code = $bin['url'];
     $revision = $bin['revision'];
     $customName = $bin['customname'];
