@@ -1,6 +1,6 @@
 <?php
 include('config.php'); // contains DB & important versioning
-include('logger.php'); // contains activity logger
+// include('logger.php'); // contains activity logger
 
 include('auth.php'); // contains user auth
 $log = new logmein(); // instantiate the class
@@ -123,7 +123,7 @@ if (!$action) {
   // showSaved($home);
   // could be listed under a user OR could be listing all the revisions for a particular bin
   
-  logger('list');
+  // logger('list');
 
   exit();
 } else if ($action == 'source' || $action == 'js') {
@@ -150,7 +150,7 @@ if (!$action) {
   }
 } else if ($action == 'edit') {
   list($code_id, $revision) = getCodeIdParams($request);
-  logger('open');
+  // logger('open');
   if ($revision == 'latest') {
     $latest_revision = getMaxRevision($code_id);
     header('Location: ' . ROOT . $code_id . '/' . $latest_revision . '/edit');
@@ -158,7 +158,7 @@ if (!$action) {
     
   }
 } else if ($action == 'logout') {
-  logger("logout");
+  // logger("logout");
   $log->logout();
 
 } else if ($action == 'save' || $action == 'clone') {
@@ -189,9 +189,9 @@ if (!$action) {
     
     if (stripos($method, 'new') !== false) {
       $code_id = false;
-      logger('clone');
+      // logger('clone');
     } else {
-      logger('save');
+      // logger('save');
     }
     
     if (!$code_id) {
@@ -285,7 +285,7 @@ if (!$action) {
   
 } else if ($action) { // this should be an id
   $subaction = array_pop($request);
-  logger('view');
+  // logger('view');
 
   if ($action == 'latest') {
     // find the latest revision and redirect to that.
@@ -454,6 +454,19 @@ function getCode($code_id, $revision, $testonly = false) {
     // return array(preg_replace('/\r/', '', $html), preg_replace('/\r/', '', $javascript), $row->streaming, $row->active_tab, $row->active_cursor);
     return array($revision, get_magic_quotes_gpc() ? stripslashes($html) : $html, get_magic_quotes_gpc() ? stripslashes($javascript) : $javascript, $row->streaming, $row->active_tab, $row->active_cursor);
   }
+}
+
+function checkOwner($code_id, $revision, $user) {
+	$sql = sprintf('select name from owners where url="%s" and revision="%s"', mysql_real_escape_string($code_id), mysql_real_escape_string($revision));
+  $result = mysql_query($sql);
+	$row = mysql_fetch_object($result);
+	
+	if ($row->name == $user) {
+		return true;
+	} else {
+		return false;
+	}
+	
 }
 
 function defaultCode($not_found = false) {
