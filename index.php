@@ -42,6 +42,8 @@ if ($code_id) {
   $code_id_path = ROOT . $code_id . '/';
 }
 
+$ownership = checkOwner($code_id, $revision, $_SESSION['name']);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,7 +60,7 @@ if ($code_id) {
 <div id="control">
   <div class="control">
     <div class="buttons">
-      <a id="account" class="tab button group light left" href="<?php echo ROOT?>list">Page List</a>
+      <a id="account" class="tab button group light left" href="<?php echo ROOT?>list">Page List<?php echo $is_owner?></a>
       <a id="account" class="tab button group light right gap" href="../">New</a>
       <!--<a class="tab button source group left" accesskey="1" href="#source">Code</a>
       <a class="tab button preview group right gap" accesskey="2" href="#preview">Preview</a>-->
@@ -66,10 +68,20 @@ if ($code_id) {
     <?php if ($code_id) : ?>
       <a id="jsbinurl" target="<?php echo $code_id?>" class="button group light left" href="http://<?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?>"><?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id ?></a>
 
-      <div class="button group gap right tall">
-        <a href="<?php echo ROOT?>save" class="save title">Save</a>
-        <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
-        <a id="save" title="Save new a new revision" class="button light save group" href="<?php echo $code_id_path?>save">Save</a>
+
+						<?php if ($ownership) :?>
+			     	 <div class="button group gap right tall">
+				        <a href="<?php echo ROOT?>save" class="save title">Save</a>
+				        <a id="save" title="Save a new revision" class="button light save group" href="<?php echo $code_id_path?>save">Save</a>
+				        <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
+		
+	      		<?php else : ?>
+	
+				     	 <div class="button group gap right short">	
+				        <a title="Create a new copy" class="clone title" href="<?php echo ROOT?>clone">Copy</a>
+				        <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
+	
+						<?php endif ?>
       <?php else : ?>
         <div class="button group gap left right">
           <a href="<?php echo ROOT?>save" class="save title">Save</a>
@@ -89,6 +101,7 @@ if ($code_id) {
         <a id="account" class="button group light left" href="<?php echo ROOT?>list"><?php echo $_SESSION['name']; ?></a>
         <a id="logout" class="button group light right" href="<?php echo ROOT?>logout">Logout</a>
       <span id="logo">openHTML</span>
+
     </div>
     </div>
   </div>
@@ -118,6 +131,7 @@ if ($code_id) {
 </div>
 
 <script>
+
 <?php
   // assumes http - if that's not okay, this need to be changed
   $latest_revision = getMaxRevision($code_id);
