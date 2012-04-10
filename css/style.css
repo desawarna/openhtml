@@ -1060,9 +1060,9 @@ details li, .details li {
 
 /* login forms */
 
-#loginformname {
+.loginformid {
   width: 220px;
-  padding: 20px;
+  padding: 25px 50px 40px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 150px;
@@ -1073,7 +1073,13 @@ details li, .details li {
   border-color: #bbb;
 }
 
-input#username, input#password {
+.loginformid h1 {
+	color: #555;
+	text-align: center;
+	
+}
+
+input#username, input#password, input#email {
   font-size: 16px;
   height: 20px;
   width: 210px;
