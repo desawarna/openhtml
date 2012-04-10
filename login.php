@@ -8,7 +8,7 @@ if($_REQUEST['action'] == 'login'){
     if($log->login("ownership", $_POST['username'], $_POST['password']) == true){
         //do something on successful login
         
-        logger('login');
+        // logger('login');
 
 			header('Location: ./list');
     }else{
