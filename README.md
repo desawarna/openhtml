@@ -1,6 +1,6 @@
 # openHTML
 
-![openHTML screenshot](images/screenshot.png)
+![openHTML screenshot](https://github.com/thomaspark/openhtml/raw/master/images/screenshot.png)
 
 openHTML is a web-based HTML and CSS editor geared toward beginners learning basic web development. It offers:
 
