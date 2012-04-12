@@ -11,7 +11,7 @@ if($_REQUEST['action'] == 'create'){
         //do something on successful creation
         
         // logger('login');
-
+			$log->logout();
 			header('Location: ./');
     }else{
         //do something on FAILED login

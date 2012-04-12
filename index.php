@@ -145,6 +145,14 @@ $ownership = checkOwner($code_id, $revision, $_SESSION['name']);
 </script>
 <script>jsbin = { root: "<?php echo HOST ?>", version: "<?php echo VERSION?>" }; tips = <?php echo file_get_contents('tips.json')?>;</script>
 <script src="<?php echo ROOT?>js/<?php echo VERSION?>/jsbin.js"></script>
+
+<!-- <script>
+		window.onbeforeunload = function() { 
+				if (document.title.substr(-9) == '[unsaved]'){
+					return 'You have unsaved changes. You should save first.';
+				}
+			};
+</script> -->
 <?php if (!OFFLINE) : ?>
 <script>
 var _gaq = _gaq || [];
