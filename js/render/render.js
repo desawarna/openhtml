@@ -14,15 +14,15 @@ function getPreparedCode() {
   var parts = [],
       source = '',
       js = '';
-  
+
   try {
     source = editors.html.getCode();
   } catch (e) {}
-  
+
   try {
     js = editors.javascript.getCode();
   } catch (e) {}
-  
+
 
   // redirect JS console logged to our custom log while debugging
   if (consoleTest.test(js)) {
@@ -32,7 +32,7 @@ function getPreparedCode() {
       js = js.replace(/(^.|\b)console\./g, 'window.top.console.');
     }
   }
-  
+
   // escape any script tags in the JS code, because that'll break the mushing together
   js = js.replace(/<\/script/ig, '<\\/script');
 
@@ -45,13 +45,13 @@ function getPreparedCode() {
     parts = source.split('%code%');
     source = parts[0] + js + parts[1];
   } else if (js) {
-    parts.push(source.substring(0, source.lastIndexOf('</body>')))
-    parts.push(source.substring(source.lastIndexOf('</body>')));
+    parts.push(source.substring(0, source.lastIndexOf('</head>')))
+    parts.push(source.substring(source.lastIndexOf('</head>')));
 
     source = parts[0];
-    
+
     var close = parts.length == 2 && parts[1] ? parts[1] : '';
-    
+
     if (useCustomConsole) {
       source += "<script src=\"http://jsbin.com/js/render/console.js\"></script>\n<script>\n";
     }
@@ -63,8 +63,8 @@ function getPreparedCode() {
   // specific change for rendering $(document).ready() because iframes doesn't trigger ready (TODO - really test in IE, may have been fixed...)
   if (/\$\(document\)\.ready/.test(source)) {
     source = source.replace(/\$\(document\)\.ready/, 'window.onload = ');
-  } 
-  
+  }
+
   // read the element out of the source code and plug it in to our document.title
   var newDocTitle = source.match(/<title>(.*)<\/title>/i);
   if (newDocTitle !== null && newDocTitle[1] !== documentTitle) {
@@ -76,12 +76,12 @@ function getPreparedCode() {
 }
 
 function renderPreview() {
-  var doc = $('#preview iframe')[0], 
+  var doc = $('#preview iframe')[0],
       win = doc.contentDocument || doc.contentWindow.document,
       source = getPreparedCode();
-  
+
   win.open();
-  
+
   if (debug) {
     win.write('<pre>' + source.replace(/[<>&]/g, function (m) {
       if (m == '<') return '&lt;';
