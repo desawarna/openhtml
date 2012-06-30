@@ -11,11 +11,11 @@ if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false
     //do something if NOT logged in. For example, redirect to login page or display message.
 
   $pre = '<!DOCTYPE html><html><head><title>openHTML - Login</title><link rel="stylesheet" href="' . ROOT . 'css/style.css" type="text/css" /></head><body><div id="control"><div class="control"><div class="buttons"><div id="auth"><span id="logo">openHTML</span></div></div></div></div><div id="bin" class="stretch">';
-  
+
   $post = '</div></body></html>';
-  
+
   $log->loginform("loginformname", "loginformid", ROOT."login.php", $pre, $post);
-  
+
   die();
 }else{
     //do something else if logged in.
@@ -88,7 +88,7 @@ if (!$action) {
     // 3.2. if name - check key against encoded key
     // 3.2.1. if match, return ok
     //        else return fail
-    
+
     $key = sha1($_POST['key']);
     $name = $_POST['name'];
     $email = $_POST['email'];
@@ -96,7 +96,7 @@ if (!$action) {
     $result = mysql_query($sql);
 
     header('content-type: application/json');
-  
+
     if (!mysql_num_rows($result)) {
       // store and okay (note "key" is a reserved word - typical!)
       $sql = sprintf('insert into ownership (name, `key`, email) values ("%s", "%s", "%s")', mysql_real_escape_string($name), mysql_real_escape_string($key), mysql_real_escape_string($email));
@@ -122,22 +122,22 @@ if (!$action) {
   showSaved($request ? $request[0] : $home);
   // showSaved($home);
   // could be listed under a user OR could be listing all the revisions for a particular bin
-  
+
   // logger('list');
 
   exit();
 } else if ($action == 'source' || $action == 'js') {
   header('Content-type: text/javascript');
   list($code_id, $revision) = getCodeIdParams($request);
-  
+
   $edit_mode = false;
-  
+
   if ($code_id) {
     list($latest_revision, $html, $javascript) = getCode($code_id, $revision);
   } else {
     list($latest_revision, $html, $javascript) = defaultCode();
   }
-  
+
   if ($action == 'js') {
     echo $javascript;
   } else {
@@ -155,7 +155,7 @@ if (!$action) {
     $latest_revision = getMaxRevision($code_id);
     header('Location: ' . ROOT . $code_id . '/' . $latest_revision . '/edit');
     $edit_mode = false;
-    
+
   }
 } else if ($action == 'logout') {
   // logger("logout");
@@ -183,17 +183,17 @@ if (!$action) {
     //    trigger any long polling to fire and update any live
     //    views
   }
-  
+
   // we're using stripos instead of == 'save' because the method *can* be "download,save" to support doing both
   if (stripos($method, 'save') !== false) {
-    
+
     if (stripos($method, 'new') !== false) {
       $code_id = false;
       // logger('clone');
     } else {
       // logger('save');
     }
-    
+
     if (!$code_id) {
       $code_id = generateCodeId();
       $revision = 1;
@@ -211,7 +211,7 @@ if (!$action) {
       // entirely blank isn't going to be saved.
     } else {
       $ok = mysql_query($sql);
-      
+
       if ($home) {
         // first check they have write permission for this home
         $sql = sprintf('select * from ownership where name="%s" and `key`="%s"', mysql_real_escape_string($home), mysql_real_escape_string($_COOKIE['key']));
@@ -223,12 +223,12 @@ if (!$action) {
         // $code_id = $home . '/' . $code_id;
       }
     }
-    
+
     // error_log('saved: ' . $code_id . ' - ' . $revision . ' -- ' . $ok . ' ' . strlen($sql));
     // error_log(mysql_error());
   }
 
-  /** 
+  /**
    * Download
    *
    * Now allow the user to download the individual bin.
@@ -240,7 +240,7 @@ if (!$action) {
     $html = preg_replace('/\r/', '', $html);
     $html = get_magic_quotes_gpc() ? stripslashes($html) : $html;
     $javascript = get_magic_quotes_gpc() ? stripslashes($javascript) : $javascript;
-    
+
     if (!$code_id) {
       $code_id = 'untitled';
       $revision = 1;
@@ -260,7 +260,7 @@ if (!$action) {
     } else {
       echo '{ "url" : "' . $url . '", "edit" : "' . $url . '/edit", "html" : "' . $url . '/edit", "js" : "' . $url . '/edit" }';
     }
-    
+
     if (array_key_exists('callback', $_REQUEST)) {
       echo '")';
     }
@@ -281,8 +281,8 @@ if (!$action) {
       header('Location: ' . ROOT . $code_id . '/' . $revision . '/edit');
     }
   }
-  
-  
+
+
 } else if ($action) { // this should be an id
   $subaction = array_pop($request);
   // logger('view');
@@ -304,10 +304,10 @@ if (!$action) {
       $latest_revision = getMaxRevision($code_id);
       $revision = $latest_revision;
     }
-    
+
     list($latest_revision, $html, $javascript) = getCode($code_id, $revision);
     list($html, $javascript) = formatCompletedCode($html, $javascript, $code_id, $revision);
-    
+
     global $quiet;
 
     // using new str_lreplace to ensure only the *last* </body> is replaced.
@@ -327,7 +327,7 @@ if (!$action) {
       } else {
         // if we can't find a head element, brute force the framebusting in to the HTML
         $html = '<script>if (window.top != window.self) window.top.location.replace(window.location.href);</script>' . $html;
-      }      
+      }
     }
 
     if (!$html && !$ajax) {
@@ -349,7 +349,7 @@ if (!$edit_mode || $ajax) {
 
 function connect() {
   // sniff, and if on my mac...
-  $link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);    
+  $link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
   mysql_select_db(DB_NAME, $link);
 }
 
@@ -375,13 +375,13 @@ function getCodeIdParams($request) {
   $revision = array_pop($request);
   $code_id = array_pop($request);
 
-  
+
   if ($code_id == null || ($home && $home == $code_id)) {
     $code_id = $revision;
     // $revision = 1;
     $revision = getMaxRevision($code_id);
   }
-  
+
   return array($code_id, $revision);
 }
 
@@ -401,13 +401,13 @@ function getCustomName($code_id, $revision) {
 
 function formatCompletedCode($html, $javascript, $code_id, $revision) {
   global $ajax, $quiet;
-  
+
   $javascript = preg_replace('@</script@', "<\/script", $javascript);
-  
+
   if ($quiet && $html) {
     $html = '<script>window.print=window.confirm=window.prompt=window.alert=function(){};</script>' . $html;
-  } 
-  
+  }
+
   if ($html && stripos($html, '%code%') === false && strlen($javascript)) {
     $parts = explode("</head>", $html);
     $html = $parts[0];
@@ -419,11 +419,11 @@ function formatCompletedCode($html, $javascript, $code_id, $revision) {
     $html = $htmlParts[0] . $javascript . $htmlParts[1];
 
     $html = preg_replace("/%code%/", $javascript, $html);
-  }  
+  }
 
   if (!$ajax && $code_id != 'jsbin') {
     $code_id .= $revision == 1 ? '' : '/' . $revision;
-    //$html = preg_replace('/<html(.*)/', "<html$1\n<!--\n\n  Created using " . $host . ROOT . "\n  Source can be edited via " . $host . ROOT . "$code_id/edit\n\n-->", $html);            
+    //$html = preg_replace('/<html(.*)/', "<html$1\n<!--\n\n  Created using " . $host . ROOT . "\n  Source can be edited via " . $host . ROOT . "$code_id/edit\n\n-->", $html);
   }
 
   return array($html, $javascript);
@@ -433,7 +433,7 @@ function formatCompletedCode($html, $javascript, $code_id, $revision) {
 function getCode($code_id, $revision, $testonly = false) {
   $sql = sprintf('select * from sandbox where url="%s" and revision="%s"', mysql_real_escape_string($code_id), mysql_real_escape_string($revision));
   $result = mysql_query($sql);
-  
+
   if (!mysql_num_rows($result) && $testonly == false) {
     header("HTTP/1.0 404 Not Found");
     return defaultCode(true);
@@ -441,16 +441,16 @@ function getCode($code_id, $revision, $testonly = false) {
     return array($revision);
   } else {
     $row = mysql_fetch_object($result);
-    
+
     // TODO required anymore? used for auto deletion
     $sql = 'update sandbox set last_viewed=now() where id=' . $row->id;
     mysql_query($sql);
-    
+
     $javascript = preg_replace('/\r/', '', $row->javascript);
     $html = preg_replace('/\r/', '', $row->html);
-    
+
     $revision = $row->revision;
-    
+
     // return array(preg_replace('/\r/', '', $html), preg_replace('/\r/', '', $javascript), $row->streaming, $row->active_tab, $row->active_cursor);
     return array($revision, get_magic_quotes_gpc() ? stripslashes($html) : $html, get_magic_quotes_gpc() ? stripslashes($javascript) : $javascript, $row->streaming, $row->active_tab, $row->active_cursor);
   }
@@ -460,29 +460,29 @@ function checkOwner($code_id, $revision, $user) {
 	$sql = sprintf('select name from owners where url="%s" and revision="%s"', mysql_real_escape_string($code_id), mysql_real_escape_string($revision));
   $result = mysql_query($sql);
 	$row = mysql_fetch_object($result);
-	
+
 	if ($row->name == $user) {
 		return true;
 	} else {
 		return false;
 	}
-	
+
 }
 
 function defaultCode($not_found = false) {
   $library = '';
   global $no_code_found;
-  
+
   if ($not_found) {
     $no_code_found = true;
   }
-  
+
   $usingRequest = false;
-  
+
   if (isset($_REQUEST['html']) || isset($_REQUEST['js'])) {
     $usingRequest = true;
   }
-  
+
   if (@$_REQUEST['html']) {
     $html = $_REQUEST['html'];
   } else if ($usingRequest) {
@@ -496,12 +496,11 @@ function defaultCode($not_found = false) {
     <title>My Title</title>
   </head>
   <body>
-    <h1>Hello World</h1>
-    <p>This is my new web page.</p>
+    <h1>My Header</h1>
   </body>
 </html>
 HERE_DOC;
-  } 
+  }
 
   $javascript = '';
 
@@ -516,8 +515,8 @@ HERE_DOC;
       $javascript = 'document.getElementById("hello").innerHTML = "<strong>This URL does not have any code saved to it.</strong>";';
     } else {
       // $javascript = "if (document.getElementById('hello')) {\n  document.getElementById('hello').innerHTML = 'Hello World - this was inserted using JavaScript';\n}\n";
-      $javascript = "h1 {\n  font-size: 60px;\n  font-weight: bold;\n  font-family: Helvetica, Arial, sans-serif;\n  text-align: center;\n  color: orange;\n}\n\np {\n\n}";
-    }    
+      $javascript = "h1 {\n  font-size: 60px;\n  font-weight: bold;\n  text-align: center;\n  color: orange;\n}";
+    }
   }
 
   return array(0, get_magic_quotes_gpc() ? stripslashes($html) : $html, get_magic_quotes_gpc() ? stripslashes($javascript) : $javascript);
@@ -527,11 +526,11 @@ HERE_DOC;
 // this method also produces *pronousable* urls
 function generateCodeId($tries = 0) {
   $code_id = generateURL();
-  
+
   if ($tries > 2) {
     $code_id .= $tries;
   }
-  
+
   // check if it's free
   $sql = sprintf('select id from sandbox where url="%s"', mysql_real_escape_string($code_id));
   $result = mysql_query($sql);
@@ -542,7 +541,7 @@ function generateCodeId($tries = 0) {
     echo('Too many tries to find a new code_id - please contact using <a href="/about">about</a>');
     exit;
   }
-  
+
   return $code_id;
 }
 
@@ -550,14 +549,14 @@ function generateURL() {
 	// generates 5 char word
   $vowels = str_split('aeiou');
   $const = str_split('bcdfghjklmnpqrstvwxyz');
-  
+
   $word = '';
   for ($i = 0; $i < 6; $i++) {
     if ($i % 2 == 0) { // even = vowels
-      $word .= $vowels[rand(0, 4)]; 
+      $word .= $vowels[rand(0, 4)];
     } else {
       $word .= $const[rand(0, 20)];
-    } 
+    }
   }
 
 	return $word;
@@ -603,8 +602,8 @@ function showSaved($name) {
     include_once('list-home-code.php');
   // } else {
   //   echo 'nothing found :(';
-  // } 
-  
+  // }
+
 }
 
 function formatURL($code_id, $revision) {
