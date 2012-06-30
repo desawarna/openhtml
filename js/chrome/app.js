@@ -16,9 +16,9 @@ var debug = jsbin.settings.debug === undefined ? false : jsbin.settings.debug,
       sessionStorage.setItem('javascript', editors.javascript.getCode());
       sessionStorage.setItem('html', editors.html.getCode());
       sessionStorage.setItem('url', template.url);
-      
+
       localStorage.setItem('settings', JSON.stringify(jsbin.settings));
-      
+
       var panel = getFocusedPanel();
       sessionStorage.setItem('panel', panel);
       try { // this causes errors in IE9 - so we'll use a try/catch to get through it
@@ -82,10 +82,10 @@ $document.one('jsbinReady', function () {
       $('#show' + panel).removeAttr('checked')[0].checked = false;
     }
   }
-  
+
   var $sp1 = $('.code.html').splitter().data('splitter');
   var $sp2 = $live.splitter().data('splitter');
-  
+
   updatePanel('html', jsbin.settings.show.html);
   updatePanel('javascript', jsbin.settings.show.javascript);
   updatePanel('live', jsbin.settings.show.live);
@@ -104,7 +104,7 @@ if (/gist\/\d+/.test(window.location.pathname) && (!sessionStorage.getItem('java
       window.gist = new Gist(window.location.pathname.replace(/.*?(\d+).*/, "$1"));
     });
   };
-  
+
   if (editors.ready) {
     loadGist();
   } else {

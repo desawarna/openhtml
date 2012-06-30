@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-include('app.php'); 
+include('app.php');
 
 if (false && (@$_POST['html'] || @$_POST['javascript'])) {
   $jsonReplaces = array(array("\\", "/", "\n", "\t", "\r", "\b", "\f", '"'), array('\\\\', '\\/', '\\n', '\\t', '\\r', '\\b', '\\f', '\"'));
@@ -30,7 +30,7 @@ if (false && (@$_POST['html'] || @$_POST['javascript'])) {
     list($latest_revision, $html, $javascript) = getCode($code_id, $revision, true);
   } else {
     list($latest_revision, $html, $javascript) = defaultCode();
-  } 
+  }
 }
 
 $latest_revision = getMaxRevision($code_id);
@@ -53,15 +53,15 @@ $ownership = checkOwner($code_id, $revision, $_SESSION['name']);
 <title>openHTML</title>
 <link rel="stylesheet" href="<?php echo ROOT?>css/style.css?<?php echo VERSION?>" type="text/css" />
 </head>
-<!--[if lt IE 7 ]><body class="source ie ie6"><![endif]--> 
-<!--[if lt IE 8 ]><body class="source ie ie7"><![endif]--> 
-<!--[if gte IE 8 ]><body class="source ie"><![endif]--> 
-<!--[if !IE]><!--><body class="source"><!--<![endif]-->  
+<!--[if lt IE 7 ]><body class="source ie ie6"><![endif]-->
+<!--[if lt IE 8 ]><body class="source ie ie7"><![endif]-->
+<!--[if gte IE 8 ]><body class="source ie"><![endif]-->
+<!--[if !IE]><!--><body class="source"><!--<![endif]-->
 <div id="control">
   <div class="control">
     <div class="buttons">
       <a id="account" class="tab button group light left" href="<?php echo ROOT?>list">Page List<?php echo $is_owner?></a>
-      <a id="account" class="tab button group light right gap" href="../">New</a>
+      <a id="account" class="tab button group light right gap" href="<?php echo ROOT?>">New</a>
       <!--<a class="tab button source group left" accesskey="1" href="#source">Code</a>
       <a class="tab button preview group right gap" accesskey="2" href="#preview">Preview</a>-->
       <a title="Revert" class="button light group left" id="revert" href="#"><img class="enabled" src="<?php echo ROOT?>images/revert.png" /><img class="disabled" src="<?php echo ROOT?>images/revert-disabled.png" /></a>
@@ -74,13 +74,13 @@ $ownership = checkOwner($code_id, $revision, $_SESSION['name']);
 				        <a href="<?php echo ROOT?>save" class="save title">Save</a>
 				        <a id="save" title="Save a new revision" class="button light save group" href="<?php echo $code_id_path?>save">Save</a>
 				        <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
-		
+
 	      		<?php else : ?>
-	
-				     	 <div class="button group gap right short">	
+
+				     	 <div class="button group gap right short">
 				        <a title="Create a new copy" class="clone title" href="<?php echo ROOT?>clone">Copy</a>
 				        <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
-	
+
 						<?php endif ?>
       <?php else : ?>
         <div class="button group gap left right">
@@ -91,7 +91,7 @@ $ownership = checkOwner($code_id, $revision, $_SESSION['name']);
           <!-- <a id="startingpoint" title="Set as starting code" class="button group" href="<?php echo ROOT?>save">As template</a> -->
       </div>
 
-      <span id="panelsvisible" class="gap">View: 
+      <span id="panelsvisible" class="gap">View:
         <input type="checkbox" data-panel="javascript" data-uri="css" id="showjavascript"><label for="showjavascript">CSS</label>
         <input type="checkbox" data-panel="html" data-uri="html" id="showhtml"><label for="showhtml">HTML</label>
         <input type="checkbox" data-panel="live" data-uri="live" id="showlive"><label for="showlive">Live</label>
@@ -147,7 +147,7 @@ $ownership = checkOwner($code_id, $revision, $_SESSION['name']);
 <script src="<?php echo ROOT?>js/<?php echo VERSION?>/jsbin.js"></script>
 
 <!-- <script>
-		window.onbeforeunload = function() { 
+		window.onbeforeunload = function() {
 				if (document.title.substr(-9) == '[unsaved]'){
 					return 'You have unsaved changes. You should save first.';
 				}
