@@ -1080,7 +1080,8 @@ details li, .details li {
 	
 }
 
-input#username, input#password, input#email {
+.loginformid input[type="text"],
+.loginformid input[type="password"] {
   font-size: 16px;
   height: 20px;
   width: 210px;

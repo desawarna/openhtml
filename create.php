@@ -7,7 +7,7 @@ $log->encrypt = true; //set encryption
 
 
 if($_REQUEST['action'] == 'create'){
-    if($log->create("ownership", $_POST['username'], $_POST['password'], $_POST['email']) == true){
+    if($log->create("ownership", $_POST['username'], $_POST['password'], $_POST['email'], $_POST['section']) == true){
         //do something on successful creation
         
         // logger('login');
@@ -33,6 +33,8 @@ if($_REQUEST['action'] == 'create'){
 										<input name="password" id="password" type="password"></div>
 										<div><label for="email">Email (optional)</label>
 										<input name="email" id="email" type="text"></div>
+										<div><label for="section">Group (optional)</label>
+										<input name="section" id="section" type="text"></div>
 										<input name="action" id="action" value="create" type="hidden">
 										<div><input name="submit" id="submit" value="Create Account" type="submit"></div>
 									</form>
@@ -84,6 +86,10 @@ if($_REQUEST['action'] == 'create'){
 						<div>
 							<label for="email">Email (optional)</label>
 							<input name="email" id="email" type="text">
+						</div>
+						<div>
+							<label for="section">Group (optional)</label>
+							<input name="section" id="section" type="text">
 						</div>
 						<input name="action" id="action" value="create" type="hidden">
 						<div><input name="submit" id="submit" value="Create Account" type="submit"></div>
