@@ -224,57 +224,12 @@ iframe {
 
 
 </style>
-    <script type="text/javascript" src="<?php echo ROOT?>js/vendor/jquery.js"></script>
-    <script type="text/javascript">
-        $().ready(function() {
-            $('.child').hide();
-            $('.rename').hide();
-            
-            $('.rename').click(function(){
-              var currentName = $(this).siblings('a').children('.first').text();
-              var newName = prompt('What would you like to name this page?', currentName);
-
-              if ((newName) && (newName !== currentName)) {
-                var url = $(this).parent().parent().attr('id');
-                var revision = $(this).siblings('a').children('.revision').text();
-                var maxLength = 22;
-
-                $.post("update.php", {
-                    customName: newName,
-                    url: url,
-                    revision: revision
-                  });
-
-                if (newName.length > maxLength+1) {
-                  $(this).siblings('a').children('span.first').html(newName.substr(0, maxLength) + '&hellip;');
-                } else {
-                  $(this).siblings('a').children('span.first').html(newName);
-                }
-                
-              }
-
-
-            });
-
-            $('.action').click(function(){
-                var id = $(this).closest('.parent').attr('id');
-                $("."+id).toggle();
-                if($(this).html() == '▶') {
-                  $(this).html('▼');
-                } else {
-                  $(this).html('▶');
-                }
-            });
-
-        });
-
-    </script>
 </head>
 <body class="list">
 <div id="control"><div class="control">
     <div class="buttons">
       <a class="button source group light left list" accesskey="1">Page List</a>
-      <a class="button source group light right" accesskey="1" href="./">New</a>
+      <a class="button source group light right" accesskey="1" href="<?php echo ROOT?>">New</a>
     <div id="userinfo">
         <a id="account" class="button group light left" href="<?php echo ROOT?>list"><?php echo $_SESSION['name'] ?></a>
         <a id="logout" class="button group light right" href="<?php echo ROOT?>logout">Logout</a><span id="logo">openHTML</span>
@@ -334,6 +289,49 @@ foreach ($order as $key => $value) {
 <p id="viewing"></p>
 <iframe id="iframe" hidden></iframe>
 </div>
+<script type="text/javascript" src="<?php echo ROOT?>js/vendor/jquery.js"></script>
+<script type="text/javascript">
+
+  $('.child').hide();
+  $('.rename').hide();
+  
+  $('.rename').click(function(){
+    var currentName = $(this).siblings('a').children('.first').text();
+    var newName = prompt('What would you like to name this page?', currentName);
+
+    if ((newName) && (newName !== currentName)) {
+      var url = $(this).parent().parent().attr('id');
+      var revision = $(this).siblings('a').children('.revision').text();
+      var maxLength = 22;
+
+      $.post("update.php", {
+          customName: newName,
+          url: url,
+          revision: revision
+        });
+
+      if (newName.length > maxLength+1) {
+        $(this).siblings('a').children('span.first').html(newName.substr(0, maxLength) + '&hellip;');
+      } else {
+        $(this).siblings('a').children('span.first').html(newName);
+      }
+      
+    }
+
+
+  });
+
+  $('.action').click(function(){
+      var id = $(this).closest('.parent').attr('id');
+      $("."+id).toggle();
+      if($(this).html() == '▶') {
+        $(this).html('▼');
+      } else {
+        $(this).html('▶');
+      }
+  });
+
+</script>
 <script>
 function render(url) {
   iframe.src = url + 'quiet';
