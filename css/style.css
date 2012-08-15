@@ -1048,6 +1048,7 @@ details li, .details li {
 
 #userinfo, #auth #logo {
  position: absolute;
+ top: 13px;
  right: 30px;
 }
 
