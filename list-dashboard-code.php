@@ -1,14 +1,24 @@
 <?php 
+
 if($_POST['member']) {
   
-  include('config.php'); // contains DB & important versioning
+  include('config.php');
+  include('auth.php'); // contains user auth
+
   $link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
   mysql_select_db(DB_NAME, $link);
 
   $member = $_POST['member'];
 
-  $sql = sprintf('select * from owners where name="%s" order by url, revision desc', mysql_real_escape_string($member));
+  // check member is really in user's section
+  $sql = sprintf('select section from ownership where name="%s"', mysql_real_escape_string($member));
   $result = mysql_query($sql);
+  $row = mysql_fetch_object($result);
+
+  if ($row->section == $_SESSION['name']) {
+    $sql = sprintf('select * from owners where name="%s" order by url, revision desc', mysql_real_escape_string($member));
+    $result = mysql_query($sql);
+  }
 
   $bins = array();
   $order = array();
