@@ -118,6 +118,12 @@ if (!$action) {
 
     exit;
   }
+} else if ($action == 'dashboard') {
+
+  showDashboard($request ? $request[0] : $home);
+
+  exit;
+
 } else if ($action == 'list' || $action == 'show') {
   showSaved($request ? $request[0] : $home);
   // showSaved($home);
@@ -603,6 +609,44 @@ function showSaved($name) {
   // } else {
   //   echo 'nothing found :(';
   // }
+
+}
+
+function showDashboard($name) {
+
+  $sql = sprintf('select * from ownership where section="%s" order by name', mysql_real_escape_string($name));
+  $result = mysql_query($sql);
+  while ($member = mysql_fetch_object($result)) {
+    $members[] = $member->name;
+  }
+
+  $sql = sprintf('select * from owners where name="%s" order by url, revision desc', mysql_real_escape_string($members[0]));
+  $result = mysql_query($sql);
+
+  $bins = array();
+  $order = array();
+
+  while ($saved = mysql_fetch_object($result)) {
+    $sql = sprintf('select * from sandbox where url="%s" and revision="%s"', mysql_real_escape_string($saved->url), mysql_real_escape_string($saved->revision));
+    $binresult = mysql_query($sql);
+    $bin = mysql_fetch_array($binresult);
+
+    if (!isset($bins[$saved->url])) {
+      $bins[$saved->url] = array();
+    }
+
+    $bins[$saved->url][] = $bin;
+
+    if (isset($order[$saved->url])) {
+      if (@strtotime($order[$saved->url]) < @strtotime($bin['created'])) {
+        $order[$saved->url] = $bin['created'];
+      }
+    } else {
+      $order[$saved->url] = $bin['created'];
+    }
+  }
+
+  include_once('dashboard.php');
 
 }
 
