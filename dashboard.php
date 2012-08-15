@@ -412,7 +412,6 @@ $('#users').change(function(){
     dataType: "html",
     cache: false,
     success: function(i) {
-      // console.log('success' + i);
       $("#bins tbody").html(i);
       collapsePages();
     } 
