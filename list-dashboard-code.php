@@ -29,7 +29,7 @@ if($_POST['member']) {
 
     $sql = sprintf('select * from sandbox where url="%s" and revision="%s"', mysql_real_escape_string($saved->url), mysql_real_escape_string($saved->revision));
     $binresult = mysql_query($sql);
-    $bin = mysql_fetch_array($binresult);;
+    $bin = mysql_fetch_array($binresult);
 
     if (!isset($bins[$saved->url])) {
       $bins[$saved->url] = array();
@@ -64,7 +64,7 @@ foreach ($order as $key => $value) {
     $url = formatURL($bin['url'], $bin['revision']);
 
 
-    $firstTime = $bin['url'] != $last; 
+    $firstTime = $bin['url'] != $last;
 
 
     if ($firstTime && $last !== null) {
