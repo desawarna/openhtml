@@ -391,6 +391,13 @@ function getCodeIdParams($request) {
   return array($code_id, $revision);
 }
 
+function getMaxRevision($code_id) {
+  $sql = sprintf('select max(revision) as rev from sandbox where url="%s"', mysql_real_escape_string($code_id));
+  $result = mysql_query($sql);
+  $row = mysql_fetch_object($result);
+  return $row->rev ? $row->rev : 0;
+}
+
 function getCustomName($code_id, $revision) {
   $sql = sprintf('select customname from sandbox where url="%s" and revision="%s"', mysql_real_escape_string($code_id),  mysql_real_escape_string($revision));
   $result = mysql_query($sql);
@@ -643,26 +650,17 @@ function showDashboard($name) {
 
 }
 
-include('functions.php');
-
-// function getMaxRevision($code_id) {
-//   $sql = sprintf('select max(revision) as rev from sandbox where url="%s"', mysql_real_escape_string($code_id));
-//   $result = mysql_query($sql);
-//   $row = mysql_fetch_object($result);
-//   return $row->rev ? $row->rev : 0;
-// }
-
-// function formatURL($code_id, $revision) {
-//   $latest_revision = getMaxRevision($code_id);
-//   if ($revision != $latest_revision && $revision) {
-//     $code_id .= '/' . $revision;
-//   }
-//   $code_id_path = ROOT;
-//   if ($code_id) {
-//     // $code_id_path = ROOT . $code_id . '/';
-//     $code_id_path = $code_id . '/';
-//   }
-//   return $code_id_path;
-// }
+function formatURL($code_id, $revision) {
+  $latest_revision = getMaxRevision($code_id);
+  if ($revision != $latest_revision && $revision) {
+    $code_id .= '/' . $revision;
+  }
+  $code_id_path = ROOT;
+  if ($code_id) {
+    // $code_id_path = ROOT . $code_id . '/';
+    $code_id_path = $code_id . '/';
+  }
+  return $code_id_path;
+}
 
 ?>
