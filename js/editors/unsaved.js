@@ -6,14 +6,16 @@ $(document).bind('codeChange', function (event, revert, onload) {
   //   $revert.removeClass('enable');
   // }
   
-  // updateTitle(revert, onload);
+  updateTitle(revert, onload);
 });
 
-// $(window).bind('beforeunload', function(revert){
-//   if (document.title.indexOf('[unsaved]') != -1){
-//     return 'You should stay and save your page first.\n';
-//   }
-// });
+$(window).bind('beforeunload', function(revert){
+    return warn_on_unload;
+});
+
+$('.save').click(function(){
+  warn_on_unload = null;
+})
 
 function updateTitle(revert, onload) {
   var title = !documentTitle ? 'openHTML' : documentTitle;
@@ -21,9 +23,10 @@ function updateTitle(revert, onload) {
   if (editors.html.ready && editors.javascript.ready) {
     if (!revert) {
       document.title = title + ' [unsaved]';
-      if ($revert.addClass('enable').is(':hidden')) {
-        $revert[onload ? 'show' : 'fadeIn']().next().removeClass('left');
-      }
+      warn_on_unload = "You have unsaved changes!";
+      // if ($revert.addClass('enable').is(':hidden')) {
+      //   $revert[onload ? 'show' : 'fadeIn']().next().removeClass('left');
+      // }
     } else {
       document.title = title;
     }    
