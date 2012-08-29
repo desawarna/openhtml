@@ -17,7 +17,7 @@ $(window).bind('beforeunload', function(){
 
 $('.save').click(function(){
   warn_on_unload = null;
-})
+});
 
 function updateTitle(revert, onload) {
   var title = !documentTitle ? 'openHTML' : documentTitle;
@@ -31,6 +31,6 @@ function updateTitle(revert, onload) {
       // }
     } else {
       document.title = title;
-    }    
+    }
   }
 }
