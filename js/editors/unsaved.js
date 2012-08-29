@@ -1,12 +1,12 @@
 var $revert = $('#revert'); //.next().addClass('left').end();
 $(document).bind('codeChange', function (event, revert, onload) {
-  if (revert == undefined) {
-    revert = false;
-  } else {
-    $revert.removeClass('enable');
-  }
+  // if (revert == undefined) {
+  //   revert = false;
+  // } else {
+  //   $revert.removeClass('enable');
+  // }
   
-  updateTitle(revert, onload);
+  // updateTitle(revert, onload);
 });
 
 // $(window).bind('beforeunload', function(revert){
