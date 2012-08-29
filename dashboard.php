@@ -236,7 +236,7 @@ iframe {
   <div class="control">
     <div class="buttons">
       <a class="button source group light left" accesskey="1" href="<?php echo ROOT?>list">Page List</a>
-      <a class="button source group light right" accesskey="1" href="<?php echo ROOT?>">New</a>
+      <a class="button source group light right" accesskey="1" href="<?php echo ROOT?>">New Page</a>
       <span class="members">
           <?php
 
