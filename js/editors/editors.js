@@ -27,6 +27,9 @@ setupEditor('html');
 
 var editorsReady = setInterval(function () {
   if (editors.html.ready && editors.javascript.ready) {
+
+    editors.html.setCursor(7, 8);
+
     clearInterval(editorsReady);
     editors.ready = true;
     if (typeof editors.onReady == 'function') editors.onReady();
