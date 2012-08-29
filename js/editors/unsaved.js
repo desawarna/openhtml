@@ -11,7 +11,7 @@ $(document).bind('codeChange', function (event, revert, onload) {
   updateTitle(revert, onload);
 });
 
-$(window).bind('beforeunload', function(revert){
+$(window).bind('beforeunload', function(warn_on_unload){
     return warn_on_unload;
 });
 
