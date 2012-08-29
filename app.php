@@ -497,13 +497,13 @@ function defaultCode($not_found = false) {
     $html = <<<HERE_DOC
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset=utf-8 />
-    <title>My Title</title>
-  </head>
-  <body>
-
-  </body>
+    <head>
+        <meta charset=utf-8 />
+        <title>My Title</title>
+    </head>
+    <body>
+        
+    </body>
 </html>
 HERE_DOC;
   }
@@ -521,7 +521,7 @@ HERE_DOC;
       $javascript = 'document.getElementById("hello").innerHTML = "<strong>This URL does not have any code saved to it.</strong>";';
     } else {
       // $javascript = "if (document.getElementById('hello')) {\n  document.getElementById('hello').innerHTML = 'Hello World - this was inserted using JavaScript';\n}\n";
-      // $javascript = "h1 {\n  font-size: 60px;\n  font-weight: bold;\n  text-align: center;\n  color: purple;\n}";
+      // $javascript = "h1 {\n  font-size: 60px;\n  font-weight: bold;\n  text-align: center;\n  color: orange;\n}";
       $javascript = "";
     }
   }

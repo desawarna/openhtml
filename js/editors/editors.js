@@ -12,14 +12,16 @@ editors.html = CodeMirror.fromTextArea(document.getElementById('html'), {
   tabMode: 'shift',
   mode: 'text/html',
   onChange: changecontrol,
-  theme: jsbin.settings.theme || 'jsbin'
+  theme: jsbin.settings.theme || 'jsbin',
+  indentUnit: 4,
 });
 
 editors.javascript = CodeMirror.fromTextArea(document.getElementById('javascript'), {
   mode: 'css',
   tabMode: 'shift',
   onChange: changecontrol,
-  theme: jsbin.settings.theme || 'jsbin'
+  theme: jsbin.settings.theme || 'jsbin',
+  indentUnit: 4,
 });
 
 setupEditor('javascript');
