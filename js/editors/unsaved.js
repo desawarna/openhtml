@@ -1,4 +1,6 @@
 var $revert = $('#revert'); //.next().addClass('left').end();
+var warn_on_unload = "You have unsaved changes!";
+
 $(document).bind('codeChange', function (event, revert, onload) {
   // if (revert == undefined) {
   //   revert = false;
