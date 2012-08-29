@@ -502,7 +502,7 @@ function defaultCode($not_found = false) {
     <title>My Title</title>
   </head>
   <body>
-    <h1>My Header</h1>
+
   </body>
 </html>
 HERE_DOC;
@@ -521,7 +521,8 @@ HERE_DOC;
       $javascript = 'document.getElementById("hello").innerHTML = "<strong>This URL does not have any code saved to it.</strong>";';
     } else {
       // $javascript = "if (document.getElementById('hello')) {\n  document.getElementById('hello').innerHTML = 'Hello World - this was inserted using JavaScript';\n}\n";
-      $javascript = "h1 {\n  font-size: 60px;\n  font-weight: bold;\n  text-align: center;\n  color: orange;\n}";
+      // $javascript = "h1 {\n  font-size: 60px;\n  font-weight: bold;\n  text-align: center;\n  color: purple;\n}";
+      $javascript = "";
     }
   }
 
