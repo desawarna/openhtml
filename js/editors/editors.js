@@ -21,6 +21,7 @@ editors.javascript = CodeMirror.fromTextArea(document.getElementById('javascript
   tabMode: 'shift',
   onChange: changecontrol,
   theme: jsbin.settings.theme || 'jsbin',
+  matchBrackets: true,
   indentUnit: 4,
 });
 
