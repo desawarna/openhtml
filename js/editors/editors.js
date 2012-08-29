@@ -14,6 +14,7 @@ editors.html = CodeMirror.fromTextArea(document.getElementById('html'), {
   onChange: changecontrol,
   theme: jsbin.settings.theme || 'jsbin',
   indentUnit: 4,
+  lineNumbers: true
 });
 
 editors.javascript = CodeMirror.fromTextArea(document.getElementById('javascript'), {
@@ -23,6 +24,7 @@ editors.javascript = CodeMirror.fromTextArea(document.getElementById('javascript
   theme: jsbin.settings.theme || 'jsbin',
   matchBrackets: true,
   indentUnit: 4,
+  lineNumbers: true
 });
 
 setupEditor('javascript');

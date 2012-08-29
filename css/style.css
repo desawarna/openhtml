@@ -1175,15 +1175,15 @@ details li, .details li {
 }
 
 .CodeMirror .CodeMirror-scroll > div {
-  margin: .6em;
+  margin: .6em .6em .6em 0;
 }
 
 .javascript .CodeMirror-scroll > div {
-  margin-top: 25px;
+  margin-top: 30px;
 }
 
 .html .CodeMirror-scroll > div {
-  margin-top: 25px;
+  margin-top: 30px;
 }
 
 .editor .CodeMirror {
