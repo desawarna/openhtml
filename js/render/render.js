@@ -3,7 +3,7 @@ var consoleTest = /(^.|\b)console\./;
 var useCustomConsole = !(function () {
   var ok = typeof window.console !== 'undefined';
   try {
-    window.console.log('jsbin init test');
+    // window.console.log('jsbin init test');
   } catch (e) {
     ok = false;
   }

@@ -55,7 +55,7 @@ function renderLivePreview() {
       window = document.defaultView || document.parentWindow,
       d = new Date();
       
-  if (!useCustomConsole) console.log('--- refreshing live preview @ ' + [two(d.getHours()),two(d.getMinutes()),two(d.getSeconds())].join(':') + ' ---');
+  // if (!useCustomConsole) console.log('--- refreshing live preview @ ' + [two(d.getHours()),two(d.getMinutes()),two(d.getSeconds())].join(':') + ' ---');
   
   // strip autofocus from the markup - prevents the focus switching out of the editable area
   source = source.replace(/(<.*?\s)(autofocus)/g, '$1');
