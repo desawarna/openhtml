@@ -336,7 +336,7 @@ foreach ($order as $key => $value) {
 function render(url) {
   iframe.src = url + 'quiet';
   iframe.removeAttribute('hidden');
-  viewing.innerHTML = '<?=$_SERVER['HTTP_HOST']?>/' + url;
+  viewing.innerHTML = '<?=$_SERVER['HTTP_HOST']?><?=ROOT?>' + url;
 }
 
 function matchNode(el, nodeName) {
