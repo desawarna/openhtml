@@ -22,9 +22,10 @@ function getRelativeTime($date) {
 	// $diff = round($diff/7);
 	// if ($diff<4)
 	// 	return $diff . " week" . plural($diff) . " ago";
- //  if (date('Y', $time) != date('Y', time())) 
- //    return date("j-M Y", $time);
-	return date("j-M Y h:i:s a", $time);
+  //  if (date('Y', $time) != date('Y', time())) 
+  //    return date("j-M Y", $time);
+  // return date("j-M", $time);
+	return date("M j, Y h:i:s a", $time);
 }
 ?>
 <!DOCTYPE html>
