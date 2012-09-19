@@ -407,7 +407,7 @@ $('#users').change(function(){
 
   $.ajax({
     type: "POST",
-    url: "list-dashboard-code.php",
+    url: "<?php echo ROOT ?>list-dashboard-code.php",
     data: 'member=' + member,
     dataType: "html",
     cache: false,
