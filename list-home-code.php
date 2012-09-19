@@ -6,24 +6,25 @@ function plural($num) {
 
 function getRelativeTime($date) {
   $time = @strtotime($date);
-	$diff = time() - $time;
-	if ($diff<60)
-		return $diff . " second" . plural($diff) . " ago";
-	$diff = round($diff/60);
-	if ($diff<60)
-		return $diff . " minute" . plural($diff) . " ago";
-	$diff = round($diff/60);
-	if ($diff<24)
-		return $diff . " hour" . plural($diff) . " ago";
-	$diff = round($diff/24);
-	if ($diff<7)
-		return $diff . " day" . plural($diff) . " ago";
-	$diff = round($diff/7);
-	if ($diff<4)
-		return $diff . " week" . plural($diff) . " ago";
-  if (date('Y', $time) != date('Y', time())) 
-    return date("j-M Y", $time);
-	return date("j-M", $time);
+	// $diff = time() - $time;
+	// if ($diff<60)
+	// 	return $diff . " second" . plural($diff) . " ago";
+	// $diff = round($diff/60);
+	// if ($diff<60)
+	// 	return $diff . " minute" . plural($diff) . " ago";
+	// $diff = round($diff/60);
+	// if ($diff<24)
+	// 	return $diff . " hour" . plural($diff) . " ago";
+	// $diff = round($diff/24);
+	// if ($diff<7)
+	// 	return $diff . " day" . plural($diff) . " ago";
+	// $diff = round($diff/7);
+	// if ($diff<4)
+	// 	return $diff . " week" . plural($diff) . " ago";
+ //  if (date('Y', $time) != date('Y', time())) 
+ //    return date("j-M Y", $time);
+	// return date("j-M", $time);
+  return date("n/j/y h:i a", $time);
 }
 ?>
 <!DOCTYPE html>
