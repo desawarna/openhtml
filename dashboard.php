@@ -25,7 +25,7 @@ function getRelativeTime($date) {
   //  if (date('Y', $time) != date('Y', time())) 
   //    return date("j-M Y", $time);
   // return date("j-M", $time);
-	return date("M j, Y h:i:s a", $time);
+  return date("n/j/y h:i a", $time);
 }
 ?>
 <!DOCTYPE html>
