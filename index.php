@@ -50,7 +50,7 @@ $ownership = checkOwner($code_id, $revision, $_SESSION['name']);
 <head>
 <meta charset=utf-8 />
 <meta name="robots" content="noindex">
-<title>openHTML!!!!</title>
+<title>openHTML</title>
 <link rel="stylesheet" href="<?php echo ROOT?>css/style.css?<?php echo VERSION?>" type="text/css" />
 </head>
 <!--[if lt IE 7 ]><body class="source ie ie6"><![endif]-->
