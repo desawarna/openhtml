@@ -6,7 +6,7 @@ $log = new logmein();
 $log->encrypt = true; //set encryption
 
 
-if($_REQUEST['action'] == 'create'){
+if(isset($_REQUEST['action']) == 'create'){
     if($log->create("ownership", $_POST['username'], $_POST['password'], $_POST['email'], $_POST['section']) == true){
         //do something on successful creation
         

@@ -467,10 +467,13 @@ function checkOwner($code_id, $revision, $user) {
   $result = mysql_query($sql);
 	$row = mysql_fetch_object($result);
 
-	if ($row->name == $user) {
-		return true;
-	} else {
-		return false;
+	if($row != false){
+	
+		if ($row->name == $user) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }
