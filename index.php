@@ -60,8 +60,9 @@ $ownership = checkOwner($code_id, $revision, $_SESSION['name']);
 <div id="control">
   <div class="control">
     <div class="buttons">
-      <a id="account" class="tab button group light left" href="<?php echo ROOT?>list">Page List<?php echo $is_owner?></a>
-      <a id="account" class="tab button group light right gap" href="<?php echo ROOT?>">New Page</a>
+      <a id="account" class="tab button group light left" href="<?php echo ROOT?>list">Page List<?php //echo $is_owner?></a>
+      <a id="account" class="tab button group light" href="<?php echo ROOT?>">New Page</a>
+      <a id="account" class="tab button group light right gap" href="http://validator.w3.org/check?uri=<?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?>">Validate</a>
       <!--<a class="tab button source group left" accesskey="1" href="#source">Code</a>
       <a class="tab button preview group right gap" accesskey="2" href="#preview">Preview</a>-->
       <a title="Revert" class="button light group left" id="revert" href="#"><img class="enabled" src="<?php echo ROOT?>images/revert.png" /><img class="disabled" src="<?php echo ROOT?>images/revert-disabled.png" /></a>
