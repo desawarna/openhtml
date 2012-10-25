@@ -379,7 +379,7 @@ div.group {
 
 div.group:hover {
   background: #fff;
-  height: 78px;
+  height: 102px;
   overflow: visible;
   -moz-border-radius-bottomleft: 3px;
   -webkit-border-bottom-left-radius: 3px;
@@ -391,7 +391,7 @@ div.group:hover {
 }
 
 div.tall:hover {
-  height: 102px; /* single height 24px */
+  height: 126px; /* single height 24px */
 }
 
 #control div.group .title {
