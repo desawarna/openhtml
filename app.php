@@ -203,7 +203,7 @@ if (!$action) {
     if (!$code_id) {
       $code_id = generateCodeId();
       $revision = 1;
-      $custom_name = $code_id;
+      $custom_name = "Untitled Webpage";
     } else {
       $revision = getMaxRevision($code_id);
       $custom_name = getCustomName($code_id, $revision);
