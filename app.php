@@ -204,6 +204,7 @@ if (!$action) {
       $code_id = generateCodeId();
       $revision = 1;
       $custom_name = "Untitled Webpage";
+      
     } else {
       $revision = getMaxRevision($code_id);
       $custom_name = getCustomName($code_id, $revision);
@@ -665,6 +666,9 @@ function formatURL($code_id, $revision) {
     $code_id_path = $code_id . '/';
   }
   return $code_id_path;
+}
+function trackChange($code){
+  
 }
 
 ?>

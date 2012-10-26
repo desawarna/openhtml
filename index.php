@@ -58,11 +58,7 @@ $ownership = checkOwner($code_id, $revision, $_SESSION['name']);
 <!--[if gte IE 8 ]><body class="source ie"><![endif]-->
 <!--[if !IE]><!--><body class="source"><!--<![endif]-->
 
-<!-- sends validation data -->
-<form name=validate action="/openhtml/validate.php" method=post>
-  <input type=hidden name="html_code" value= '<?php echo $html; ?>
-  <input type=hidden name="test" value="Test Value">'>
-</form>
+
 
 <!-- top panel -->
 <div id="control">
@@ -70,7 +66,7 @@ $ownership = checkOwner($code_id, $revision, $_SESSION['name']);
     <div class="buttons">
       <a id="account" class="tab button gap" href="<?php echo ROOT?>">New Page</a>
 
-      <a id="jsbinurl" target="<?php echo $code_id?>" class="tab button group light left" href="http://<?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?>">View</a>
+      <a id="view" target="<?php echo $code_id?>" class="tab button group light left" href="http://<?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?>">View</a>
 
         <?php if ($code_id) : ?>
           <a id="save" title="Save a new revision" class="button light save group" href="<?php echo $code_id_path?>save">Save</a>
@@ -90,7 +86,7 @@ $ownership = checkOwner($code_id, $revision, $_SESSION['name']);
                 <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
             <?php endif ?>
            <a id="download" title="Save to drive" class="button download group light" href="<?php echo ROOT?>download">Download</a>
-           <!--<a id="account" target="<?php echo $code_id?>"class="button group light" href="#" onclick="document.forms['validate'].submit(); return false;">Validate</a> -->
+           <a id="account" target="<?php echo $code_id?>"class="button group light" href="#" onclick="document.forms['validate'].submit(); return false;">Validate</a>
 
       </div> 
       
@@ -102,19 +98,19 @@ $ownership = checkOwner($code_id, $revision, $_SESSION['name']);
       <a id="jsbinurl" target="<?php echo $code_id?>" class="button group light left" href="http://<?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?>"><?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id ?></a>
 
 
-						<?php if ($ownership) :?>
-			     	 <div class="button group gap right tall">
-				        <a href="<?php echo ROOT?>save" class="save title">Save</a>
-				        <a id="save" title="Save a new revision" class="button light save group" href="<?php echo $code_id_path?>save">Save</a>
-				        <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
+            <?php if ($ownership) :?>
+             <div class="button group gap right tall">
+                <a href="<?php echo ROOT?>save" class="save title">Save</a>
+                <a id="save" title="Save a new revision" class="button light save group" href="<?php echo $code_id_path?>save">Save</a>
+                <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
 
-	      		<?php else : ?>
+            <?php else : ?>
 
-				     	 <div class="button group gap right short">
-				        <a title="Create a new copy" class="clone title" href="<?php echo ROOT?>clone">Copy</a>
-				        <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
+               <div class="button group gap right short">
+                <a title="Create a new copy" class="clone title" href="<?php echo ROOT?>clone">Copy</a>
+                <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
 
-						<?php endif ?>
+            <?php endif ?>
       <?php else : ?>
         <div class="button group gap left right">
           <a href="<?php echo ROOT?>save" class="save title">Save</a>
@@ -161,6 +157,12 @@ $ownership = checkOwner($code_id, $revision, $_SESSION['name']);
   <form method="post" action="<?php echo $code_id_path?>save">
     <input type="hidden" name="method" />
   </form>
+
+  <!-- sends validation data -->
+<form name="validate" action="/openhtml/validate.php" method=post>
+  <input type=hidden name="html_code" value= '<?php echo $html; ?>
+  <input type=hidden name="test" value="Test Value">'>
+</form>
 </div>
 
 
@@ -178,14 +180,15 @@ $ownership = checkOwner($code_id, $revision, $_SESSION['name']);
 ?>
 </script>
 <script>jsbin = { root: "<?php echo HOST ?>", version: "<?php echo VERSION?>" }; tips = <?php echo file_get_contents('tips.json')?>;</script>
-<script src="<?php echo ROOT?>js/<?php echo VERSION?>/jsbin.js"></script>
+<script src="<?php echo ROOT?>js/<?php echo VERSION?>/jsbin.js">
+</script>
 
 <!-- <script>
-		window.onbeforeunload = function() {
-				if (document.title.substr(-9) == '[unsaved]'){
-					return 'You have unsaved changes. You should save first.';
-				}
-			};
+    window.onbeforeunload = function() {
+        if (document.title.substr(-9) == '[unsaved]'){
+          return 'You have unsaved changes. You should save first.';
+        }
+      };
 </script> -->
 <?php if (!OFFLINE) : ?>
 <script>
