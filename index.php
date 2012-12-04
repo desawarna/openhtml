@@ -154,15 +154,16 @@ $ownership = checkOwner($code_id, $revision, $_SESSION['name']);
   </div>
   <div id="live" class="stretch livepreview"><a href="<?php echo ROOT ?>live" target="_new" id="popout" class="popout button light left right">Pop out</a></div>
   <div id="preview" class="binview stretch"></div>
-  <form method="post" action="<?php echo $code_id_path?>save">
+  <form id="saveform" method="post" action="<?php echo $code_id_path?>save">
     <input type="hidden" name="method" />
   </form>
 
   <!-- sends validation data -->
-<form name="validate" action="/openhtml/validate.php" method=post>
-  <input type=hidden name="html_code" value= '<?php echo $html; ?>
-  <input type=hidden name="test" value="Test Value">'>
+<form name="validate" action="/openhtml/validate.php" method="post">
+  <input type=hidden name="html_code" value= '<?php echo $html; ?>'>
+  <input type=hidden name="test" value="Test Value">
 </form>
+
 </div>
 
 

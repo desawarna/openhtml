@@ -24,7 +24,7 @@ $('a.clone').click(function (event) {
 
 function saveCode(method, ajax, ajaxCallback) {
   // create form and post to it
-  var $form = $('form')
+  var $form = $('#saveform')
     .append('<input type="hidden" name="javascript" />')
     .append('<input type="hidden" name="html" />')
     .append('<input type="hidden" name="replay" />');
@@ -41,7 +41,7 @@ function saveCode(method, ajax, ajaxCallback) {
       dataType: 'json', 
       type: 'post',
       success: function (data) {
-        $('form').attr('action', data.url + '/save');
+        $('#saveform').attr('action', data.url + '/save');
         ajaxCallback && ajaxCallback();
         sql.length = 0;
 
