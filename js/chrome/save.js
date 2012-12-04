@@ -26,12 +26,15 @@ function saveCode(method, ajax, ajaxCallback) {
   // create form and post to it
   var $form = $('form')
     .append('<input type="hidden" name="javascript" />')
-    .append('<input type="hidden" name="html" />');
+    .append('<input type="hidden" name="html" />')
+    .append('<input type="hidden" name="replay" />');
   
   $form.find('input[name=javascript]').val(editors.javascript.getCode());
   $form.find('input[name=html]').val(editors.html.getCode());
+  $form.find('input[name=replay]').val(JSON.stringify(sql));
   $form.find('input[name=method]').val(method);
   if (ajax) {
+    
     $.ajax({
       url: $form.attr('action'),
       data: $form.serialize(),
