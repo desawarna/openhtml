@@ -4,6 +4,8 @@
 //= require "unsaved"
 var focusPanel = 'javascript';
 var editors = {};
+var row = {};
+var sql = new Array();
 
 window.editors = editors;
 
@@ -198,13 +200,42 @@ if (/macintosh|mac os x/.test(ua)) {
 } 
 
 
+
+
+
+
+//records all changes made to the document stored in an array
 function changecontrol(event) {
   // sends message to the document saying that a key has been pressed, we'll ignore the control keys
   // if (! ({ 16:1, 17:1, 18:1, 20:1, 27:1, 37:1, 38:1, 39:1, 40:1, 91:1, 93:1 })[event.which] ) {
     $(document).trigger('codeChange');
+
+    var html = editors['html'];
+    var css = editors['javascript']
+    var time = new Date();
+
+    
+    row.clock = time.getTime();
+    row.html = html.getValue();
+    row.css= css.getValue();
+    sql.push(JSON.stringify(row));
+    console.log(sql);
+
+
+
+    
+    
+    
   // }
   
   return true;
 }
 
+
 //= require "keycontrol"
+
+
+
+
+
+
