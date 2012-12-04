@@ -43,6 +43,7 @@ function saveCode(method, ajax, ajaxCallback) {
       success: function (data) {
         $('form').attr('action', data.url + '/save');
         ajaxCallback && ajaxCallback();
+        sql.length = 0;
 
         if (window.history && window.history.pushState) {
           window.history.pushState(null, data.edit, data.edit);
