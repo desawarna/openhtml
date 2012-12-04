@@ -49,3 +49,13 @@ CREATE TABLE IF NOT EXISTS `pagenames` (
 
   PRIMARY KEY (`url`)
 );
+
+CREATE TABLE IF NOT EXISTS `replay` (
+  `edit` int(11) DEFAULT '1',
+  `url` char(255) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci DEFAULT NULL,
+  `customname` char(255) NOT NULL,
+  `time` bigint(11) NOT NULL,
+  `html` text CHARACTER SET utf8 NOT NULL,
+  `css` text CHARACTER SET utf8 NOT NULL
+);
+
