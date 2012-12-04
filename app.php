@@ -176,6 +176,11 @@ if (!$action) {
   $method = @$_POST['method'];
   $stream = isset($_POST['stream']) ? true : false;
   $streaming_key = '';
+  $replay = json_decode(@$_POST['replay'], true);
+
+  foreach($replay as $key => $index){
+    $row[$key] = json_decode($replay[$key], true);
+  }
 
   if ($stream && isset($_COOKIE['streaming_key'])) {
     $streaming_key = $_COOKIE['streaming_key'];
@@ -207,17 +212,39 @@ if (!$action) {
       
     } else {
       $revision = getMaxRevision($code_id);
+      $replayIndex = getMaxReplayIndex($code_id);
       $custom_name = getCustomName($code_id, $revision);
       $revision++;
     }
 
-    $sql = sprintf('insert into sandbox (javascript, html, created, last_viewed, url, revision, customname) values ("%s", "%s", now(), now(), "%s", "%s", "%s")', mysql_real_escape_string($javascript), mysql_real_escape_string($html), mysql_real_escape_string($code_id), mysql_real_escape_string($revision), mysql_real_escape_string($custom_name));
+
+    $sql = sprintf('insert into sandbox (javascript, html, created, last_viewed, url, revision, customname) values("%s", "%s", now(), now(), "%s", "%s", "%s")', mysql_real_escape_string($javascript), mysql_real_escape_string($html), mysql_real_escape_string($code_id), mysql_real_escape_string($revision), mysql_real_escape_string($custom_name));
+    
+    
+    
+    foreach($row as $key => $index){
+      if(($row[$key][html] != "") && ($row[$key][css] != "")){
+        $current = $replayIndex+$key;
+        $sqlreplay[] = "INSERT INTO  `replay` (`edit` ,`url` ,`customname` ,`time` ,`html` ,`css`) VALUES ('".$current."', '".mysql_real_escape_string($code_id)."', '".mysql_real_escape_string($custom_name)."',  '".$row[$key][clock]."',  '".mysql_real_escape_string($row[$key][html])."',  '".mysql_real_escape_string($row[$key][css])."')";
+        //$sqlreplay = sprintf('insert into replay (index, customname, time, html, css) values("%s", "%s", "%s", "%s", "%s")', $row[1][time], mysql_real_escape_string($custom_name), $row[1][clock], $row[1][html], $row[1][css]);
+      }
+    }
+
+    
+    
+
+
 
     // a few simple tests to pass before we save
     if (($html == '' && $html == $javascript)) {
       // entirely blank isn't going to be saved.
     } else {
       $ok = mysql_query($sql);
+      foreach($sqlreplay as $key => $index){
+        $replayok = mysql_query($sqlreplay[$key]);
+      }
+      
+      
 
       if ($home) {
         // first check they have write permission for this home
@@ -226,6 +253,8 @@ if (!$action) {
         if (mysql_num_rows($result) == 1) {
           $sql = sprintf('insert into owners (name, url, revision) values ("%s", "%s", "%s")', mysql_real_escape_string($home), mysql_real_escape_string($code_id), mysql_real_escape_string($revision));
           $ok = mysql_query($sql);
+
+
         }
         // $code_id = $home . '/' . $code_id;
       }
@@ -394,6 +423,14 @@ function getCodeIdParams($request) {
 
 function getMaxRevision($code_id) {
   $sql = sprintf('select max(revision) as rev from sandbox where url="%s"', mysql_real_escape_string($code_id));
+  $result = mysql_query($sql);
+  $row = mysql_fetch_object($result);
+
+  return $row->rev ? $row->rev : 0;
+}
+
+function getMaxReplayIndex($code_id) {
+  $sql = sprintf('select max(edit) as rev from replay where url="%s"', mysql_real_escape_string($code_id));
   $result = mysql_query($sql);
   $row = mysql_fetch_object($result);
   return $row->rev ? $row->rev : 0;
