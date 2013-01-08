@@ -14,7 +14,6 @@ editors.html = CodeMirror.fromTextArea(document.getElementById('html'), {
   tabMode: 'shift',
   mode: 'text/html',
   onChange: changecontrol,
-  theme: jsbin.settings.theme || 'jsbin',
   theme: "ankur",
   indentUnit: 4,
   lineNumbers: true
@@ -24,7 +23,6 @@ editors.javascript = CodeMirror.fromTextArea(document.getElementById('javascript
   mode: 'css',
   tabMode: 'shift',
   onChange: changecontrol,
-  theme: jsbin.settings.theme || 'jsbin',
   theme: "ankur",
   matchBrackets: true,
   indentUnit: 4,
@@ -103,6 +101,8 @@ var editorsReady = setInterval(function () {
 
 function focused(editor, event) {
   focusPanel = editor.id;
+  snapshot(focusPanel);
+  console.log(focusPanel);
 }
 
 function getFocusedPanel() {
@@ -212,25 +212,23 @@ function changecontrol(event) {
   // if (! ({ 16:1, 17:1, 18:1, 20:1, 27:1, 37:1, 38:1, 39:1, 40:1, 91:1, 93:1 })[event.which] ) {
     $(document).trigger('codeChange');
 
-    var html = editors['html'];
-    var css = editors['javascript']
-    var time = new Date();
-
-    
-    row.clock = time.getTime();
-    row.html = html.getValue();
-    row.css= css.getValue();
-    sql.push(JSON.stringify(row));
-    console.log(sql);
-
-
-
-    
-    
-    
+    snapshot();
   // }
   
   return true;
+}
+
+function snapshot(extra){
+    var html = editors['html'];
+    var css = editors['javascript']
+    var time = new Date();
+    row.clock = time.getTime();
+    row.html = html.getValue();
+    row.css= css.getValue();
+    row.special = extra;
+    sql.push(JSON.stringify(row));
+    console.log(sql);
+
 }
 
 
