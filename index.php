@@ -86,7 +86,7 @@ $ownership = checkOwner($code_id, $revision, $_SESSION['name']);
                 <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
             <?php endif ?>
            <a id="download" title="Save to drive" class="button download group light" href="<?php echo ROOT?>download">Download</a>
-           <a id="account" target="<?php echo $code_id?>"class="button group light" href="#" onclick="document.forms['validate'].submit(); return false;">Validate</a>
+           <a id="validate" target="_blank" class="button group light" href="#">Validate</a>
 
       </div> 
       
@@ -159,9 +159,8 @@ $ownership = checkOwner($code_id, $revision, $_SESSION['name']);
   </form>
 
   <!-- sends validation data -->
-<form name="validate" action="/openhtml/validate.php" method="post">
-  <input type=hidden name="html_code" value= '<?php echo $html; ?>'>
-  <input type=hidden name="test" value="Test Value">
+<form id="validateform" action="/openhtml/validate.php" target="_blank" method="post">
+  <input type="hidden" name="method" />
 </form>
 
 </div>
