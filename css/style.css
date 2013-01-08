@@ -1067,6 +1067,7 @@ details li, .details li {
   margin-left: auto;
   margin-right: auto;
   margin-top: 150px;
+  tr-pro: 162px;
 
   background-color: #eeeeee;
   border-width: 1px 2px 3px 1px;
@@ -1314,6 +1315,62 @@ span.CodeMirror-selected {
 .cm-s-neat span.cm-variable { color: black; }
 .cm-s-neat span.cm-number, .cm-s-neat span.cm-atom { color: #3a3; }
 .cm-s-neat span.cm-meta {color: #555;}
+
+/* eclipse */
+.cm-s-eclipse span.cm-meta {color: #FF1717;}
+.cm-s-eclipse span.cm-keyword { line-height: 1em; font-weight: bold; color: #7F0055; }
+.cm-s-eclipse span.cm-atom {color: #219;}
+.cm-s-eclipse span.cm-number {color: #164;}
+.cm-s-eclipse span.cm-def {color: #00f;}
+.cm-s-eclipse span.cm-variable {color: black;}
+.cm-s-eclipse span.cm-variable-2 {color: #0000C0;}
+.cm-s-eclipse span.cm-variable-3 {color: #0000C0;}
+.cm-s-eclipse span.cm-property {color: black;}
+.cm-s-eclipse span.cm-operator {color: black;}
+.cm-s-eclipse span.cm-comment {color: #3F7F5F;}
+.cm-s-eclipse span.cm-string {color: #2A00FF;}
+.cm-s-eclipse span.cm-string-2 {color: #f50;}
+.cm-s-eclipse span.cm-error {color: #f00;}
+.cm-s-eclipse span.cm-qualifier {color: #555;}
+.cm-s-eclipse span.cm-builtin {color: #30a;}
+.cm-s-eclipse span.cm-bracket {color: #cc7;}
+.cm-s-eclipse span.cm-tag {color: #170;}
+.cm-s-eclipse span.cm-attribute {color: #00c;}
+.cm-s-eclipse span.cm-link {color: #219;}
+
+.cm-s-eclipse .CodeMirror-matchingbracket {
+  border:1px solid grey;
+  color:black !important;;
+}
+
+/* ankur */
+.cm-s-ankur span.cm-meta {color: #FF1717; font-weight: bold;}
+.cm-s-ankur span.cm-keyword { line-height: 1em; font-weight: bold; color: #7F0055; }
+.cm-s-ankur span.cm-atom {color: #219;}
+.cm-s-ankur span.cm-number {color: #164;}
+.cm-s-ankur span.cm-def {color: #00f;}
+.cm-s-ankur span.cm-variable {color: #00c; font-weight: bold;}
+.cm-s-ankur span.cm-variable-2 {color: #0000C0;}
+.cm-s-ankur span.cm-variable-3 {color: #0000C0;}
+.cm-s-ankur span.cm-property {color: black;}
+.cm-s-ankur span.cm-operator {color: black;}
+.cm-s-ankur span.cm-comment {color: #3F7F5F;}
+.cm-s-ankur span.cm-string {color: #2A00FF;}
+.cm-s-ankur span.cm-string-2 {color: #f50;}
+.cm-s-ankur span.cm-error {color: #f00;}
+.cm-s-ankur span.cm-qualifier {color: #555;}
+.cm-s-ankur span.cm-builtin {color: #30a;}
+.cm-s-ankur span.cm-bracket {color: #cc7;}
+.cm-s-ankur span.cm-tag {color: #007FFF;}
+.cm-s-ankur span.cm-attribute {color: #00c; font-weight: bold;}
+.cm-s-ankur span.cm-link {color: #219;}
+.cm-s-ankur span.cm-number {color: #2A00FF;}
+
+.cm-s-ankur .CodeMirror-matchingbracket {
+  border:1px solid grey;
+  color:black !important;;
+}
+
 
 /* elegant */
 .cm-s-elegant span.cm-number, .cm-s-elegant span.cm-string, .cm-s-elegant span.cm-atom {color: #762;}

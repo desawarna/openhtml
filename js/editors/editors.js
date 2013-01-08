@@ -15,6 +15,7 @@ editors.html = CodeMirror.fromTextArea(document.getElementById('html'), {
   mode: 'text/html',
   onChange: changecontrol,
   theme: jsbin.settings.theme || 'jsbin',
+  theme: "ankur",
   indentUnit: 4,
   lineNumbers: true
 });
@@ -24,6 +25,7 @@ editors.javascript = CodeMirror.fromTextArea(document.getElementById('javascript
   tabMode: 'shift',
   onChange: changecontrol,
   theme: jsbin.settings.theme || 'jsbin',
+  theme: "ankur",
   matchBrackets: true,
   indentUnit: 4,
   lineNumbers: true
