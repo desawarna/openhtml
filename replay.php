@@ -77,6 +77,7 @@ function addTime(){
 function skip(){
 	i++;
 	t = history[i]['time']/speed;
+	t = (history[i]['time'])/speed;
 	populate();
 	
 }
