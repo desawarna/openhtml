@@ -88,6 +88,7 @@ function reset(){
 	stopTimer();
 	document.getElementById("cssReplay").innerHTML = history[i]['css'];
 	document.getElementById("htmlReplay").innerHTML = history[i]['html'];
+	document.getElementById("special").innerHTML = history[i]['special'];
 	
 }
 
@@ -101,8 +102,14 @@ function populate(){
 	 if((t*speed) >= history[i]['time']){
 	 	document.getElementById("cssReplay").innerHTML = history[i]['css'];
 	 	document.getElementById("htmlReplay").innerHTML = history[i]['html'];
+	 	document.getElementById("special").innerHTML = history[i]['special'];
 	 	i++;
 	 }
+
+function update(){
+		document.getElementById("cssReplay").innerHTML = history[i]['css'];
+	 	document.getElementById("htmlReplay").innerHTML = history[i]['html'];
+	}
 }
 
 </script>
@@ -122,17 +129,17 @@ function populate(){
 </div>
 <div id="ReplayContainer">
 
-	<div id = "cssReplay">
+	<pre id = "cssReplay">
 		CSS
-	</div>
+	</pre>
 
-	<div id = "htmlReplay">
+	<pre id = "htmlReplay">
 		HTML
-	</div>
+	</pre>
 
-	<div id = "misc">
-		
-	</div>
+	<pre id = "special">
+		Events
+	</pre>
 
 </div>
 
