@@ -178,7 +178,8 @@ function formatReplay($data){
 	$origTime = $data[0][time];
 
 	foreach($data as $key => $value){
-
+		$data[$key][html] = htmlentities($data[$key][html]);
+		$data[$key][css] = htmlentities($data[$key][css]);
 		$data[$key][time] -= $origTime;
 	}
 
