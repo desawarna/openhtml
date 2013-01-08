@@ -44,6 +44,7 @@ if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false
  }
 </style>
 
+
 <!-- script -->
 <script>
 
@@ -51,12 +52,18 @@ if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false
 
 //variables
 var t, timer, i, speed;
-t = -1;
+t = 0;
 i = 0;
 speed = 10;
 
-<?php $history = retrieveReplay("agugay"); $js_history = json_encode($history); ?>
-	var history = <?php echo $js_history; ?>;
+//retrieve php variables
+<?php
+$history = retrieveReplay("agugay"); 
+$js_history = json_encode($history);
+?>
+
+var history = <?php echo $js_history; ?>;
+console.log(history);
 
 function startTimer(){
 	timer = self.setInterval("addTime()", 1)
@@ -70,13 +77,13 @@ function stopTimer(){
 function addTime(){
 	t++;
 	populate();
-	document.getElementById("frame").innerHTML = t;
+	document.getElementById("t").innerHTML = t;
+	document.getElementById("time").innerHTML = (history[i+1]['time']/1000);
 	
 }
 
 function skip(){
 	i++;
-	t = history[i]['time']/speed;
 	t = (history[i]['time'])/speed;
 	populate();
 	
@@ -124,7 +131,8 @@ function update(){
 	<button type=button value=stop name=stop onClick="skip()">Skip</button>
 	<button type=button value=stop name=stop onClick="reset()">Reset</button>
 	Speed: <input type="range" id="speed" min="0" max="50" step="1"  value="10" onChange="changeSpeed()"/><span id="speedval">10</span> ||
-	Frame: <span id="frame">0</span>
+	T: <span id="t">0</span>
+	Time: <span id="time">0</span>
 
 </div>
 <div id="ReplayContainer">
@@ -152,7 +160,7 @@ function update(){
 <?php
 
 //debug
-var_dump($js_history);
+	//var_dump($js_history);
 
 
 //Retrieves replay history from the database
