@@ -10,6 +10,7 @@ $('a.clone').click(function (event) {
   event.preventDefault();
 
   var $form = $('form')
+  var $form = $('saveform')
     .append('<input type="hidden" name="javascript" />')
     .append('<input type="hidden" name="html" />');
   
@@ -21,6 +22,23 @@ $('a.clone').click(function (event) {
   return false;
 });
 
+$('#validate').click(function (event){
+  event.preventDefault();
+  validate();
+  return false;
+});
+
+function validate(){
+  var $form = $('#validateform')
+    .append('<input type="hidden" name="javascript" />')
+    .append('<input type="hidden" name="html_code" />');
+
+  $form.find('input[name=javascript]').val(editors.javascript.getCode());
+  $form.find('input[name=html_code]').val(editors.html.getCode());
+  $form.submit();
+
+  snapshot("Valitator Activated");
+}
 
 function saveCode(method, ajax, ajaxCallback) {
   // create form and post to it

@@ -167,7 +167,13 @@ if (!$action) {
   // logger("logout");
   $log->logout();
 
-} else if ($action == 'save' || $action == 'clone') {
+} 
+
+else if($action == 'validate') {
+  //validate($_POST["html_code"], "html");
+  validate("<!doctype html><html>hi</html>", "html");
+}
+else if ($action == 'save' || $action == 'clone') {
 
   list($code_id, $revision) = getCodeIdParams($request);
 
@@ -221,18 +227,13 @@ if (!$action) {
     $sql = sprintf('insert into sandbox (javascript, html, created, last_viewed, url, revision, customname) values("%s", "%s", now(), now(), "%s", "%s", "%s")', mysql_real_escape_string($javascript), mysql_real_escape_string($html), mysql_real_escape_string($code_id), mysql_real_escape_string($revision), mysql_real_escape_string($custom_name));
     
     
-    
+    //populate sqlreplay array with replay data until savepoint
     foreach($row as $key => $index){
       if(($row[$key][html] != "") && ($row[$key][css] != "")){
         $current = $replayIndex+$key;
-        $sqlreplay[] = "INSERT INTO  `replay` (`edit` ,`url` ,`customname` ,`time` ,`html` ,`css`) VALUES ('".$current."', '".mysql_real_escape_string($code_id)."', '".mysql_real_escape_string($custom_name)."',  '".$row[$key][clock]."',  '".mysql_real_escape_string($row[$key][html])."',  '".mysql_real_escape_string($row[$key][css])."')";
-        //$sqlreplay = sprintf('insert into replay (index, customname, time, html, css) values("%s", "%s", "%s", "%s", "%s")', $row[1][time], mysql_real_escape_string($custom_name), $row[1][clock], $row[1][html], $row[1][css]);
+        $sqlreplay[] = "INSERT INTO  `replay` (`edit` ,`url` ,`customname` ,`time` ,`html` ,`css` ,`special`) VALUES ('".$current."', '".mysql_real_escape_string($code_id)."', '".mysql_real_escape_string($custom_name)."',  '".$row[$key][clock]."',  '".mysql_real_escape_string($row[$key][html])."',  '".mysql_real_escape_string($row[$key][css])."', '".mysql_real_escape_string($row[$key][special])."')";
       }
     }
-
-    
-    
-
 
 
     // a few simple tests to pass before we save
@@ -704,8 +705,25 @@ function formatURL($code_id, $revision) {
   }
   return $code_id_path;
 }
-function trackChange($code){
-  
+function validate($code, $type){
+
+  if($type == "html") $url="http://validator.w3.org/check";
+  else if ($type == "css") $url = "http://jigsaw.w3.org/css-validator/validator";
+  $handle = curl_init();
+  curl_setopt_array(
+    $handle,
+    array(
+      CURLOPT_URL => $url,
+      CURLOPT_POSTFIELDS => "fragment=".$code,//"&output=soap12",
+      CURLOPT_RETURNTRANSFER => true
+    )
+  );
+
+  $curl_response = curl_exec($handle);
+  curl_close($handle);
+
+  echo "<script> alert({$curl_response});</script>";
+  return $curl_response;  
 }
 
 ?>
