@@ -268,21 +268,6 @@ iframe.javascript {
   margin-right: 10px;
 }
 
-a.button:hover {
-  -moz-box-shadow: #fff 0px 0px 5px;
-  -webkit-box-shadow: #fff 0px 0px 5px;
-  box-shadow: #fff 0px 0px 5px;
-  background: rgba(0, 0, 0, 0.05);
-}
-
-a.button:active, .button:focus {
-  -moz-box-shadow: #C8C8C8 0px 0px 3px;
-  -webkit-box-shadow: #C8C8C8 0px 0px 3px;
-  box-shadow: #C8C8C8 0px 0px 3px;
-  border-color: #fff;
-  outline: 0;
-  text-shadow: none;
-}
 
 #popout {
   display: none;
@@ -1014,6 +999,12 @@ ie6, li {
 .showtip #tip {
   display: block;
 }
+/* formatted boxes*/
+.message{
+/*  background: #2BA6CB;  
+  border: solid 1px #c0c0c0; */ 
+  margin: 0 0 30px 0;
+}
 
 .details, details {
   position: absolute;
@@ -1063,10 +1054,10 @@ details li, .details li {
 
 .loginformid {
   width: 220px;
-  padding: 25px 50px 40px;
+  padding: 25px 50px 20px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 150px;
+  margin-top: 100px;
   tr-pro: 162px;
 
   background-color: #eeeeee;
