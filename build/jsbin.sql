@@ -37,6 +37,8 @@ CREATE TABLE IF NOT EXISTS `ownership` (
   `key` char(255) NOT NULL,
   `email` char(255) NOT NULL,
   `section` char(255) NOT NULL,
+  `ownership` tinyint(1) NOT NULL,
+
 
   PRIMARY KEY (`name`),
   KEY `name_key` (`name`, `key`)
@@ -56,6 +58,7 @@ CREATE TABLE IF NOT EXISTS `replay` (
   `customname` char(255) NOT NULL,
   `time` bigint(11) NOT NULL,
   `html` text CHARACTER SET utf8 NOT NULL,
-  `css` text CHARACTER SET utf8 NOT NULL
-);
+  `css` text CHARACTER SET utf8 NOT NULL,
+  `special` text NOT NULL
+)
 
