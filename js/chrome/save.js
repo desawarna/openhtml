@@ -9,7 +9,6 @@ $('a.save').click(function (event) {
 $('a.clone').click(function (event) {
   event.preventDefault();
 
-  var $form = $('form')
   var $form = $('saveform')
     .append('<input type="hidden" name="javascript" />')
     .append('<input type="hidden" name="html" />');
@@ -41,6 +40,9 @@ function validate(){
 }
 
 function saveCode(method, ajax, ajaxCallback) {
+
+  //record save timestamp
+  snapshot("Document Saved");
   // create form and post to it
   var $form = $('#saveform')
     .append('<input type="hidden" name="javascript" />')
