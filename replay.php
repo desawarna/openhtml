@@ -51,16 +51,18 @@ if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false
 // Timer functions
 
 //variables
-var t, timer, i, speed;
+var t, timer, i, speed, play;
 t = 0;
 i = 0;
 speed = 10;
+play = 0;
 
 //retrieve php variables
 <?php
 $history = retrieveReplay("agugay"); // ankur's test
 // $history = retrieveReplay("ipabuc"); // tom's test
 $js_history = json_encode($history);
+$end = end($history);
 ?>
 
 var history = <?php echo $js_history; ?>;
@@ -94,9 +96,7 @@ function reset(){
 	t = -1;
 	i = 0;
 	stopTimer();
-	document.getElementById("cssReplay").innerHTML = history[i]['css'];
-	document.getElementById("htmlReplay").innerHTML = history[i]['html'];
-	document.getElementById("special").innerHTML = history[i]['special'];
+	update();
 	
 }
 
@@ -106,17 +106,19 @@ function changeSpeed(){
 }
 
 
+
 function populate(){
 	 if((t*speed) >= history[i]['time']){
-	 	document.getElementById("cssReplay").innerHTML = history[i]['css'];
-	 	document.getElementById("htmlReplay").innerHTML = history[i]['html'];
-	 	document.getElementById("special").innerHTML = history[i]['special'];
+	 	update();
 	 	i++;
 	 }
 
 function update(){
 		document.getElementById("cssReplay").innerHTML = history[i]['css'];
 	 	document.getElementById("htmlReplay").innerHTML = history[i]['html'];
+	 	document.getElementById("play").value = history[i]['time'];
+	 	document.getElementById("playval").innerHTML = history[i]['time'];
+	 	
 	}
 }
 
@@ -133,7 +135,8 @@ function update(){
 	<button type=button value=stop name=stop onClick="reset()">Reset</button>
 	Speed: <input type="range" id="speed" min="0" max="50" step="1"  value="10" onChange="changeSpeed()"/><span id="speedval">10</span> ||
 	T: <span id="t">0</span>
-	Time: <span id="time">0</span>
+	Time: <span id="time">0</span> ||
+	<input type="range" id="play" min="0" max="<?php echo $end['time']; ?>" step="1"  value="0" /><span id="playval">0</span>
 
 </div>
 <div id="ReplayContainer">
@@ -163,6 +166,7 @@ function update(){
 //debug
 	// var_dump($js_history);
 
+$session = array();
 
 //Retrieves replay history from the database
 function retrieveReplay($url){
@@ -190,6 +194,8 @@ function formatReplay($data){
 		$data[$key][html] = htmlentities($data[$key][html]);
 		$data[$key][css] = htmlentities($data[$key][css]);
 		$data[$key][time] -= $origTime;
+		//
+		if((($data[$key][time])-($data[$key-1][time])) > 300) $session['time'];
 	}
 
 	return $data;
