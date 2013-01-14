@@ -58,7 +58,8 @@ speed = 10;
 
 //retrieve php variables
 <?php
-$history = retrieveReplay("agugay"); 
+$history = retrieveReplay("agugay"); // ankur's test
+// $history = retrieveReplay("ipabuc"); // tom's test
 $js_history = json_encode($history);
 ?>
 
@@ -160,7 +161,7 @@ function update(){
 <?php
 
 //debug
-	//var_dump($js_history);
+	// var_dump($js_history);
 
 
 //Retrieves replay history from the database
