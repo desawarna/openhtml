@@ -121,7 +121,7 @@ function update(){
 	 	document.getElementById("special").innerHTML = history[i]['special'];
 	 	document.getElementById("play").value = history[i]['time'];
 	 	document.getElementById("playval").innerHTML = history[i]['time'];
-	 	
+	 	document.getElementById("nextactive").innerHTML = history[i+1]['time'];
 	}
 }
 
@@ -139,7 +139,8 @@ function update(){
 	Speed: <input type="range" id="speed" min="0" max="50" step="1"  value="10" onChange="changeSpeed()"/><span id="speedval">10</span> ||
 	T: <span id="t">0</span>
 	Time: <span id="time">0</span> ||
-	<input type="range" id="play" min="0" max="<?php echo $end['time']; ?>" step="1"  value="0" /><span id="playval">0</span>
+	<input type="range" id="play" min="0" max="<?php echo $end['time']; ?>" step="1"  value="0" /><span id="playval">0</span> ||
+	Next Active:<span id="nextactive">0</span>
 
 </div>
 <div id="ReplayContainer">
