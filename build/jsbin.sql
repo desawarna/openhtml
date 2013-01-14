@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `ownership` (
   `key` char(255) NOT NULL,
   `email` char(255) NOT NULL,
   `section` char(255) NOT NULL,
-  `ownership` tinyint(1) NOT NULL,
+  `consent` tinyint(1) NOT NULL,
 
 
   PRIMARY KEY (`name`),
