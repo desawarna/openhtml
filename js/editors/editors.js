@@ -220,7 +220,7 @@ function changecontrol(event) {
 
 function snapshot(extra){
     var html = editors['html'];
-    var css = editors['javascript']
+    var css = editors['javascript'];
     var time = new Date();
     row.clock = time.getTime();
     row.html = html.getValue();
