@@ -24,11 +24,6 @@ $loginform = '	<!DOCTYPE html>
 										<input name="email" id="email" type="text"></div>
 										<div><label for="section">Group (optional)</label>
 										<input name="section" id="section" type="text"></div>
-										<div class="message">
-										<input name="consent" id="section" type="checkbox" checked="checked" style="display: block; float:left; margin-right: 15px;" />
-										<label for="section" style="margin-left:0px;">
-										Allow anonymous data to be used for research.</label>
-										</div>
 										<input name="action" id="action" value="create" type="hidden">
 										<div style="text-align: center;"><input name="submit" id="submit" class="button medium" style="height:auto; float:none;" value="Create Account" type="submit"></div>
 									</form>
@@ -36,6 +31,13 @@ $loginform = '	<!DOCTYPE html>
 						</body>
 				</html>
 			';
+
+// <div class="message">
+// <input name="consent" id="section" type="checkbox" checked="checked" style="display: block; float:left; margin-right: 15px;" />
+// <label for="section" style="margin-left:0px;">
+// Allow anonymous data to be used for research.</label>
+// </div>
+										
 
 if(isset($_REQUEST['action']) == 'create'){
     if($log->create("ownership", $_POST['username'], $_POST['password'], $_POST['email'], $_POST['section'], $_POST['consent']) == true){
