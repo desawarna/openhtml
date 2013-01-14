@@ -14,7 +14,7 @@ editors.html = CodeMirror.fromTextArea(document.getElementById('html'), {
   tabMode: 'shift',
   mode: 'text/html',
   onChange: changecontrol,
-  theme: "ankur",
+  theme: "eclipse",
   indentUnit: 4,
   lineNumbers: true
 });
@@ -23,7 +23,7 @@ editors.javascript = CodeMirror.fromTextArea(document.getElementById('javascript
   mode: 'css',
   tabMode: 'shift',
   onChange: changecontrol,
-  theme: "ankur",
+  theme: "eclipse",
   matchBrackets: true,
   indentUnit: 4,
   lineNumbers: true
