@@ -59,7 +59,9 @@ play = 0;
 
 //retrieve php variables
 <?php
-$history = retrieveReplay("ibubiw"); // ankur's test
+
+$history = retrieveReplay(mysql_escape_string($_GET['url']));
+// $history = retrieveReplay("ibubiw"); // ankur's test
 // $history = retrieveReplay("ipabuc"); // tom's test
 $js_history = json_encode($history);
 $end = end($history);
