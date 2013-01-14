@@ -169,10 +169,6 @@ if (!$action) {
 
 } 
 
-else if($action == 'validate') {
-  //validate($_POST["html_code"], "html");
-  validate("<!doctype html><html>hi</html>", "html");
-}
 else if ($action == 'save' || $action == 'clone') {
 
   list($code_id, $revision) = getCodeIdParams($request);
