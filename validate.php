@@ -9,7 +9,8 @@ function validate($code, $type){
     $handle,
     array(
       CURLOPT_URL => $url,
-      CURLOPT_POSTFIELDS => "fragment=".$code."&output=soap12",
+      CURLOPT_POSTFIELDS => "fragment=".$code,
+      // CURLOPT_POSTFIELDS => "fragment=".$code."&output=soap12",
       CURLOPT_RETURNTRANSFER => true
     )
   );
