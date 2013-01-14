@@ -59,7 +59,7 @@ play = 0;
 
 //retrieve php variables
 <?php
-$history = retrieveReplay("agugay"); // ankur's test
+$history = retrieveReplay("ibubiw"); // ankur's test
 // $history = retrieveReplay("ipabuc"); // tom's test
 $js_history = json_encode($history);
 $end = end($history);
@@ -116,6 +116,7 @@ function populate(){
 function update(){
 		document.getElementById("cssReplay").innerHTML = history[i]['css'];
 	 	document.getElementById("htmlReplay").innerHTML = history[i]['html'];
+	 	document.getElementById("special").innerHTML = history[i]['special'];
 	 	document.getElementById("play").value = history[i]['time'];
 	 	document.getElementById("playval").innerHTML = history[i]['time'];
 	 	
