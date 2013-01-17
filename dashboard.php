@@ -1,9 +1,11 @@
 <?php
-if ( ! defined('ROOT')) exit('No direct script access allowed');
-function plural($num) {
-	if ($num != 1)
-		return "s";
-}
+// if ( ! defined('ROOT')) exit('No direct script access allowed');
+// function plural($num) {
+// 	if ($num != 1)
+// 		return "s";
+// }
+
+
 
 function getRelativeTime($date) {
   $time = @strtotime($date);
@@ -27,7 +29,55 @@ function getRelativeTime($date) {
   // return date("j-M", $time);
   return date("n/j/y h:i a", $time);
 }
+
+//Get Sections
+
+  if(isset($_POST['section'])){
+    $name = $_POST['section'];
+   
+  }
+  
+  $query = "SELECT * FROM group_membership WHERE name='{$name}' ORDER BY id desc";
+  $result = mysql_query($query);
+  while ($section = mysql_fetch_object($result)) {
+    $sections[] = $section->section;
+  }
+
+//Get users and docs
+  $sql = sprintf('select * from ownership where section="%s" order by name', mysql_real_escape_string($sections[0]));
+  $result = mysql_query($sql);
+  while ($member = mysql_fetch_object($result)) {
+    $members[] = $member->name;
+  }
+
+  $sql = sprintf('select * from owners where name="%s" order by url, revision desc', mysql_real_escape_string($members[0]));
+  $result = mysql_query($sql);
+
+  $bins = array();
+  $order = array();
+
+  while ($saved = mysql_fetch_object($result)) {
+    $sql = sprintf('select * from sandbox where url="%s" and revision="%s"', mysql_real_escape_string($saved->url), mysql_real_escape_string($saved->revision));
+    $binresult = mysql_query($sql);
+    $bin = mysql_fetch_array($binresult);
+
+    if (!isset($bins[$saved->url])) {
+      $bins[$saved->url] = array();
+    }
+
+    $bins[$saved->url][] = $bin;
+
+    if (isset($order[$saved->url])) {
+      if (@strtotime($order[$saved->url]) < @strtotime($bin['created'])) {
+        $order[$saved->url] = $bin['created'];
+      }
+    } else {
+      $order[$saved->url] = $bin['created'];
+    }
+  }
+
 ?>
+<!-- formatting  -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -238,11 +288,35 @@ iframe {
     <div class="buttons">
       <a class="button source group light left" accesskey="1" href="<?php echo ROOT?>list">Page List</a>
       <a class="button source group light right" accesskey="1" href="<?php echo ROOT?>">New Page</a>
+
+      <!-- Dropdown for sections -->
+      <span class="members">Section:</span>
+      <span class="members">
+          <?php
+
+          if (!empty($sections)) {
+            echo '<select id="sections">';
+
+            foreach ($sections as $section) {
+              echo '<option value="' .$section. '">' .$section. '</option>';
+            }
+            echo '</select>';
+
+          } else {
+            echo '<select id="sections" disabled="disabled"><option>No Sections</option></select>';
+          }
+          ?>
+        </select>
+      </span>
+
+
+      <!-- Dropdown for users -->
+      <span class="members">Users: </span>
       <span class="members">
           <?php
 
           if (!empty($members)) {
-            echo '<select id="users">';
+           echo '<select id="members">';
 
             foreach ($members as $member) {
               echo '<option value="' .$member. '">' .$member. '</option>';
@@ -403,7 +477,7 @@ bins.onmouseover = function (event) {
   }
 };
 
-$('#users').change(function(){
+$('#members').change(function(){
   var member = $(this).val();
 
   $.ajax({
@@ -415,6 +489,24 @@ $('#users').change(function(){
     success: function(i) {
       $("#bins tbody").html(i);
       collapsePages();
+
+    } 
+  });
+});
+
+$('#sections').change(function(){
+  var section = $(this).val();
+
+  $.ajax({
+    type: "POST",
+    url: "<?php echo ROOT ?>list-dashboard-code.php",
+    data: 'section=' + section,
+    dataType: "html",
+    cache: false,
+    success: function(i) {
+
+        console.log(i);
+        $('#members').html(i).change();
     } 
   });
 });
