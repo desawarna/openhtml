@@ -1,9 +1,43 @@
 <?php 
 
-if($_POST['member']) {
+
+if($_POST['section']){
+  include('config.php');
+  include('auth.php'); // contains user auth
+
+  $link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
+  mysql_select_db(DB_NAME, $link);
+
+   
+    $section_name = $_POST['section'];
+    $_SESSION['section'] = $_POST['section'];
+
+  
+  $query = "SELECT name FROM ownership WHERE section='{$section_name}'";
+  $result = mysql_query($query);
+
+  while($member = mysql_fetch_array($result)){
+    $members[] = $member['name'];
+  }
+  
+ 
+          if (!empty($members)) {            
+            foreach ($members as $member) {
+              echo '<option value="' .$member. '">' .$member. '</option>';
+            }            
+          } 
+          else {
+            echo '<option>No users</option>';
+          }
+  $update = 1;
+  
+}
+
+if($_POST['member'] || $update) {
   
   include('config.php');
   include('auth.php'); // contains user auth
+
 
   $link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
   mysql_select_db(DB_NAME, $link);
@@ -15,10 +49,10 @@ if($_POST['member']) {
   $result = mysql_query($sql);
   $row = mysql_fetch_object($result);
 
-  if ($row->section == $_SESSION['name']) {
+
     $sql = sprintf('select * from owners where name="%s" order by url, revision desc', mysql_real_escape_string($member));
     $result = mysql_query($sql);
-  }
+  
 
 
   $bins = array();
