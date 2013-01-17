@@ -33,15 +33,15 @@ CREATE TABLE IF NOT EXISTS `owners` (
 );
 
 CREATE TABLE IF NOT EXISTS `ownership` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` char(255) NOT NULL,
   `key` char(255) NOT NULL,
   `email` char(255) NOT NULL,
   `section` char(255) NOT NULL,
   `consent` tinyint(1) NOT NULL,
-
-
-  PRIMARY KEY (`name`),
-  KEY `name_key` (`name`, `key`)
+  
+  PRIMARY KEY (`id`),
+  KEY `name_key` (`name`,`key`)
 );
 
 CREATE TABLE IF NOT EXISTS `pagenames` (
@@ -60,5 +60,20 @@ CREATE TABLE IF NOT EXISTS `replay` (
   `html` text CHARACTER SET utf8 NOT NULL,
   `css` text CHARACTER SET utf8 NOT NULL,
   `special` text NOT NULL
-)
+);
+
+CREATE TABLE IF NOT EXISTS `groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `section` char(255) NOT NULL,
+  `description` char(255) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `group_membership` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` char(255) NOT NULL,
+  `section` char(255) NOT NULL,
+  `role` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+);
 
