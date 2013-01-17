@@ -45,6 +45,86 @@ if ($action == $home) {
   $action = array_pop($request);
 }
 
+if ($action == 'changepassword'){
+
+
+$pre = '<!DOCTYPE html><html><head><title>openHTML - Login</title><link rel="stylesheet" href="' . ROOT . 'css/style.css" type="text/css" /></head><body><div id="control"><div class="control"><div class="buttons"><div id="auth"><span id="logo">openHTML</span></div></div></div></div><div id="bin" class="stretch">';
+$post ='</div></body></html>';
+
+
+  if(!isset($_POST['change'])){
+    
+    //display reset password form
+
+    $log->resetform($_SESSION['name'], "change", "loginformid", ROOT."changepassword", $pre, $post);
+
+  }else {  //Try to change password
+
+    connect();
+    $sql = "SELECT * FROM ownership WHERE name = '".$_SESSION['name']."'";
+    $query = mysql_query($sql);
+    $row = mysql_fetch_array($query);
+
+    if( ($row['key'] == sha1($_POST['oldpassword'])) ){
+      if( $_POST['newpassword'] == $_POST['verify'])
+      {
+        $log -> passwordreset(mysql_real_escape_string($_POST['username']), "ownership", "key", "name", $_POST['verify']);
+        echo $pre."<div class='loginformid'><h3>Success</h3><a href=".ROOT."logout>Return to openHTML</a></div>".$post;
+      } else {
+          $message = "<div class='warning'>Passwords do not match</div>";
+          $post =$message.$post; $log->resetform($_SESSION['name'], "change", "loginformid", ROOT."changepassword", $pre, $post);
+        }
+    } else { 
+        $message = "<div class='warning'>Incorrect Password</div>"; 
+        $post = $message.$post;
+        $log->resetform($_SESSION['name'], "change", "loginformid", ROOT."changepassword", $pre, $post); 
+      }
+
+    exit;
+  }//Try to change password
+}
+
+if ($action == 'downloadall' && isset($_GET['name'])){
+
+  connect();
+    //retrieve data
+    $doc = getUserDocs($_GET['name']);
+
+    $formattedDocs = Array();
+
+    //Format data
+    foreach($doc as $key => $page)
+    {
+      $javascript = $page['javascript'];
+      $html = $page['html'];
+
+      // strip escaping (replicated from getCode method):
+      $javascript = preg_replace('/\r/', '', $javascript);
+      $html = preg_replace('/\r/', '', $html);
+      $html = get_magic_quotes_gpc() ? stripslashes($html) : $html;
+      $javascript = get_magic_quotes_gpc() ? stripslashes($javascript) : $javascript;
+  
+      if (!$code_id) {
+        $code_id = 'untitled';
+        $revision = 1;
+      }
+      $originalHTML = $html;
+      list($html, $javascript) = formatCompletedCode($html, $javascript, $code_id, $revision);
+      $formattedDocs['index'] = $key;
+      $formattedDocs['name'] = $code_id . ($revision == 1 ? '' : '.' . $revision) . $ext; 
+      $formattedDocs['content'] = $html;
+    }
+
+    //create html files put it in an array to be zipped
+    foreach($formattedDocs as $key => $file){
+
+    }
+
+  exit;
+
+}
+
+
 $quiet = false;
 if ($action == 'quiet') {
   $quiet = true;
@@ -77,6 +157,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 if ($action) {
   connect();
 }
+
+
 
 if (!$action) {
   // do nothing and serve up the page
@@ -294,6 +376,7 @@ else if ($action == 'save' || $action == 'clone') {
       echo '{ "url" : "' . $url . '", "edit" : "' . $url . '/edit", "html" : "' . $url . '/edit", "js" : "' . $url . '/edit" }';
     }
 
+
     if (array_key_exists('callback', $_REQUEST)) {
       echo '")';
     }
@@ -418,6 +501,8 @@ function getCodeIdParams($request) {
   return array($code_id, $revision);
 }
 
+//Get the most recent document from the sandbox table
+//Parameter: url of the document
 function getMaxRevision($code_id) {
   $sql = sprintf('select max(revision) as rev from sandbox where url="%s"', mysql_real_escape_string($code_id));
   $result = mysql_query($sql);
@@ -426,11 +511,24 @@ function getMaxRevision($code_id) {
   return $row->rev ? $row->rev : 0;
 }
 
+//Get most recent edit index for replayer
+//Parameter: url of the document
 function getMaxReplayIndex($code_id) {
   $sql = sprintf('select max(edit) as rev from replay where url="%s"', mysql_real_escape_string($code_id));
   $result = mysql_query($sql);
   $row = mysql_fetch_object($result);
   return $row->rev ? $row->rev : 0;
+}
+
+//retrieve all final documents from a given user
+//Parameter: username
+//return: An array containing important document info (css, html, title, etc)
+function getUserDocs($username){
+  $query = "SELECT * FROM sandbox where name={$username}";
+  $result = mysql_query($query);
+  $docs = mysql_fetch_array($result);
+
+  return $docs;
 }
 
 function getCustomName($code_id, $revision) {
@@ -653,37 +751,7 @@ function showSaved($name) {
 
 function showDashboard($name) {
 
-  $sql = sprintf('select * from ownership where section="%s" order by name', mysql_real_escape_string($name));
-  $result = mysql_query($sql);
-  while ($member = mysql_fetch_object($result)) {
-    $members[] = $member->name;
-  }
-
-  $sql = sprintf('select * from owners where name="%s" order by url, revision desc', mysql_real_escape_string($members[0]));
-  $result = mysql_query($sql);
-
-  $bins = array();
-  $order = array();
-
-  while ($saved = mysql_fetch_object($result)) {
-    $sql = sprintf('select * from sandbox where url="%s" and revision="%s"', mysql_real_escape_string($saved->url), mysql_real_escape_string($saved->revision));
-    $binresult = mysql_query($sql);
-    $bin = mysql_fetch_array($binresult);
-
-    if (!isset($bins[$saved->url])) {
-      $bins[$saved->url] = array();
-    }
-
-    $bins[$saved->url][] = $bin;
-
-    if (isset($order[$saved->url])) {
-      if (@strtotime($order[$saved->url]) < @strtotime($bin['created'])) {
-        $order[$saved->url] = $bin['created'];
-      }
-    } else {
-      $order[$saved->url] = $bin['created'];
-    }
-  }
+  
 
   include_once('dashboard.php');
 
