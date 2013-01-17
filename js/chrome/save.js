@@ -9,7 +9,7 @@ $('a.save').click(function (event) {
 $('a.clone').click(function (event) {
   event.preventDefault();
 
-  var $form = $('saveform')
+  var $form = $('#saveform')
     .append('<input type="hidden" name="javascript" />')
     .append('<input type="hidden" name="html" />');
   
@@ -18,6 +18,7 @@ $('a.clone').click(function (event) {
   $form.find('input[name=method]').val('save,new');
   $form.submit();
 
+  snapshot("Document Copied");
   return false;
 });
 
