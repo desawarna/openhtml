@@ -51,6 +51,7 @@ $ownership = checkOwner($code_id, $revision, $_SESSION['name']);
 <meta charset=utf-8 />
 <meta name="robots" content="noindex">
 <title>openHTML</title>
+<!-- <link rel="stylesheet" href="<?php echo ROOT?>css/foundation.min.css?<?php echo VERSION?>" type="text/css" /> -->
 <link rel="stylesheet" href="<?php echo ROOT?>css/style.css?<?php echo VERSION?>" type="text/css" />
 </head>
 <!--[if lt IE 7 ]><body class="source ie ie6"><![endif]-->
@@ -61,80 +62,7 @@ $ownership = checkOwner($code_id, $revision, $_SESSION['name']);
 
 
 <!-- top panel -->
-<div id="control">
-  <div class="control">
-    <div class="buttons">
-      <a id="account" class="tab button gap" href="<?php echo ROOT?>">New Page</a>
-
-      <a id="view" target="<?php echo $code_id?>" class="tab button group light left" href="http://<?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?>">View</a>
-
-        <?php if ($code_id) : ?>
-          <a id="save" title="Save a new revision" class="button light save group" href="<?php echo $code_id_path?>save">Save</a>
-        <?php else : ?>
-          <a id="save" class="tab button light save group" href="<?php echo ROOT?>save">Save</a>
-        <?php endif ?>
-
-        <?php if ($ownership) :?>
-                <div class="button group gap right tall">
-                <a id="options" class="title">Options</a>
-                <a id="save" title="Save a new revision" class="button light save group" href="<?php echo $code_id_path?>save">Save</a>
-                <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
-
-            <?php else : ?>
-                <div class="button group gap right short">
-                <a id="options" class="title">Options</a>
-                <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
-            <?php endif ?>
-           <a id="download" title="Save to drive" class="button download group light" href="<?php echo ROOT?>download">Download</a>
-           <a id="validate" target="_blank" class="button group light" href="#">Validate</a>
-
-      </div> 
-      
-      
-      <!--<a class="tab button source group left" accesskey="1" href="#source">Code</a>
-      <a class="tab button preview group right gap" accesskey="2" href="#preview">Preview</a>-->
-      <a title="Revert" class="button light group left" id="revert" href="#"><img class="enabled" src="<?php echo ROOT?>images/revert.png" /><img class="disabled" src="<?php echo ROOT?>images/revert-disabled.png" /></a>
-    <!--<?php if ($code_id) : ?>
-      <a id="jsbinurl" target="<?php echo $code_id?>" class="button group light left" href="http://<?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?>"><?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id ?></a>
-
-
-            <?php if ($ownership) :?>
-             <div class="button group gap right tall">
-                <a href="<?php echo ROOT?>save" class="save title">Save</a>
-                <a id="save" title="Save a new revision" class="button light save group" href="<?php echo $code_id_path?>save">Save</a>
-                <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
-
-            <?php else : ?>
-
-               <div class="button group gap right short">
-                <a title="Create a new copy" class="clone title" href="<?php echo ROOT?>clone">Copy</a>
-                <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
-
-            <?php endif ?>
-      <?php else : ?>
-        <div class="button group gap left right">
-          <a href="<?php echo ROOT?>save" class="save title">Save</a>
-          <a id="save" title="Save new bin" class="button save group" href="<?php echo ROOT?>save">Save</a>
-      <?php endif ?>
-          <a id="download" title="Save to drive" class="button download group light" href="<?php echo ROOT?>download">Download</a>
-          <!-- <a id="startingpoint" title="Set as starting code" class="button group" href="<?php echo ROOT?>save">As template</a> 
-      </div>  -->
-
-      <span id="panelsvisible" class="gap">Show:
-        <input type="checkbox" data-panel="javascript" data-uri="css" id="showjavascript"><label for="showjavascript">CSS</label>
-        <input type="checkbox" data-panel="html" data-uri="html" id="showhtml"><label for="showhtml">HTML</label>
-        <input type="checkbox" data-panel="live" data-uri="live" id="showlive"><label for="showlive">Preview</label>
-      </span>
-
-      <div id="userinfo">
-        <a id="account" class="button group light left" href="<?php echo ROOT?>list">Page List<?php //echo $is_owner?></a> 
-        <!--<a id="account" class="button group light" href="<?php echo ROOT?>list"><?php echo $_SESSION['name']; ?></a> -->
-        <a id="logout" class="button group light right" href="<?php echo ROOT?>logout">Logout: <?php echo $_SESSION['name']; ?></a>
-      <span id="logo">openHTML</span>
-    </div>
-    </div>
-  </div>
-</div>
+<?php include("nav.php"); ?>
 
 <!-- text area -->
 <div id="bin" class="stretch" style="opacity: 0; filter:alpha(opacity=0);">
