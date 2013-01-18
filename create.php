@@ -2,8 +2,17 @@
 //instantiate if needed
 include("auth.php");
 include('logger.php');
+include("config.php");
 $log = new logmein();
 $log->encrypt = true; //set encryption
+
+
+$sections = getGroups();
+foreach($sections as $section){
+	$section_option = $section_option . "<option>".$section."</option>";									
+}
+
+
 
 $loginform = '	<!DOCTYPE html>
 					<html>
@@ -23,7 +32,12 @@ $loginform = '	<!DOCTYPE html>
 										<div><label for="email">Email (optional)</label>
 										<input name="email" id="email" type="text"></div>
 										<div><label for="section">Group (optional)</label>
-										<input name="section" id="section" type="text"></div>
+										<select name="section">
+											<option>None</option>'.
+											$section_option
+
+										.'</select>
+										</div>
 										<input name="action" id="action" value="create" type="hidden">
 										<div style="text-align: center;"><input name="submit" id="submit" class="button medium" style="height:auto; float:none;" value="Create Account" type="submit"></div>
 									</form>
@@ -60,6 +74,23 @@ if(isset($_REQUEST['action']) == 'create'){
 
 
 echo $loginform;
+
+
+function getGroups(){
+
+	$link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
+	mysql_select_db(DB_NAME, $link);
+
+	$query = "SELECT section FROM groups order by section asc";
+	$result = mysql_query($query);
+
+	while($group = mysql_fetch_array($result)){
+		$groups[] = $group['section'];
+	}
+
+
+	return $groups;
+}
 
 ?>
 
