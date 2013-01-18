@@ -477,7 +477,7 @@ bins.onmouseover = function (event) {
   }
 };
 
-$('#members').change(function(){
+$('#users').change(function(){
   var member = $(this).val();
 
   $.ajax({
@@ -505,8 +505,7 @@ $('#sections').change(function(){
     cache: false,
     success: function(i) {
 
-        console.log(i);
-        $('#members').html(i).change();
+        $('#users').html(i).change();
     } 
   });
 });
