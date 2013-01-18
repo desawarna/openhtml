@@ -316,7 +316,7 @@ iframe {
           <?php
 
           if (!empty($members)) {
-           echo '<select id="members">';
+           echo '<select id="users">';
 
             foreach ($members as $member) {
               echo '<option value="' .$member. '">' .$member. '</option>';
