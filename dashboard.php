@@ -303,7 +303,7 @@ iframe {
             echo '</select>';
 
           } else {
-            echo '<select id="sections" disabled="disabled"><option>No Sections</option></select>';
+            echo '<select id="sections"><option>No Sections</option></select>';
           }
           ?>
         </select>
@@ -324,7 +324,7 @@ iframe {
             echo '</select>';
 
           } else {
-            echo '<select id="users" disabled="disabled"><option>No users</option></select>';
+            echo '<select id="users"><option>No users</option></select>';
           }
           ?>
         </select>
