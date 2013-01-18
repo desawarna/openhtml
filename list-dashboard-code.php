@@ -29,11 +29,11 @@ if($_POST['section']){
           else {
             echo '<option>No users</option>';
           }
-  $update = 1;
+  
   
 }
 
-if($_POST['member'] || $update) {
+if($_POST['member']) {
   
   include('config.php');
   include('auth.php'); // contains user auth
