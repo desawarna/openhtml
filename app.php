@@ -307,10 +307,10 @@ else if ($action == 'save' || $action == 'clone') {
     $sqlreplay = Array();
     //populate sqlreplay array with replay data until savepoint
     foreach($row as $key => $index){
-      if(($row[$key]['html'] != "") && ($row[$key]['css'] != "")){
+      //if(($row[$key]['html'] != "") && ($row[$key]['css'] != "")){
         $current = $replayIndex+$key;
         $sqlreplay[$key] = "INSERT INTO  `replay` (`edit` ,`url` ,`customname` ,`time` ,`html` ,`css` ,`special`) VALUES ('".$current."', '".mysql_real_escape_string($code_id)."', '".mysql_real_escape_string($custom_name)."',  '".$row[$key]['clock']."',  '".mysql_real_escape_string($row[$key]['html'])."',  '".mysql_real_escape_string($row[$key]['css'])."', '".mysql_real_escape_string($row[$key]['special'])."')";
-      }
+      //}
     }
 
 
@@ -658,7 +658,9 @@ HERE_DOC;
     } else {
       // $javascript = "if (document.getElementById('hello')) {\n  document.getElementById('hello').innerHTML = 'Hello World - this was inserted using JavaScript';\n}\n";
       // $javascript = "h1 {\n  font-size: 60px;\n  font-weight: bold;\n  text-align: center;\n  color: orange;\n}";
-      $javascript = "";
+      $javascript = "body {
+
+}";
     }
   }
 
