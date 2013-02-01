@@ -53,7 +53,6 @@ CREATE TABLE IF NOT EXISTS `pagenames` (
 );
 
 CREATE TABLE IF NOT EXISTS `replay` (
-  `edit` int(11) DEFAULT '1',
   `url` char(255) CHARACTER SET utf8 DEFAULT NULL,
   `customname` char(255) NOT NULL,
   `time` bigint(11) NOT NULL,
