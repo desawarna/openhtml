@@ -1,34 +1,36 @@
 <?php
 // if ( ! defined('ROOT')) exit('No direct script access allowed');
 // function plural($num) {
-// 	if ($num != 1)
-// 		return "s";
+//  if ($num != 1)
+//    return "s";
 // }
 
 
 
 function getRelativeTime($date) {
   $time = @strtotime($date);
-	// $diff = time() - $time;
-	// if ($diff<60)
-	// 	return $diff . " second" . plural($diff) . " ago";
-	// $diff = round($diff/60);
-	// if ($diff<60)
-	// 	return $diff . " minute" . plural($diff) . " ago";
-	// $diff = round($diff/60);
-	// if ($diff<24)
-	// 	return $diff . " hour" . plural($diff) . " ago";
-	// $diff = round($diff/24);
-	// if ($diff<7)
-	// 	return $diff . " day" . plural($diff) . " ago";
-	// $diff = round($diff/7);
-	// if ($diff<4)
-	// 	return $diff . " week" . plural($diff) . " ago";
+  // $diff = time() - $time;
+  // if ($diff<60)
+  //  return $diff . " second" . plural($diff) . " ago";
+  // $diff = round($diff/60);
+  // if ($diff<60)
+  //  return $diff . " minute" . plural($diff) . " ago";
+  // $diff = round($diff/60);
+  // if ($diff<24)
+  //  return $diff . " hour" . plural($diff) . " ago";
+  // $diff = round($diff/24);
+  // if ($diff<7)
+  //  return $diff . " day" . plural($diff) . " ago";
+  // $diff = round($diff/7);
+  // if ($diff<4)
+  //  return $diff . " week" . plural($diff) . " ago";
   //  if (date('Y', $time) != date('Y', time())) 
   //    return date("j-M Y", $time);
   // return date("j-M", $time);
   return date("n/j/y h:i a", $time);
 }
+
+
 
 //Get Sections
 
@@ -380,7 +382,7 @@ iframe {
     <tr data-type="spacer"><td colspan=3></td></tr>
       <?php endif ?>
     <tr data-url="<?=$url?>" <?=($firstTime ? ' class="parent" id="' : ' class="child ')  . $code . '">' ?>
-      <td class="url"><?=($firstTime && $revision > 1) ? '<span class="action">▶</span> ': '<span class="inaction">&nbsp;</span>'?> <a href="<?=$url?>edit"><span<?=($firstTime ? ' class="first"' : '') . '>' . ($bin['customname'] ? $bin['customname'] : $bin['url']) ?></span> <span class="revision"><?=$bin['revision']?></span></a></td>
+      <td class="url"><?=($firstTime) ? '<span class="rename">Download</span> ': ''?><?=($firstTime && $revision > 1) ? '<span class="action">▶</span> ': '<span class="inaction">&nbsp;</span>'?> <a href="<?=$url?>edit"><span<?=($firstTime ? ' class="first"' : '') . '>' . ($bin['customname'] ? $bin['customname'] : $bin['url']) ?></span> <span class="revision"><?=$bin['revision']?></span></a></td>
       <td class="created"><a pubdate="<?=$bin['created']?>" href="<?=$url?>edit"><?=getRelativeTime($bin['created'])?></a></td>
       <!--<td class="title"><a href="<?=$url?>edit"><?=substr($title, 0, 200)?></a></td>-->
     </tr>
@@ -413,6 +415,20 @@ function collapsePages() {
       } else {
         $(this).html('▶');
       }
+  });
+
+  $('.rename').click(function(){
+    var url = $(this).parent().parent().attr('id');
+    var revision = $(this).siblings('a').children('.revision').text();
+
+
+    // console.log("download"+url+revision);
+    $.post(url+"/save", {
+          'method': 'download',
+          'url': url,
+          'revision': revision
+        }, function(data){response=data;});
+
   });
 }
 
