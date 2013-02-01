@@ -919,12 +919,9 @@ ie6, li {
 .unsaved {
   background-color: #2ba6cb;
   border: 1px solid #1e728c;
-  -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset,
-                      1px 2px 1px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset,
-                      1px 2px 1px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset,
-                      1px 2px 1px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+  -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
   color: white;
   /*font-weight: bold; */
   -webkit-transition: background-color 0.15s ease-in-out; 
