@@ -85,41 +85,66 @@ $post ='</div></body></html>';
 }
 
 if ($action == 'downloadall' && isset($_GET['name'])){
-
+ini_set('max_execution_time', 300);
   connect();
     //retrieve data
-    $doc = getUserDocs($_GET['name']);
-
+    $username = $_GET['name'];
+    $doc = getUserDocs($username);
     $formattedDocs = Array();
+    $zip = new ZipArchive;
+    $zipname = $username.".zip";
+    $zip->open($zipname, ZipArchive::OVERWRITE);
+    $zip->addFromString("open.html", "<meta http-equiv='refresh' content='0; url=http://openhtml.info'>");
+    $zip->close();
+
 
     //Format data
     foreach($doc as $key => $page)
     {
       $javascript = $page['javascript'];
       $html = $page['html'];
+      $code_id = $page['url'];
+      $revision =1;
+    if(isset($_GET['latest'])){
+      $revision = getMaxRevision($code_id);
+      if($revision != $page['revision']){
+        continue;
+      }
+    }
 
       // strip escaping (replicated from getCode method):
       $javascript = preg_replace('/\r/', '', $javascript);
       $html = preg_replace('/\r/', '', $html);
       $html = get_magic_quotes_gpc() ? stripslashes($html) : $html;
       $javascript = get_magic_quotes_gpc() ? stripslashes($javascript) : $javascript;
+
   
-      if (!$code_id) {
-        $code_id = 'untitled';
-        $revision = 1;
-      }
+      
       $originalHTML = $html;
       list($html, $javascript) = formatCompletedCode($html, $javascript, $code_id, $revision);
       $formattedDocs['index'] = $key;
-      $formattedDocs['name'] = $code_id . ($revision == 1 ? '' : '.' . $revision) . $ext; 
+      $formattedDocs['name'] = $code_id . "-" . $page['revision'] . "-" . $page['customname'] . '.html'; 
       $formattedDocs['content'] = $html;
+
+      $res = $zip->open($zipname, ZipArchive::CREATE);
+
+      if ($res === TRUE) {
+        $html = $html."<!-- ".$page['created']."-->";
+        $zip->addFromString($formattedDocs['name'], $html);
+        //echo $formattedDocs['name']."  :   ";
+
+      }else {
+            echo 'failed';
+      }
+      $zip->close();
+
     }
 
-    //create html files put it in an array to be zipped
-    foreach($formattedDocs as $key => $file){
-
-    }
-
+   // echo filesize($zipname;
+  header('Content-Type: application/zip');
+  header('Content-disposition: attachment; filename="'.$zipname.'"');
+  header("Content-Length: ".filesize($zipname));
+  readfile($zipname);
   exit;
 
 }
@@ -251,6 +276,28 @@ if (!$action) {
 
 } 
 
+else if ($action == 'savereplay'){
+  $replay = json_decode(@$_POST['replay'], true);
+  $custom_name = getCustomName($code_id, $revision);
+  foreach($replay as $key => $index){
+    $row[$key] = json_decode($replay[$key], true);
+  }
+
+  $sqlreplay = Array();
+  //populate sqlreplay array with replay data until savepoint
+  foreach($row as $key => $index){
+      if(!isset($row[$key]['special'])) $row[$key]['special'] = " ";
+  
+      $sqlreplay[$key] = "INSERT INTO  `replay` (`url` ,`customname` ,`time` ,`html` ,`css` ,`special`) VALUES ('".mysql_real_escape_string($code_id)."', '".mysql_real_escape_string($custom_name)."',  '".$row[$key]['clock']."',  '".mysql_real_escape_string($row[$key]['html'])."',  '".mysql_real_escape_string($row[$key]['css'])."', '".mysql_real_escape_string($row[$key]['special'])."')";
+  }
+
+ $ok = mysql_query($sql);
+  foreach($sqlreplay as $key => $index){
+    $replayok = mysql_query($sqlreplay[$key]);
+  }
+
+}
+
 else if ($action == 'save' || $action == 'clone') {
 
   list($code_id, $revision) = getCodeIdParams($request);
@@ -279,9 +326,10 @@ else if ($action == 'save' || $action == 'clone') {
     //    views
   }
 
+
   // we're using stripos instead of == 'save' because the method *can* be "download,save" to support doing both
   if (stripos($method, 'save') !== false) {
-    
+
     if (stripos($method, 'new') !== false) {
       $code_id = false;
       // logger('clone');
@@ -296,7 +344,7 @@ else if ($action == 'save' || $action == 'clone') {
       
     } else {
       $revision = getMaxRevision($code_id);
-      $replayIndex = getMaxReplayIndex($code_id);
+      
       $custom_name = getCustomName($code_id, $revision);
       $revision++;
     }
@@ -308,6 +356,8 @@ else if ($action == 'save' || $action == 'clone') {
     //populate sqlreplay array with replay data until savepoint
     foreach($row as $key => $index){
       //if(($row[$key]['html'] != "") && ($row[$key]['css'] != "")){
+        if(!isset($row[$key]['special'])) $row[$key]['special'] = " ";
+        
         
         $sqlreplay[$key] = "INSERT INTO  `replay` (`url` ,`customname` ,`time` ,`html` ,`css` ,`special`) VALUES ('".mysql_real_escape_string($code_id)."', '".mysql_real_escape_string($custom_name)."',  '".$row[$key]['clock']."',  '".mysql_real_escape_string($row[$key]['html'])."',  '".mysql_real_escape_string($row[$key]['css'])."', '".mysql_real_escape_string($row[$key]['special'])."')";
       //}
@@ -318,14 +368,11 @@ else if ($action == 'save' || $action == 'clone') {
     if (($html == '' && $html == $javascript)) {
       // entirely blank isn't going to be saved.
     } else {
-      
-      
       $ok = mysql_query($sql);
       foreach($sqlreplay as $key => $index){
         $replayok = mysql_query($sqlreplay[$key]);
-
       }
-
+      
       
 
       if ($home) {
@@ -354,6 +401,18 @@ else if ($action == 'save' || $action == 'clone') {
    **/
   if (stripos($method, 'download') !== false) {
     // strip escaping (replicated from getCode method):
+
+
+
+    if(isset($_POST['url'])){
+      $code_id = $_POST['url'];
+      $revision = $_POST['revision'];
+      $query = "select * from sandbox where url='{$code_id}' AND revision='{$revision}'";
+      $result = mysql_query($query);
+      $data = mysql_fetch_assoc($result);
+      $html = $data['html'];
+      $javascript = $data['javascript'];
+    }
     $javascript = preg_replace('/\r/', '', $javascript);
     $html = preg_replace('/\r/', '', $html);
     $html = get_magic_quotes_gpc() ? stripslashes($html) : $html;
@@ -376,7 +435,7 @@ else if ($action == 'save' || $action == 'clone') {
     if (isset($_REQUEST['format']) && strtolower($_REQUEST['format']) == 'plain') {
       echo $url;
     } else {
-      echo '{ "url" : "' . $url . '", "edit" : "' . $url . '/edit", "html" : "' . $url . '/edit", "js" : "' . $url . '/edit" }';
+      echo '{ "url" : "' . $url . '", "edit" : "' . $url . '/edit", "html" : "' . $html . '/edit", "javascript" : "' . $javascript . '/edit" }';
     }
 
 
@@ -516,22 +575,36 @@ function getMaxRevision($code_id) {
 
 //Get most recent edit index for replayer
 //Parameter: url of the document
-function getMaxReplayIndex($code_id) {
-  $sql = sprintf('select max(edit) as rev from replay where url="%s"', mysql_real_escape_string($code_id));
-  $result = mysql_query($sql);
-  $row = mysql_fetch_object($result);
-  return $row->rev ? $row->rev : 0;
-}
+// function getMaxReplayIndex($code_id) {
+//   $sql = sprintf('select max(edit) as rev from replay where url="%s"', mysql_real_escape_string($code_id));
+//   $result = mysql_query($sql);
+//   $row = mysql_fetch_object($result);
+//   return $row->rev ? $row->rev : 0;
+// }
 
 //retrieve all final documents from a given user
 //Parameter: username
 //return: An array containing important document info (css, html, title, etc)
 function getUserDocs($username){
-  $query = "SELECT * FROM sandbox where name={$username}";
+  $files = Array();
+  $query = "SELECT * FROM owners where name='{$username}'";
   $result = mysql_query($query);
-  $docs = mysql_fetch_array($result);
 
-  return $docs;
+  while($doc = mysql_fetch_array($result)){
+
+    $page_query = "SELECT * FROM sandbox where url='".$doc['url']."'";
+    $page_result = mysql_query($page_query);
+
+    ini_set("memory_limit","256M");
+
+    while($file = mysql_fetch_array($page_result, MYSQL_ASSOC)){
+      $files[] = $file;
+    }
+    //$files[] = getMaxRevision($doc['url']);
+
+  }
+
+  return $files;
 }
 
 function getCustomName($code_id, $revision) {
@@ -599,18 +672,18 @@ function getCode($code_id, $revision, $testonly = false) {
 }
 
 function checkOwner($code_id, $revision, $user) {
-	$sql = sprintf('select name from owners where url="%s" and revision="%s"', mysql_real_escape_string($code_id), mysql_real_escape_string($revision));
+  $sql = sprintf('select name from owners where url="%s" and revision="%s"', mysql_real_escape_string($code_id), mysql_real_escape_string($revision));
   $result = mysql_query($sql);
-	$row = mysql_fetch_object($result);
+  $row = mysql_fetch_object($result);
 
-	if($row != false){
-	
-		if ($row->name == $user) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+  if($row != false){
+  
+    if ($row->name == $user) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
 }
 
@@ -694,7 +767,7 @@ function generateCodeId($tries = 0) {
 }
 
 function generateURL() {
-	// generates 5 char word
+  // generates 5 char word
   $vowels = str_split('aeiou');
   $const = str_split('bcdfghjklmnpqrstvwxyz');
 
@@ -707,7 +780,7 @@ function generateURL() {
     }
   }
 
-	return $word;
+  return $word;
 }
 
 function googleAnalytics() {
