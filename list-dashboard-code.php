@@ -1,7 +1,7 @@
 <?php 
 
 
-if($_POST['section']){
+if(isset($_POST['section'])){
   include('config.php');
   include('auth.php'); // contains user auth
 
@@ -33,7 +33,7 @@ if($_POST['section']){
   
 }
 
-if($_POST['member']) {
+if(isset($_POST['member'])) {
   
   include('config.php');
   include('auth.php'); // contains user auth

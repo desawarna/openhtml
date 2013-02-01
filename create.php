@@ -5,6 +5,7 @@ include('logger.php');
 include("config.php");
 $log = new logmein();
 $log->encrypt = true; //set encryption
+$section_option = "";
 
 
 $sections = getGroups();
@@ -54,6 +55,7 @@ $loginform = '	<!DOCTYPE html>
 										
 
 if(isset($_REQUEST['action']) == 'create'){
+	$_POST['consent'] = 0;
     if($log->create("ownership", $_POST['username'], $_POST['password'], $_POST['email'], $_POST['section'], $_POST['consent']) == true){
         //do something on successful creation
         
