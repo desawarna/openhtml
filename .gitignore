@@ -3,3 +3,4 @@ logs/*
 config.php
 auth.php
 .DS_Store
+temp
