@@ -277,6 +277,7 @@ if (!$action) {
 } 
 
 else if ($action == 'savereplay'){
+  list($code_id, $revision) = getCodeIdParams($request);
   $replay = json_decode(@$_POST['replay'], true);
   $custom_name = getCustomName($code_id, $revision);
   foreach($replay as $key => $index){
@@ -291,7 +292,7 @@ else if ($action == 'savereplay'){
       $sqlreplay[$key] = "INSERT INTO  `replay` (`url` ,`customname` ,`time` ,`html` ,`css` ,`special`) VALUES ('".mysql_real_escape_string($code_id)."', '".mysql_real_escape_string($custom_name)."',  '".$row[$key]['clock']."',  '".mysql_real_escape_string($row[$key]['html'])."',  '".mysql_real_escape_string($row[$key]['css'])."', '".mysql_real_escape_string($row[$key]['special'])."')";
   }
 
- $ok = mysql_query($sql);
+ 
   foreach($sqlreplay as $key => $index){
     $replayok = mysql_query($sqlreplay[$key]);
   }
@@ -357,7 +358,7 @@ else if ($action == 'save' || $action == 'clone') {
     foreach($row as $key => $index){
       //if(($row[$key]['html'] != "") && ($row[$key]['css'] != "")){
         if(!isset($row[$key]['special'])) $row[$key]['special'] = " ";
-        
+
         
         $sqlreplay[$key] = "INSERT INTO  `replay` (`url` ,`customname` ,`time` ,`html` ,`css` ,`special`) VALUES ('".mysql_real_escape_string($code_id)."', '".mysql_real_escape_string($custom_name)."',  '".$row[$key]['clock']."',  '".mysql_real_escape_string($row[$key]['html'])."',  '".mysql_real_escape_string($row[$key]['css'])."', '".mysql_real_escape_string($row[$key]['special'])."')";
       //}
@@ -435,7 +436,7 @@ else if ($action == 'save' || $action == 'clone') {
     if (isset($_REQUEST['format']) && strtolower($_REQUEST['format']) == 'plain') {
       echo $url;
     } else {
-      echo '{ "url" : "' . $url . '", "edit" : "' . $url . '/edit", "html" : "' . $html . '/edit", "javascript" : "' . $javascript . '/edit" }';
+      echo '{ "url" : "' . $url . '", "edit" : "' . $url . '/edit", "html" : "' . $url . '/edit", "javascript" : "' . $url . '/edit" }';
     }
 
 
