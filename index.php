@@ -60,9 +60,17 @@ $ownership = checkOwner($code_id, $revision, $_SESSION['name']);
 <!--[if !IE]><!--><body class="source"><!--<![endif]-->
 
 
-
 <!-- top panel -->
-<?php include("nav.php"); ?>
+<?php 
+  connect();
+  $username = $_SESSION['name'];
+  $query = "select * from group_membership where name='{$username}'";
+  $result = mysql_fetch_array(mysql_query($query));
+
+  if($result){$dash = 1;} else {$dash=0;}
+  include("nav.php"); 
+
+?>
 
 <!-- text area -->
 <div id="bin" class="stretch" style="opacity: 0; filter:alpha(opacity=0);">
