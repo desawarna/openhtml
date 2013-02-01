@@ -24,6 +24,7 @@ function updateTitle(revert, onload) {
   // if (jsbin.settings.home) title = jsbin.settings.home + '@' + title;
   if (editors.html.ready && editors.javascript.ready) {
     if (!revert) {
+      $('#save').addClass('unsaved');
       document.title = title + ' [unsaved]';
       warn_on_unload = "You have unsaved changes!";
       // if ($revert.addClass('enable').is(':hidden')) {
@@ -31,6 +32,7 @@ function updateTitle(revert, onload) {
       // }
     } else {
       document.title = title;
+      $('#save').removeClass('unsaved');
     }
   }
 }
