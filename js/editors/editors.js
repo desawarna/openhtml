@@ -4,7 +4,7 @@
 //= require "unsaved"
 var focusPanel = 'javascript';
 var editors = {};
-var row = {};
+// var row = {};
 var sql = new Array();
 
 window.editors = editors;
@@ -211,9 +211,9 @@ function changecontrol(event) {
   // sends message to the document saying that a key has been pressed, we'll ignore the control keys
   // if (! ({ 16:1, 17:1, 18:1, 20:1, 27:1, 37:1, 38:1, 39:1, 40:1, 91:1, 93:1 })[event.which] ) {
     $(document).trigger('codeChange');
-    if(sql.length > 20){
-      saveSnaps();
-    }
+    // if(sql.length > 20){
+    //   saveSnaps();
+    // }
 
     snapshot();
   // }
@@ -241,8 +241,7 @@ function roughSizeOfObject(object) {
         }
         else if
         (
-            typeof value === 'object'
-            && objectList.indexOf(value) === -1
+            typeof value === 'object' && objectList.indexOf(value) === -1
         )
         {
             objectList.push( value );
@@ -251,8 +250,8 @@ function roughSizeOfObject(object) {
                     if (i == 'Blob') bytes += value[i].size || 0;
                     stack.push(value[i]);
                     stack.push(i);
-                } catch(e) {};
-            };
+                } catch(e) {}
+            }
         }
     }
     return bytes;
@@ -263,13 +262,15 @@ function snapshot(extra){
     var html = editors['html'];
     var css = editors['javascript'];
     var time = new Date();
+    var row = {};
     row.clock = time.getTime();
     row.html = html.getValue();
     row.css= css.getValue();
     row.special = extra;
-    sql.push(JSON.stringify(row));
+    sql.push(row);
     console.log('SQL Size: '+roughSizeOfObject(sql));
-   console.log('SQL Length: '+sql.length);
+    console.log('SQL Length: '+sql.length);
+    console.log(sql);
 
 }
 
