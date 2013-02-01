@@ -40,6 +40,30 @@ function validate(){
   snapshot("Valitator Activated");
 }
 
+function saveSnaps(){
+  snapshot("Auto Snap");
+
+  var $form = $('#saveform')
+    .append('<input type="hidden" name="replay" />');
+
+  $form.find('input[name=replay]').val(JSON.stringify(sql));
+
+  $.ajax({
+    url: $form.attr('action')+'replay',
+    data: $form.serialize(),
+    dataType: 'json',
+    type: 'post',
+    success: function (data) {
+     sql.length = 0;
+    },
+      error: function () {
+
+      }
+
+  });
+  
+}
+
 function saveCode(method, ajax, ajaxCallback) {
 
   //record save timestamp
@@ -55,9 +79,7 @@ function saveCode(method, ajax, ajaxCallback) {
   $form.find('input[name=replay]').val(JSON.stringify(sql));
   $form.find('input[name=method]').val(method);
   if (ajax) {
-
     
-
     $.ajax({
       url: $form.attr('action'),
       data: $form.serialize(),
@@ -77,8 +99,8 @@ function saveCode(method, ajax, ajaxCallback) {
           window.location = data.edit;
         }
       },
-      error: function (data) {
-        console.log(data);
+      error: function () {
+        console.log("Save Error");
       }
     });
   } else {
