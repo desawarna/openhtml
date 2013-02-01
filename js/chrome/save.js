@@ -83,7 +83,7 @@ function saveCode(method, ajax, ajaxCallback) {
     $.ajax({
       url: $form.attr('action'),
       data: $form.serialize(),
-      dataType: 'json', 
+      dataType: 'json',
       type: 'post',
       success: function (data) {
         $('#saveform').attr('action', data.url + '/save');
@@ -94,14 +94,14 @@ function saveCode(method, ajax, ajaxCallback) {
           window.history.pushState(null, data.edit, data.edit);
 
           $('#jsbinurl').attr('href', data.url).text(data.url.replace(/http:\/\//, ''));
-          updateTitle(true)
+          updateTitle(true);
         } else {
           window.location = data.edit;
         }
       },
-      error: function () {
-        console.log("Save Error");
-      }
+     error: function (request, status, error) {
+        console.log(request.responseText, status, error);
+    }
     });
   } else {
     $form.submit();
