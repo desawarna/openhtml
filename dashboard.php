@@ -382,8 +382,8 @@ iframe {
     <tr data-type="spacer"><td colspan=3></td></tr>
       <?php endif ?>
     <tr data-url="<?=$url?>" <?=($firstTime ? ' class="parent" id="' : ' class="child ')  . $code . '">' ?>
-      <td class="url"><?=($firstTime) ? '<span class="rename">Download</span> ': ''?><?=($firstTime && $revision > 1) ? '<span class="action">▶</span> ': '<span class="inaction">&nbsp;</span>'?> <a href="<?=$url?>edit"><span<?=($firstTime ? ' class="first"' : '') . '>' . ($bin['customname'] ? $bin['customname'] : $bin['url']) ?></span> <span class="revision"><?=$bin['revision']?></span></a></td>
-      <td class="created"><a pubdate="<?=$bin['created']?>" href="<?=$url?>edit"><?=getRelativeTime($bin['created'])?></a></td>
+      <td class="url"><?=($firstTime) ? '<span class="rename">Download</span> ': ''?><?=($firstTime && $revision > 1) ? '<span class="action">▶</span> ': '<span class="inaction">&nbsp;</span>'?> <a href="<? echo ROOT . $url?>edit"><span<?=($firstTime ? ' class="first"' : '') . '>' . ($bin['customname'] ? $bin['customname'] : $bin['url']) ?></span> <span class="revision"><?=$bin['revision']?></span></a></td>
+      <td class="created"><a pubdate="<?=$bin['created']?>" href="<? echo ROOT . $url?>edit"><?=getRelativeTime($bin['created'])?></a></td>
       <!--<td class="title"><a href="<?=$url?>edit"><?=substr($title, 0, 200)?></a></td>-->
     </tr>
   <?php

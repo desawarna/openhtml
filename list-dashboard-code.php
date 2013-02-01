@@ -109,11 +109,11 @@ foreach ($order as $key => $value) {
 
     $output = $output . '<td class="url">' . (($firstTime && $revision > 1) ? '<span class="action">▶</span> ': '<span class="inaction">&nbsp;</span>');
 
-    $output = $output . '<a href="' . $url . 'edit"><span' . ($firstTime ? ' class="first"' : '') . '>' . ($bin['customname'] ? $bin['customname'] : $bin['url']);
+    $output = $output . '<a href="' . ROOT . $url . 'edit"><span' . ($firstTime ? ' class="first"' : '') . '>' . ($bin['customname'] ? $bin['customname'] : $bin['url']);
 
     $output = $output . '</span> <span class="revision">' . $bin['revision'] . '</span></a></td>';
 
-    $output = $output . '<td class="created"><a pubdate="' . $bin['created'] . '"href="' . $url . 'edit">' . getRelativeTime($bin['created']) . '</a></td></tr>';
+    $output = $output . '<td class="created"><a pubdate="' . $bin['created'] . '"href="' . ROOT . $url . 'edit">' . getRelativeTime($bin['created']) . '</a></td></tr>';
 
     print $output;
 
