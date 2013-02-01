@@ -308,11 +308,11 @@ else if ($action == 'save' || $action == 'clone') {
   $method = @$_POST['method'];
   $stream = isset($_POST['stream']) ? true : false;
   $streaming_key = '';
-  $replay = json_decode(@$_POST['replay'], true);
+  $replay = @$_POST['replay'];
 
-  foreach($replay as $key => $index){
-    $row[$key] = json_decode($replay[$key], true);
-  }
+  // foreach($replay as $key => $index){
+  //   $row[$key] = json_decode($replay[$key], true);
+  // }
 
   if ($stream && isset($_COOKIE['streaming_key'])) {
     $streaming_key = $_COOKIE['streaming_key'];
@@ -353,16 +353,16 @@ else if ($action == 'save' || $action == 'clone') {
 
     $sql = sprintf('insert into sandbox (javascript, html, created, last_viewed, url, revision, customname) values("%s", "%s", now(), now(), "%s", "%s", "%s")', mysql_real_escape_string($javascript), mysql_real_escape_string($html), mysql_real_escape_string($code_id), mysql_real_escape_string($revision), mysql_real_escape_string($custom_name));
     
-    $sqlreplay = Array();
+    //$sqlreplay = Array();
     //populate sqlreplay array with replay data until savepoint
-    foreach($row as $key => $index){
-      //if(($row[$key]['html'] != "") && ($row[$key]['css'] != "")){
-        if(!isset($row[$key]['special'])) $row[$key]['special'] = " ";
+    // foreach($row as $key => $index){
+    //   //if(($row[$key]['html'] != "") && ($row[$key]['css'] != "")){
+    //     if(!isset($row[$key]['special'])) $row[$key]['special'] = " ";
 
         
-        $sqlreplay[$key] = "INSERT INTO  `replay` (`url` ,`customname` ,`time` ,`html` ,`css` ,`special`) VALUES ('".mysql_real_escape_string($code_id)."', '".mysql_real_escape_string($custom_name)."',  '".$row[$key]['clock']."',  '".mysql_real_escape_string($row[$key]['html'])."',  '".mysql_real_escape_string($row[$key]['css'])."', '".mysql_real_escape_string($row[$key]['special'])."')";
-      //}
-    }
+    //    // $sqlreplay[$key] = "INSERT INTO  `replay` (`url` ,`customname` ,`time` ,`html` ,`css` ,`special`) VALUES ('".mysql_real_escape_string($code_id)."', '".mysql_real_escape_string($custom_name)."',  '".$row[$key]['clock']."',  '".mysql_real_escape_string($row[$key]['html'])."',  '".mysql_real_escape_string($row[$key]['css'])."', '".mysql_real_escape_string($row[$key]['special'])."')";
+    //   //}
+    // }
 
 
     // a few simple tests to pass before we save
@@ -370,9 +370,10 @@ else if ($action == 'save' || $action == 'clone') {
       // entirely blank isn't going to be saved.
     } else {
       $ok = mysql_query($sql);
-      foreach($sqlreplay as $key => $index){
-        $replayok = mysql_query($sqlreplay[$key]);
-      }
+      $replayok = mysql_query("INSERT INTO replay_sessions (`url`, `time`, `session`) VALUES ('".mysql_real_escape_string($code_id)."', '".time()."',  '".$replay."')");
+      // foreach($sqlreplay as $key => $index){
+      //   $replayok = mysql_query($sqlreplay[$key]);
+      // }
       
       
 
