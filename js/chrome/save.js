@@ -55,7 +55,9 @@ function saveCode(method, ajax, ajaxCallback) {
   $form.find('input[name=replay]').val(JSON.stringify(sql));
   $form.find('input[name=method]').val(method);
   if (ajax) {
+
     
+
     $.ajax({
       url: $form.attr('action'),
       data: $form.serialize(),
@@ -75,8 +77,8 @@ function saveCode(method, ajax, ajaxCallback) {
           window.location = data.edit;
         }
       },
-      error: function () {
-
+      error: function (data) {
+        console.log(data);
       }
     });
   } else {
