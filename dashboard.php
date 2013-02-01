@@ -286,8 +286,7 @@ iframe {
 <div id="control">
   <div class="control">
     <div class="buttons">
-      <a class="button source group light left" accesskey="1" href="<?php echo ROOT?>list">Page List</a>
-      <a class="button source group light right" accesskey="1" href="<?php echo ROOT?>">New Page</a>
+      
 
       <!-- Dropdown for sections -->
       <span class="members">Section:</span>
@@ -330,8 +329,14 @@ iframe {
         </select>
       </span>
       <div id="userinfo">
-          <a id="account" class="button group light left" href="<?php echo ROOT?>list"><?php echo $_SESSION['name'] ?></a>
-          <a id="logout" class="button group light right" href="<?php echo ROOT?>logout">Logout</a><span id="logo">openHTML</span>
+          <a id="account" class="button group light left" href="<?php echo ROOT?>list">Page List<?php //echo $is_owner?></a> 
+          <div class="button group gap right tall">
+            <a id="admin" class="title" href="#"><?php echo $_SESSION['name']; ?></a>
+            <a id="dashboard" title="Dashboard" class="button light group" href="<?php echo ROOT?>dashboard">Dashboard</a>
+            <a id="change" title="Change Password" class="button light group" href="<?php echo ROOT?>changepassword">Password</a>
+            <a id="logout" title="Logout" class="button group light" href="<?php echo ROOT?>logout">Logout</a>
+          </div>
+          <span id="logo">openHTML</span>
       </div>
     </div>
   </div>
