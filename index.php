@@ -95,7 +95,7 @@ $ownership = checkOwner($code_id, $revision, $_SESSION['name']);
   </form>
 
   <!-- sends validation data -->
-<form id="validateform" action="/openhtml/validate.php" target="_blank" method="post">
+<form id="validateform" action="<?php echo ROOT ?>validate.php" target="_blank" method="post">
   <input type="hidden" name="method" />
 </form>
 
