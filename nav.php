@@ -3,13 +3,14 @@
     <div class="buttons">
       <a id="account" class="tab button gap" href="<?php echo ROOT?>">New Page</a>
 
-      <a id="view" target="<?php echo $code_id?>" class="tab button group light left" href="http://<?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?>">View</a>
-
-        <?php if ($code_id) : ?>
-          <a id="save" title="Save a new revision" class="button light save group" href="<?php echo $code_id_path?>save">Save</a>
+       <?php if ($code_id) : ?>
+          <a id="save" title="Save a new revision" class="button light save group left" href="<?php echo $code_id_path?>save">Save</a>
         <?php else : ?>
-          <a id="save" class="tab button light save group" href="<?php echo ROOT?>save">Save</a>
+          <a id="save" class="tab button light save group left" href="<?php echo ROOT?>save">Save</a>
         <?php endif ?>
+      <a id="view" target="<?php echo $code_id?>" class="tab button group light" href="http://<?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?>">View</a>
+
+       
 
         <?php if ($ownership) :?>
                 <div class="button group gap right tall">
