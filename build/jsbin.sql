@@ -52,14 +52,11 @@ CREATE TABLE IF NOT EXISTS `pagenames` (
   PRIMARY KEY (`url`)
 );
 
-CREATE TABLE IF NOT EXISTS `replay` (
-  `url` char(255) CHARACTER SET utf8 DEFAULT NULL,
-  `customname` char(255) NOT NULL,
-  `time` bigint(11) NOT NULL,
-  `html` text CHARACTER SET utf8 NOT NULL,
-  `css` text CHARACTER SET utf8 NOT NULL,
-  `special` text NOT NULL
-);
+CREATE TABLE IF NOT EXISTS `replay_sessions` (
+  `url` varchar(5) NOT NULL,
+  `time` int(10) NOT NULL,
+  `session` mediumtext NOT NULL
+)
 
 CREATE TABLE IF NOT EXISTS `groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
