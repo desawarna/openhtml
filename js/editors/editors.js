@@ -227,7 +227,7 @@ function snapshot(extra){
     row.css= css.getValue();
     row.special = extra;
     sql.push(JSON.stringify(row));
-    console.log(sql);
+    //console.log(sql);
 
 }
 
