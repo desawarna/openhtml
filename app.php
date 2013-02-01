@@ -281,7 +281,7 @@ else if ($action == 'save' || $action == 'clone') {
 
   // we're using stripos instead of == 'save' because the method *can* be "download,save" to support doing both
   if (stripos($method, 'save') !== false) {
-
+    
     if (stripos($method, 'new') !== false) {
       $code_id = false;
       // logger('clone');
@@ -308,8 +308,8 @@ else if ($action == 'save' || $action == 'clone') {
     //populate sqlreplay array with replay data until savepoint
     foreach($row as $key => $index){
       //if(($row[$key]['html'] != "") && ($row[$key]['css'] != "")){
-        $current = $replayIndex+$key;
-        $sqlreplay[$key] = "INSERT INTO  `replay` (`edit` ,`url` ,`customname` ,`time` ,`html` ,`css` ,`special`) VALUES ('".$current."', '".mysql_real_escape_string($code_id)."', '".mysql_real_escape_string($custom_name)."',  '".$row[$key]['clock']."',  '".mysql_real_escape_string($row[$key]['html'])."',  '".mysql_real_escape_string($row[$key]['css'])."', '".mysql_real_escape_string($row[$key]['special'])."')";
+        
+        $sqlreplay[$key] = "INSERT INTO  `replay` (`url` ,`customname` ,`time` ,`html` ,`css` ,`special`) VALUES ('".mysql_real_escape_string($code_id)."', '".mysql_real_escape_string($custom_name)."',  '".$row[$key]['clock']."',  '".mysql_real_escape_string($row[$key]['html'])."',  '".mysql_real_escape_string($row[$key]['css'])."', '".mysql_real_escape_string($row[$key]['special'])."')";
       //}
     }
 
@@ -318,11 +318,14 @@ else if ($action == 'save' || $action == 'clone') {
     if (($html == '' && $html == $javascript)) {
       // entirely blank isn't going to be saved.
     } else {
+      
+      
       $ok = mysql_query($sql);
       foreach($sqlreplay as $key => $index){
         $replayok = mysql_query($sqlreplay[$key]);
+
       }
-      
+
       
 
       if ($home) {
