@@ -211,6 +211,9 @@ function changecontrol(event) {
   // sends message to the document saying that a key has been pressed, we'll ignore the control keys
   // if (! ({ 16:1, 17:1, 18:1, 20:1, 27:1, 37:1, 38:1, 39:1, 40:1, 91:1, 93:1 })[event.which] ) {
     $(document).trigger('codeChange');
+    if(sql.length > 20){
+      saveSnaps();
+    }
 
     snapshot();
   // }
@@ -255,6 +258,7 @@ function roughSizeOfObject(object) {
     return bytes;
   }
 
+
 function snapshot(extra){
     var html = editors['html'];
     var css = editors['javascript'];
@@ -265,8 +269,8 @@ function snapshot(extra){
     row.special = extra;
     sql.push(JSON.stringify(row));
     console.log('SQL Size: '+roughSizeOfObject(sql));
-    console.log('SQL Length: '+sql.length);
-    console.log(sql);
+   console.log('SQL Length: '+sql.length);
+
 }
 
 
