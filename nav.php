@@ -68,6 +68,7 @@
         <!--<a id="account" class="button group light" href="<?php echo ROOT?>list"><?php echo $_SESSION['name']; ?></a> -->
         <div class="button group gap right tall">
           <a id="admin" class="title" href="#"><?php echo $_SESSION['name']; ?></a>
+          <?php if($dash) : ?><a id="dashboard" title="Dashboard" class="button light group" href="<?php echo ROOT?>dashboard">Dashboard<?php endif ?>
           <a id="change" title="Change Password" class="button light group" href="<?php echo ROOT?>changepassword">Password</a>
           <a id="logout" title="Logout" class="button group light" href="<?php echo ROOT?>logout">Logout</a>
         </div>

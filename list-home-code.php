@@ -1,4 +1,11 @@
 <?php if ( ! defined('ROOT')) exit('No direct script access allowed');
+
+  connect();
+  $username = $_SESSION['name'];
+  $query = "select * from group_membership where name='{$username}'";
+  $result = mysql_fetch_array(mysql_query($query));
+  if($result){$dash = 1;} else {$dash=0;}
+  
 function plural($num) {
 	if ($num != 1)
 		return "s";
@@ -234,6 +241,7 @@ iframe {
       <a class="button group light left" href="<?php echo ROOT?>list" accesskey="1">Page List</a>
         <div class="button group gap right tall">
           <a id="admin" class="title" href="#"><?php echo $_SESSION['name']; ?></a>
+          <?php if($dash) : ?><a id="dashboard" title="Dashboard" class="button light group" href="<?php echo ROOT?>dashboard">Dashboard<?php endif ?>
           <a id="change" title="Change Password" class="button light group" href="<?php echo ROOT?>changepassword">Password</a>
           <a id="logout" title="Logout" class="button group light" href="<?php echo ROOT?>logout">Logout</a>
         </div>
