@@ -4,7 +4,6 @@
 //loginto sql
 
 include('config.php'); // contains DB & important versioning
-// include('logger.php'); // contains activity logger
 
 include('auth.php'); // contains user auth
 $log = new logmein(); // instantiate the class

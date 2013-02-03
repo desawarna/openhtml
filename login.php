@@ -1,7 +1,6 @@
 <?php
 //instantiate if needed
 include("auth.php");
-include('logger.php');
 $log = new logmein();
 $log->encrypt = true; //set encryption
 if($_REQUEST['action'] == 'login'){
