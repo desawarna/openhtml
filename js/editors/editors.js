@@ -268,9 +268,9 @@ function snapshot(extra){
     row.css= css.getValue();
     row.special = extra;
     sql.push(row);
-    console.log('SQL Size: '+roughSizeOfObject(sql));
-    console.log('SQL Length: '+sql.length);
-    console.log(sql);
+    // console.log('SQL Size: '+roughSizeOfObject(sql));
+    // console.log('SQL Length: '+sql.length);
+    // console.log(sql);
 
 }
 
