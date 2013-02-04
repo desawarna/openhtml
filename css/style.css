@@ -925,10 +925,50 @@ ie6, li {
   color: white;
   /*font-weight: bold; */
   -webkit-transition: background-color 0.15s ease-in-out; 
-  -moz-transition: background-color 0.15s ease-in-out; 
+  -moz-transition: background-color 0.15s ease-in-out;
+  -ms-transition: background-color 0.15s ease-in-out;
   -o-transition: background-color 0.15s ease-in-out; 
   transition: background-color 0.15s ease-in-out; 
-  /* Hovers */ /* Sizes */ /* Colors */ /* Radii */ /* Layout */ /* Disabled ---------- */ 
+}
+
+.saving {
+  -webkit-animation: pulsate 1.5s ease-out infinite;
+  -moz-animation: pulsate 1.5s ease-out infinite;
+  -ms-animation: pulsate 1.5s ease-out infinite;
+  -o-animation: pulsate 1.5s ease-out infinite;
+  animation: pulsate 1.5s ease-out infinite;
+/*   -webkit-animation-iteration-count: infinite;
+*/
+}
+
+@-webkit-keyframes pulsate {
+  0% { background-color: #2ba6cb; }
+  50% { background-color: #33c6fe; }
+  100% { background-color: #2ba6cb; }
+}
+
+@-moz-keyframes pulsate {
+  0% { background-color: #2ba6cb; }
+  50% { background-color: #33c6fe; }
+  100% { background-color: #2ba6cb; }
+}
+
+@-ms-keyframes pulsate {
+  0% { background-color: #2ba6cb; }
+  50% { background-color: #33c6fe; }
+  100% { background-color: #2ba6cb; }
+}
+
+@-o-keyframes pulsate {
+  0% { background-color: #2ba6cb; }
+  50% { background-color: #33c6fe; }
+  100% { background-color: #2ba6cb; }
+}
+
+@keyframes pulsate {
+  0% { background-color: #2ba6cb; }
+  50% { background-color: #33c6fe; }
+  100% { background-color: #2ba6cb; }
 }
 
 .button.download {
