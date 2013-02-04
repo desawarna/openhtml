@@ -1,8 +1,10 @@
 // to allow for download button to be introduced via beta feature
 $('a.save').click(function (event) {
   event.preventDefault();
+ 
   saveCode('save', window.location.pathname.indexOf('/edit') !== -1);
-  
+
+
   return false;
 });
 
@@ -55,9 +57,10 @@ function saveSnaps(){
     type: 'post',
     success: function (data) {
      sql.length = 0;
+     console.log("Success");
     },
       error: function () {
-
+        console.log("Error");
       }
 
   });
@@ -65,7 +68,7 @@ function saveSnaps(){
 }
 
 function saveCode(method, ajax, ajaxCallback) {
-
+  // $(this).addClass('saving');
   //record save timestamp
   snapshot("Document Saved");
   // create form and post to it
@@ -89,6 +92,7 @@ function saveCode(method, ajax, ajaxCallback) {
         $('#saveform').attr('action', data.url + '/save');
         ajaxCallback && ajaxCallback();
         sql.length = 0;
+
         $('#save').removeClass('unsaved');
 
         if (window.history && window.history.pushState) {
