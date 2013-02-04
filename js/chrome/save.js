@@ -89,6 +89,7 @@ function saveCode(method, ajax, ajaxCallback) {
         $('#saveform').attr('action', data.url + '/save');
         ajaxCallback && ajaxCallback();
         sql.length = 0;
+        $('#save').removeClass('unsaved');
 
         if (window.history && window.history.pushState) {
           window.history.pushState(null, data.edit, data.edit);

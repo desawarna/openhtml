@@ -32,7 +32,7 @@ function updateTitle(revert, onload) {
       // }
     } else {
       document.title = title;
-      $('#save').removeClass('unsaved');
+      
     }
   }
 }
