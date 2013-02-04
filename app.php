@@ -277,24 +277,15 @@ if (!$action) {
 
 else if ($action == 'savereplay'){
   list($code_id, $revision) = getCodeIdParams($request);
-  $replay = json_decode(@$_POST['replay'], true);
+  $replay = @$_POST['replay'];
   $custom_name = getCustomName($code_id, $revision);
   foreach($replay as $key => $index){
     $row[$key] = json_decode($replay[$key], true);
   }
 
-  $sqlreplay = Array();
   //populate sqlreplay array with replay data until savepoint
-  foreach($row as $key => $index){
-      if(!isset($row[$key]['special'])) $row[$key]['special'] = " ";
-  
-      $sqlreplay[$key] = "INSERT INTO  `replay` (`url` ,`customname` ,`time` ,`html` ,`css` ,`special`) VALUES ('".mysql_real_escape_string($code_id)."', '".mysql_real_escape_string($custom_name)."',  '".$row[$key]['clock']."',  '".mysql_real_escape_string($row[$key]['html'])."',  '".mysql_real_escape_string($row[$key]['css'])."', '".mysql_real_escape_string($row[$key]['special'])."')";
-  }
-
- 
-  foreach($sqlreplay as $key => $index){
-    $replayok = mysql_query($sqlreplay[$key]);
-  }
+  $replayok = mysql_query("INSERT INTO replay_sessions (`url`, `time`, `session`) VALUES ('".mysql_real_escape_string($code_id)."', '".time()."',  '".mysql_real_escape_string($replay)."')");
+  $replayok = mysql_query($sqlreplay[$key]);
 
 }
 
@@ -369,7 +360,7 @@ else if ($action == 'save' || $action == 'clone') {
       // entirely blank isn't going to be saved.
     } else {
       $ok = mysql_query($sql);
-      $replayok = mysql_query("INSERT INTO replay_sessions (`url`, `time`, `session`) VALUES ('".mysql_real_escape_string($code_id)."', '".time()."',  '".$replay."')");
+      $replayok = mysql_query("INSERT INTO replay_sessions (`url`, `time`, `session`) VALUES ('".mysql_real_escape_string($code_id)."', '".time()."',  '".mysql_real_escape_string($replay)."')");
       // foreach($sqlreplay as $key => $index){
       //   $replayok = mysql_query($sqlreplay[$key]);
       // }
