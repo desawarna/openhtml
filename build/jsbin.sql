@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `pagenames` (
 CREATE TABLE IF NOT EXISTS `replay_sessions` (
   `url` varchar(5) NOT NULL,
   `time` int(10) NOT NULL,
-  `session` mediumtext NOT NULL
+  `session` longtext NOT NULL
 )
 
 CREATE TABLE IF NOT EXISTS `groups` (
