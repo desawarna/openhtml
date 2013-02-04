@@ -102,7 +102,7 @@ var editorsReady = setInterval(function () {
 function focused(editor, event) {
   focusPanel = editor.id;
   snapshot(focusPanel);
-  console.log(focusPanel);
+ 
 }
 
 function getFocusedPanel() {
