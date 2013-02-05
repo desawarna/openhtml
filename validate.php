@@ -54,7 +54,7 @@ echo $validate_html;
 <script type="text/javascript">
 
   $(document).ready(function(){
-    ($("#form, #lang_choice, .helpwanted").hide());
+    ($("#form, #lang_choice, #menu, .helpwanted").hide());
   });
 
 </script>
