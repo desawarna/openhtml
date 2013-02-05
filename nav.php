@@ -15,11 +15,11 @@
         <?php if ($ownership) :?>
                 <div class="button group gap right tall">
                 <a id="options" class="title">Options</a>
-                <a id="save" title="Save a new revision" class="button light save group" href="<?php echo $code_id_path?>save">Save</a>
+                
                 <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
 
             <?php else : ?>
-                <div class="button group gap right short">
+                <div class="button group gap right tall">
                 <a id="options" class="title">Options</a>
                 <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
             <?php endif ?>

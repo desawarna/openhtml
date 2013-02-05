@@ -421,10 +421,10 @@ div.tall:hover {
 }
 
 #control div.group .button {
-  padding-left: 24px;
+  padding-left: 8px;
   border: 0;
   display: block;
-  width: 70px;
+  width: 86px;
 }
 
 #control .group a {
