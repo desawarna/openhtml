@@ -161,6 +161,10 @@ div.code, #live, .resize {
   cursor: w-resize;
 }
 
+.sizer {
+  cursor: pointer;
+}
+
 .block {
   border: 0;
   position: absolute;
@@ -254,6 +258,11 @@ iframe.javascript {
   margin: 0px 0px;
   background: #fff;
   background: rgba(255, 255, 255, 0.3);
+}
+
+.button:hover {
+  background-color: #ccc;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 #control span {
@@ -931,6 +940,10 @@ ie6, li {
   transition: background-color 0.15s ease-in-out; 
 }
 
+.unsaved:hover {
+  background-color: #2180a4;
+}
+
 .saving {
   -webkit-animation: pulsate 1.5s ease-out infinite;
   -moz-animation: pulsate 1.5s ease-out infinite;
@@ -1282,7 +1295,7 @@ details li, .details li {
   padding: .4em .2em .4em .4em;
 }
 .CodeMirror-lines {
-  padding: .4em;
+  padding: .4em .4em .4em 1.4em;
 }
 
 .CodeMirror pre {

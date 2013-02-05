@@ -64,6 +64,16 @@
         <input type="checkbox" data-panel="live" data-uri="live" id="showlive"><label for="showlive">Preview</label>
       </span>
 
+      <span id="zoomout" class="button light group left sizer" data-delta="-5">
+        -
+      </span>
+      <span id="reset" class="button light group sizer" data-delta="0">
+        =
+      </span>
+      <span id="zoomin" class="button light group right sizer" data-delta="5">
+        +
+      </span>
+
       <div id="userinfo">
         <a id="account" class="button group light left" href="<?php echo ROOT?>list">Page List<?php //echo $is_owner?></a> 
         <!--<a id="account" class="button group light" href="<?php echo ROOT?>list"><?php echo $_SESSION['name']; ?></a> -->
@@ -79,3 +89,10 @@
     </div>
   </div>
 </div>
+
+
+
+
+
+
+

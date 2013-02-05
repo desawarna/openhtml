@@ -288,6 +288,28 @@ function snapshot(extra){
 
 }
 
+function changeFontSize(delta){
+
+  var oldsize = $(".CodeMirror").css("font-size");
+
+  delta = parseInt(delta, 10);
+  oldsize = parseInt(oldsize, 10);
+  
+  var newsize = oldsize + delta+"px";
+
+  if(delta == 0) newsize = "12px";
+
+  if(parseInt(newsize) > 6) $(".CodeMirror").css("font-size", newsize);
+}
+
+
+$('.sizer').click(function(){
+
+  changeFontSize($(this).attr('data-delta'));
+
+});
+
+
 
 //= require "keycontrol"
 
