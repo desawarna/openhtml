@@ -1121,9 +1121,8 @@ details li, .details li {
 }
 
 #userinfo, #auth #logo {
- position: absolute;
- top: 13px;
- right: 30px;
+ float: right;
+ margin-left: 10px;
  width: 320px;
 }
 
