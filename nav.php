@@ -64,13 +64,13 @@
         <input type="checkbox" data-panel="live" data-uri="live" id="showlive"><label for="showlive">Preview</label>
       </span>
 
-      <span id="zoomout" class="button light group left sizer" data-delta="-5">
+      <span id="zoomout" class="button light group left sizer" data-delta="-3">
         -
       </span>
       <span id="reset" class="button light group sizer" data-delta="0">
         =
       </span>
-      <span id="zoomin" class="button light group right sizer" data-delta="5">
+      <span id="zoomin" class="button light group right sizer" data-delta="3">
         +
       </span>
 
