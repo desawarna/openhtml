@@ -54,7 +54,10 @@ echo $validate_html;
 <script type="text/javascript">
 
   $(document).ready(function(){
-    ($("#form, #lang_choice, #menu, .helpwanted").hide());
+    ($("#form, #lang_choice, .helpwanted").hide());
+    $('a[href^="./"]').each(function(){
+      $(this).attr('href', 'http://validator.w3.org/' + $(this).attr('href'));
+    })
   });
 
 </script>
