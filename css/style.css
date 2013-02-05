@@ -988,16 +988,16 @@ ie6, li {
   padding-left: 24px;
 
 /*  background-image: url(/images/arrow_down_12x12.png);*/
-  background-image: url(../images/download.png);
+/*  background-image: url(../images/download.png);
   background-repeat: no-repeat;
-  background-position: 8px -33px;
+  background-position: 8px -33px;*/
 }
 
-.button.download:hover {
+/*.button.download:hover {
   background-image: url(../images/download.png);
   background-repeat: no-repeat;
   background-position: 8px 7px;
-}
+}*/
 
 /* attempt to get a live render preview in */
 #live {
