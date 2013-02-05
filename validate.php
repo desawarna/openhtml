@@ -38,12 +38,23 @@ function validate($code, $type){
 
   $curl_response = curl_exec($handle);
   curl_close($handle);
-  echo $curl_response;
+  
   return $curl_response;  
 }
 
 
-validate($_POST["code"], $_POST["type"]);
+$validate_html = validate($_POST["code"], $_POST["type"]);
+echo $validate_html;
 
 
 ?>
+
+<script type="text/javascript" src="<?php ROOT ?>js/vendor/jquery.js"></script>
+
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    ($("#form, #lang_choice").hide());
+  });
+
+</script>

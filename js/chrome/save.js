@@ -27,12 +27,14 @@ $('a.clone').click(function (event) {
 $('#validatehtml').click(function (event){
   event.preventDefault();
   validate("html");
+  snapshot("HTML Validated");
   return false;
 });
 
 $('#validatecss').click(function (event){
   event.preventDefault();
   validate("css");
+  snapshot("CSS Validated");
   return false;
 });
 
@@ -45,8 +47,6 @@ function validate(type){
   else if (type == "html") { $form.find('input[name=code]').val(editors.html.getCode()); }
   $form.find('input[name=type]').val(type);
   $form.submit();
-
-  snapshot("Valitator Activated");
 }
 
 function saveSnaps(){
