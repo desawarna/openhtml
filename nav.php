@@ -24,7 +24,8 @@
                 <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
             <?php endif ?>
            <a id="download" title="Save to drive" class="button download group light" href="<?php echo ROOT?>download">Download</a>
-           <a id="validate" target="_blank" class="button group light" href="#">Validate</a>
+           <a id="validatehtml" target="_blank" class="button group light" href="#">Validate HTML</a>
+           <a id="validatecss" target="_blank" class="button group light" href="#">Validate CSS</a>
 
       </div> 
       

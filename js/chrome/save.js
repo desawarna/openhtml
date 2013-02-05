@@ -24,19 +24,26 @@ $('a.clone').click(function (event) {
   return false;
 });
 
-$('#validate').click(function (event){
+$('#validatehtml').click(function (event){
   event.preventDefault();
-  validate();
+  validate("html");
   return false;
 });
 
-function validate(){
-  var $form = $('#validateform')
-    .append('<input type="hidden" name="javascript" />')
-    .append('<input type="hidden" name="html_code" />');
+$('#validatecss').click(function (event){
+  event.preventDefault();
+  validate("css");
+  return false;
+});
 
-  $form.find('input[name=javascript]').val(editors.javascript.getCode());
-  $form.find('input[name=html_code]').val(editors.html.getCode());
+function validate(type){
+  var $form = $('#validateform')
+    .append('<input type="hidden" name="code" />')
+    .append('<input type="hidden" name="type" />');
+
+  if(type == "css") { $form.find('input[name=code]').val(editors.javascript.getCode()); }
+  else if (type == "html") { $form.find('input[name=code]').val(editors.html.getCode()); }
+  $form.find('input[name=type]').val(type);
   $form.submit();
 
   snapshot("Valitator Activated");
