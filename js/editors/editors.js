@@ -290,16 +290,21 @@ function snapshot(extra){
 
 function changeFontSize(delta){
 
-  var oldsize = $(".CodeMirror").css("font-size");
-
   delta = parseInt(delta, 10);
+
+  var oldsize = $(".CodeMirror").css("font-size");
   oldsize = parseInt(oldsize, 10);
   
-  var newsize = oldsize + delta+"px";
+  var newsize = oldsize + delta + "px";
 
-  if(delta == 0) newsize = "12px";
+  if(delta === 0) newsize = "12px";
 
-  if(parseInt(newsize) > 6) $(".CodeMirror").css("font-size", newsize);
+  if(parseInt(newsize, 10) > 6) {
+    $(".CodeMirror").css("font-size", newsize);
+
+    editors.javascript.refresh();
+    editors.html.refresh();
+  }
 }
 
 

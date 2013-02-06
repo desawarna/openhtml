@@ -785,6 +785,7 @@ var CodeMirror = (function() {
         throw new Error("BAD PATCH! " + JSON.stringify(updates) + " size=" + (showingTo - showingFrom) +
                         " nodes=" + lineDiv.childNodes.length);
       updateCursor();
+      updateGutter();
     }
 
     function refreshDisplay(from, to) {

@@ -1294,7 +1294,7 @@ details li, .details li {
   padding: .4em .2em .4em .4em;
 }
 .CodeMirror-lines {
-  padding: .4em .4em .4em 1.4em;
+  padding: .4em;
 }
 
 .CodeMirror pre {
