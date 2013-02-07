@@ -82,13 +82,13 @@ function addTime(){
 	t++;
 	populate();
 	document.getElementById("t").innerHTML = t;
-	document.getElementById("time").innerHTML = (history[i+1]['time']/1000);
+	document.getElementById("time").innerHTML = (history[i+1]['clock']/1000);
 	
 }
 
 function skip(){
 	i++;
-	t = (history[i]['time'])/speed;
+	t = (history[i]['clock'])/speed;
 	populate();
 	
 }
@@ -109,18 +109,20 @@ function changeSpeed(){
 
 
 function populate(){
-	 if((t*speed) >= history[i]['time']){
+	 if((t*speed) >= history[i]['clock']){
 	 	update();
 	 	i++;
 	 }
 
 function update(){
-		document.getElementById("cssReplay").innerHTML = history[i]['css'];
-	 	document.getElementById("htmlReplay").innerHTML = history[i]['html'];
-	 	document.getElementById("special").innerHTML = history[i]['special'];
-	 	document.getElementById("play").value = history[i]['time'];
-	 	document.getElementById("playval").innerHTML = history[i]['time'];
-	 	document.getElementById("nextactive").innerHTML = history[i+1]['time'];
+		if(typeof history[i+1] != 'undefined'){
+			document.getElementById("cssReplay").innerHTML = history[i]['css'];
+		 	document.getElementById("htmlReplay").innerHTML = history[i]['html'];
+		 	document.getElementById("special").innerHTML = history[i]['special'];
+		 	document.getElementById("play").value = history[i]['clock'];
+		 	document.getElementById("playval").innerHTML = history[i]['clock'];
+		 	document.getElementById("nextactive").innerHTML = history[i+1]['clock'];
+		} else {stopTimer();}
 	}
 }
 
@@ -168,20 +170,32 @@ function update(){
 
 //debug
 	// var_dump($js_history);
-
+	var_dump($history);
+	// var_dump($combined);
 $session = array();
 
 //Retrieves replay history from the database
 function retrieveReplay($url){
 
-	$sql = "SELECT * FROM replay WHERE url = '" . mysql_escape_string($url) . "' ORDER BY time ASC";
+
+
+	$sql = "SELECT session FROM replay_sessions WHERE url = '" . mysql_escape_string($url) . "' ORDER BY time ASC";
 	$result = mysql_query($sql);
 		
 
-	while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-		$history[] = $row;
-		
+	while ($row = mysql_fetch_assoc($result, MYSQL_ASSOC)) {
+		$history .= $row['session'];
 	}
+
+	// foreach($history as $key => $value){
+	// 	$java_object .= $history[$key]["session"];
+	// }
+
+
+	
+	$history = str_replace('][', ',', $history);
+	$history = json_decode($history, true);
+
 
 	$history = formatReplay($history);
 	return $history;
@@ -191,14 +205,14 @@ function retrieveReplay($url){
 //Accepts array of replay history in ascending order to format the timestamps for replay or any other formatting which may be required in the future
 function formatReplay($data){
 
-	$origTime = $data[0][time];
+	$origTime = $data[0]['clock'];
 
 	foreach($data as $key => $value){
-		$data[$key][html] = htmlentities($data[$key][html]);
-		$data[$key][css] = htmlentities($data[$key][css]);
-		$data[$key][time] -= $origTime;
-		//
-		if((($data[$key][time])-($data[$key-1][time])) > 300) $session['time'];
+		$data[$key]['html'] = htmlentities($data[$key]['html']);
+		$data[$key]['css'] = htmlentities($data[$key]['css']);
+		$data[$key]['clock'] -= $origTime;
+		
+		//if((($data[$key]['clock'])-($data[$key-1]['clock'])) > 300) $session['clock'];
 	}
 
 	return $data;
