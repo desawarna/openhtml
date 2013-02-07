@@ -49,7 +49,7 @@ echo $validate_html;
 
 ?>
 
-<script type="text/javascript" src="<?php ROOT ?>js/vendor/jquery.js"></script>
+<script type="text/javascript" src="js/vendor/jquery.js"></script>
 
 <script type="text/javascript">
 
