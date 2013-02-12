@@ -3,13 +3,18 @@
     <div class="buttons">
       <a id="account" class="tab button gap" href="<?php echo ROOT?>">New Page</a>
 
-       <?php if ($code_id) : ?>
-          <a id="save" title="Save a new revision" class="button light save group left" href="<?php echo $code_id_path?>save">Save</a>
-        <?php else : ?>
-          <a id="save" class="tab button light save group left" href="<?php echo ROOT?>save">Save</a>
-        <?php endif ?>
+      <?php if ($ownership) :?>
+         <?php if ($code_id) : ?>
+            <a id="save" title="Save a new revision" class="button light save group left" href="<?php echo $code_id_path?>save">Save</a>
+          <?php else : ?>
+            <a id="save" class="tab button light save group left" href="<?php echo ROOT?>save">Save</a>
+          <?php endif ?>
+        <a id="view" target="<?php echo $code_id?>" class="tab button group light" href="http://<?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?>">View</a>
+      <?php else : ?>
+      <a id="clone" title="Create a new copy" class="button clone group light left" href="<?php echo ROOT?>clone">Copy <?php echo $page_owner; ?>'s Page</a>
       <a id="view" target="<?php echo $code_id?>" class="tab button group light" href="http://<?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?>">View</a>
 
+      <?php endif ?>
        
 
         <?php if ($ownership) :?>
@@ -21,7 +26,7 @@
             <?php else : ?>
                 <div class="button group gap right tall">
                 <a id="options" class="title">Options</a>
-                <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
+                
             <?php endif ?>
            <a id="download" title="Save to drive" class="button download group light" href="<?php echo ROOT?>download">Download</a>
            <a id="validatehtml" target="_blank" class="button group light" href="#">Validate HTML</a>
