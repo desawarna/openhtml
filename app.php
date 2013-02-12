@@ -83,6 +83,8 @@ $post ='</div></body></html>';
   }//Try to change password
 }
 
+
+
 if ($action == 'downloadall' && isset($_GET['name'])){
 ini_set('max_execution_time', 300);
   connect();
@@ -145,6 +147,24 @@ ini_set('max_execution_time', 300);
   header("Content-Length: ".filesize($zipname));
   readfile($zipname);
   exit;
+
+}
+
+elseif($action == 'downloadsingle' && isset($_GET['url'])){
+  
+  $url = $_GET['url'];
+  $rev = getMaxRevision($url);
+  $ext = ".html";
+  $query = "SELECT * FROM  `sandbox` WHERE  `url` =  '".$url."' AND  `revision` = '{$rev}'";
+  $document = mysql_fetch_array(mysql_query($query));
+  $originalHTML = $document['html'];
+  list($document['html'], $document['javascript']) = formatCompletedCode($document['html'], $document['javascript'], $url, $rev);
+    //header('Content-Type: text/html');
+    //header('Content-Disposition: attachment; filename="' . $url . '-' . $rev . $ext . '"');
+  //header('Content-Disposition: attachment; filename="' . $code_id . ($revision == 1 ? '' : '.' . $revision) . $ext . '"');
+ 
+    echo $originalHTML ? $document['html'] : $document['javascript'];
+
 
 }
 
@@ -262,6 +282,7 @@ if (!$action) {
   }
 } else if ($action == 'edit') {
   list($code_id, $revision) = getCodeIdParams($request);
+  $page_owner = getOwner($code_id);
   // logger('open');
   if ($revision == 'latest') {
     $latest_revision = getMaxRevision($code_id);
@@ -427,6 +448,7 @@ else if ($action == 'save' || $action == 'clone') {
     if (isset($_REQUEST['format']) && strtolower($_REQUEST['format']) == 'plain') {
       echo $url;
     } else {
+
       echo '{ "url" : "' . $url . '", "edit" : "' . $url . '/edit", "html" : "' . $url . '/edit", "javascript" : "' . $url . '/edit" }';
     }
 
@@ -553,6 +575,15 @@ function getCodeIdParams($request) {
   }
 
   return array($code_id, $revision);
+}
+
+//Get Owner of current page that is being edited
+//Paremeter: document hash
+function getOwner($id){
+  $sql = "SELECT * FROM  `owners` WHERE  `url` =  '{$id}'";
+  $result = mysql_fetch_assoc(mysql_query($sql));
+  return $result['name'];
+
 }
 
 //Get the most recent document from the sandbox table
