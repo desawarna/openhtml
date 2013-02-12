@@ -406,6 +406,7 @@ iframe {
 function collapsePages() {
 
   $('.child').hide();
+  $('.rename').hide();
 
   $('.action').click(function(){
       var id = $(this).closest('.parent').attr('id');
@@ -420,14 +421,14 @@ function collapsePages() {
   $('.rename').click(function(){
     var url = $(this).parent().parent().attr('id');
     var revision = $(this).siblings('a').children('.revision').text();
-
+    window.location.replace(url+"/downloadsingle?url="+url);
 
     // console.log("download"+url+revision);
-    $.post(url+"/save", {
-          'method': 'download',
-          'url': url,
-          'revision': revision
-        }, function(data){response=data;});
+    // $.get(url+"/downloadsingle", {
+    //       'method': 'downloadsingle',
+    //       'url': url,
+    //       'revision': revision
+    //     }, function(data){response=data; console.log(data);});
 
   });
 }
