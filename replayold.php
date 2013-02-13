@@ -82,13 +82,13 @@ function addTime(){
 	t++;
 	populate();
 	document.getElementById("t").innerHTML = t;
-	document.getElementById("time").innerHTML = (history[i+1]['clock']/1000);
+	document.getElementById("time").innerHTML = (history[i+1]['time']/1000);
 	
 }
 
 function skip(){
 	i++;
-	t = (history[i]['clock'])/speed;
+	t = (history[i]['time'])/speed;
 	populate();
 	
 }
@@ -109,7 +109,7 @@ function changeSpeed(){
 
 
 function populate(){
-	 if((t*speed) >= history[i]['clock']){
+	 if((t*speed) >= history[i]['time']){
 	 	update();
 	 	i++;
 	 }
@@ -119,9 +119,9 @@ function update(){
 			document.getElementById("cssReplay").innerHTML = history[i]['css'];
 		 	document.getElementById("htmlReplay").innerHTML = history[i]['html'];
 		 	document.getElementById("special").innerHTML = history[i]['special'];
-		 	document.getElementById("play").value = history[i]['clock'];
-		 	document.getElementById("playval").innerHTML = history[i]['clock'];
-		 	document.getElementById("nextactive").innerHTML = history[i+1]['clock'];
+		 	document.getElementById("play").value = history[i]['time'];
+		 	document.getElementById("playval").innerHTML = history[i]['time'];
+		 	document.getElementById("nextactive").innerHTML = history[i+1]['time'];
 		} else {stopTimer();}
 	}
 }
@@ -176,15 +176,15 @@ $session = array();
 
 //Retrieves replay history from the database
 function retrieveReplay($url){
+	//$history = array();
 
 
-
-	$sql = "SELECT session FROM replay_sessions WHERE url = '" . mysql_real_escape_string($url) . "' ORDER BY time ASC";
+	$sql = "SELECT * FROM replay WHERE url = '" . mysql_real_escape_string($url) . "' ORDER BY time ASC";
 	$result = mysql_query($sql);
 		
 
 	while ($row = mysql_fetch_assoc($result, MYSQL_ASSOC)) {
-		$history .= $row['session'];
+		$history[] = $row;
 	}
 
 	// foreach($history as $key => $value){
@@ -193,11 +193,11 @@ function retrieveReplay($url){
 
 
 	
-	$history = str_replace('][', ',', $history);
-	$history = json_decode($history, true);
+	// $history = str_replace('][', ',', $history);
+	// $history = json_decode($history, true);
 
 
-	$history = formatReplay($history);
+	//$history = formatReplay($history);
 	return $history;
 }
 
@@ -205,7 +205,7 @@ function retrieveReplay($url){
 //Accepts array of replay history in ascending order to format the timestamps for replay or any other formatting which may be required in the future
 function formatReplay($data){
 
-	$origTime = $data[0]['clock'];
+	$origTime = $data[0]['time'];
 
 	foreach($data as $key => $value){
 		$data[$key]['html'] = htmlentities($data[$key]['html']);
