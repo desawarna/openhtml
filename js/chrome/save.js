@@ -121,7 +121,7 @@ function saveCode(method, ajax, ajaxCallback) {
 }
 
 $document.keydown(function (event) {
-  if (event.metaKey && event.which == 83) {
+  if ((event.metaKey && event.which == 83) || (event.ctrlKey && event.which == 83)) {
     if (event.shiftKey == false) {
       $('#save').click();
       event.preventDefault();
