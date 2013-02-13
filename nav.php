@@ -124,7 +124,7 @@ $('.rename').click(function(){
 });
 
 $('.delete').click(function(){
-  var state = confirm("Are you sure?");
+  var state = confirm("Are you sure you want to delete this page?");
   if(state == true){
     
     var url = "<?php echo $code_id ?>";
@@ -132,7 +132,7 @@ $('.delete').click(function(){
         Delete: true,
         url: url,
       }).done(function(){
-        alert("DELETED");
+        
         window.location.replace("../list");
       });
 
