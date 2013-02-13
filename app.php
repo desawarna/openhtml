@@ -813,7 +813,7 @@ HERE_DOC;
 }
 
 function showSaved($name) {
-  $sql = sprintf('select * from owners where name="%s" and hidden="%s" order by url, revision desc', mysql_real_escape_string($name), 0);
+  $sql = sprintf('select * from owners where name="%s" and hidden="%s" order by url, revision desc', mysql_real_escape_string($name), "0");
   $result = mysql_query($sql);
 
   $bins = array();
