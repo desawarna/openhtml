@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS `owners` (
   `name` char(255) NOT NULL,
   `url` char(255) NOT NULL,
   `revision` int(11) default 1,
+  `hidden` int(1) NOT NULL,
   
   PRIMARY KEY  (`id`),
   KEY `name_url` (`name`, `url`, `revision`)

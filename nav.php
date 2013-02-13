@@ -20,7 +20,8 @@
         <?php if ($ownership) :?>
                 <div class="button group gap right tall">
                 <a id="options" class="title">Options</a>
-                
+                <a id="Rename" class ="button group rename light">Rename</a>
+                <a id="Rename" class ="button group delete light">Delete</a>
                 <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
 
             <?php else : ?>
@@ -96,7 +97,45 @@
   </div>
 </div>
 
+<script type="text/javascript" src="<?php echo ROOT?>js/vendor/jquery.js"></script>
+<script type="text/javascript">
+$('.rename').click(function(){
+  var currentName = "<?php echo getCustomName($code_id, $revision); ?>";
+  var newName = prompt('What would you like to name this page?', currentName);
 
+  if ((newName) && (newName !== currentName)) {
+    var url = "<?php echo $code_id ?>";
+    var revision = "<?php echo $revision ?>";
+    var maxLength = 22;
+
+    $.post("../update.php", {
+        customName: newName,
+        url: url,
+        revision: revision
+      }).done(function(){
+        location.reload();
+      });
+  }
+});
+
+$('.delete').click(function(){
+  var state = confirm("Are you sure?");
+  if(state == true){
+    
+    var url = "<?php echo $code_id ?>";
+    $.post("../update.php", {
+        Delete: true,
+        url: url,
+      }).done(function(){
+        alert("DELETED");
+        window.location.replace("../list");
+      });
+
+  }
+});
+
+
+</script>
 
 
 
