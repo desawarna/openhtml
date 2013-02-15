@@ -187,6 +187,12 @@ function skip(){
 	
 }
 
+function back(){
+	i = i-2;
+	t = (history[i]['clock'])/speed;
+	populate();
+}
+
 function reset(){
 	t = -1;
 	i = 0;
