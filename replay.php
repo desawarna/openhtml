@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 
 //loginto sql
@@ -26,26 +25,117 @@ if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false
 }
 ?>
 
+<!DOCTYPE html>
+<html>
 <!-- containers / styling -->
 <head>
+	<link rel="stylesheet" href="./css/site.css">
+	<link rel="stylesheet" href="./css/prettify.css">
+	<link rel="stylesheet" href="./css/font-awesome.css">
+
 <!-- style -->
 <style type="text/css">
 
+#top {
+	background-color: orange;
+	width: 90%;
+	border: solid 1px #ccc;
+	padding: 3px;
+}
+
 #cssReplay, #htmlReplay {
 	float: left;
-	width: 500px;
+	width: 600px;
 	background-color: #c0c0c0;
 	border-right: dotted;
 	border-width: 1px;
 	padding-left: 10px;
 	margin: 10px;
+	word-wrap:break-word;
 
  }
+
+ #special {
+ 	clear: left;
+ }
+
+ #scroll-wrap {
+ 	width: 90%;
+ 	height: 5px;
+ 	margin-top:0px;
+ 	padding: 3px;
+ 	border: solid 1px #ccc;
+ 	background-color: yellow;
+ }
+
+ #scroll-wrap:hover {
+ 	height: 20px;
+ }
+
+ #speed {
+ 	top: 2px;
+ }
+
+ pre {
+ 	white-space: pre-wrap;
+ 	white-space: -moz-pre-wrap;
+ 	white-space: break-word;
+ }
+
+ .button {
+ 	display: inline-block;
+ 	height: 20px;
+ 	width: 20px;
+ 	padding: 1px 10px 1px 10px;
+ 	/*margin-right:10px;*/
+ 	font-size: 20px;
+    color: #FFF;
+ }
+
+ .button:active {
+ 	opacity: .5;
+ }
+
 </style>
 
+</head>
+
+<body>
+
+<!-- buttons -->
+<div id="top">
+	<div class="button" value=start name=start onClick="startTimer()"> <i class="icon-play"></i> </div>
+	<div class="button" value=stop name=stop onClick="stopTimer()"><i class="icon-pause"></i></div>
+	<div class="button" value=stop name=stop onClick="back()"><i class="icon-step-backward"></i></div>
+	<div class="button" value=stop name=stop onClick="skip()"><i class="icon-step-forward"></i></div>
+	<div class="button" value=stop name=stop onClick="reset()"><i class="icon-stop"></i></div>
+	Speed: <span id="speedval">10</span>  <input type="range" id="speed" min="0" max="50" step="1"  value="10" onChange="changeSpeed()"/>
+	Event: <span id="special">Events</span>
+	Date: <span id="date">cdas</span>
+	<!-- T: <span id="t">0</span>
+	Time: <span id="time">0</span> ||
+	<input type="range" id="play" min="0" max="<?php echo $end['clock']/1000; ?>" step="1"  value="0" /> <?php echo $end['clock']/1000; ?>||
+	Current: <span id="playval">0</span> ||
+	Next Active: <span id="nextactive">0</span> Seconds -->
+</div>
+<div id="scroll-wrap">
+	<div id="current"></div>
+</div>
+
+<div id="ReplayContainer">
+
+	<pre id = "cssReplay">
+		CSS
+	</pre>
+
+	<pre id = "htmlReplay">
+		HTML
+	</pre>
+</div>
 
 <!-- script -->
-<script>
+<script type="text/javascript" src="<?php echo ROOT?>js/vendor/jquery.js"></script>
+<script type="text/javascript">
 
 // Timer functions
 
@@ -81,8 +171,12 @@ function stopTimer(){
 function addTime(){
 	t++;
 	populate();
-	document.getElementById("t").innerHTML = t;
-	document.getElementById("time").innerHTML = (history[i+1]['clock']/1000);
+	// document.getElementById("t").innerHTML = t;
+	// document.getElementById("time").innerHTML = (history[i+1]['clock']/1000);
+	// document.getElementById("nextactive").innerHTML = ((history[i+1]['clock'])-(t*speed))/1000;
+	// document.getElementById("play").value = (t*speed/1000);
+	// document.getElementById("playval").innerHTML = (t*speed/1000);
+	document.getElementById("date").innerHTML = history[i-1]['stamp'];
 	
 }
 
