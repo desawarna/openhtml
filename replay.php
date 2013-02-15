@@ -148,7 +148,7 @@ play = 0;
 
 //retrieve php variables
 <?php
-
+date_default_timezone_set('America/New_York');
 $history = retrieveReplay(mysql_real_escape_string($_GET['url']));
 // $history = retrieveReplay("ibubiw"); // ankur's test
 // $history = retrieveReplay("ipabuc"); // tom's test
@@ -264,12 +264,12 @@ function update(){
 
 //debug
 	// var_dump($js_history);
-	var_dump($history);
+	//var_dump($history);
 	// var_dump($combined);
 $session = array();
 
 //Retrieves replay history from the database
-function retrieveReplay($url){
+function retrieveReplay($url) {
 
 
 
@@ -297,18 +297,22 @@ function retrieveReplay($url){
 
 
 //Accepts array of replay history in ascending order to format the timestamps for replay or any other formatting which may be required in the future
-function formatReplay($data){
+function formatReplay($data) {
 
 	$origTime = $data[0]['clock'];
 
 	foreach($data as $key => $value){
+		$data[$key]['stamp'] = date("m/d/y h:i:s a", ($data[$key]['clock']/1000));
 		$data[$key]['html'] = htmlentities($data[$key]['html']);
 		$data[$key]['css'] = htmlentities($data[$key]['css']);
 		$data[$key]['clock'] -= $origTime;
+
+		
 		
 		//if((($data[$key]['clock'])-($data[$key-1]['clock'])) > 300) $session['clock'];
 	}
 
 	return $data;
 }
+
 ?>
