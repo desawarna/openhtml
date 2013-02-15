@@ -164,7 +164,8 @@ function startTimer(){
 }
 
 function stopTimer(){
-	clearInterval(timer);
+	console.log("Stop");
+	self.clearInterval(timer);
 	timer = null;
 }
 
@@ -181,7 +182,6 @@ function addTime(){
 }
 
 function skip(){
-	i++;
 	t = (history[i]['clock'])/speed;
 	populate();
 	
@@ -209,14 +209,13 @@ function populate(){
 	 }
 
 function update(){
-		if(typeof history[i+1] != 'undefined'){
+		// if(typeof history[i+1] != 'undefined'){
+			
+		if(i < (history.length-1)){
 			document.getElementById("cssReplay").innerHTML = history[i]['css'];
 		 	document.getElementById("htmlReplay").innerHTML = history[i]['html'];
 		 	document.getElementById("special").innerHTML = history[i]['special'];
-		 	document.getElementById("play").value = history[i]['clock'];
-		 	document.getElementById("playval").innerHTML = history[i]['clock'];
-		 	document.getElementById("nextactive").innerHTML = history[i+1]['clock'];
-		} else {stopTimer();}
+		} else {stopTimer(); }
 	}
 }
 
