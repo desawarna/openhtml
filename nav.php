@@ -5,15 +5,15 @@
 
       <?php if ($ownership && $code_id) :?>
         <a id="save" title="Save a new revision" class="button light save group left" href="<?php echo $code_id_path?>save">Save</a>
-        <a id="view" target="<?php echo $code_id?>" class="tab button group light" href="http://<?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?>">View</a>
+        <a id="view" target="<?php echo $code_id?>" class="tab button group light" href="<?php echo ROOT . $code_id?>">View</a>
       
       <?php elseif($code_id && !($ownership)) : ?>
         <a id="clone" title="Create a new copy" class="button clone group light left" href="<?php echo ROOT?>clone">Copy <?php echo $page_owner; ?>'s Page</a>
-        <a id="view" target="<?php echo $code_id?>" class="tab button group light" href="http://<?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?>">View</a>
+        <a id="view" target="<?php echo $code_id?>" class="tab button group light" href="<?php echo ROOT . $code_id?>">View</a>
 
       <?php else : ?>  
         <a id="save" title="Save a new revision" class="button light save group left" href="<?php echo $code_id_path?>save">Save</a>
-        <a id="view" target="<?php echo $code_id?>" class="tab button group light" href="http://<?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?>">View</a>
+        <a id="view" target="<?php echo $code_id?>" class="tab button group light" href="<?php echo ROOT . $code_id?>">View</a>
 
       <?php endif ?>
        
