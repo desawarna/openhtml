@@ -258,7 +258,7 @@ function retrieveReplay($url){
 	// $history = json_decode($history, true);
 
 
-	//$history = formatReplay($history);
+	$history = formatReplay($history);
 	return $history;
 }
 
