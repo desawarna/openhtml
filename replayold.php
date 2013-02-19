@@ -29,17 +29,76 @@ if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false
 <!-- containers / styling -->
 <head>
 <!-- style -->
+	<link rel="stylesheet" href="./css/site.css">
+	<link rel="stylesheet" href="./css/prettify.css">
+	<link rel="stylesheet" href="./css/font-awesome.css">
 <style type="text/css">
+
+#top {
+	background-color: orange;
+	width: 100%;
+	border: solid 1px #ccc;
+	padding: 3px;
+}
 
 #cssReplay, #htmlReplay {
 	float: left;
-	width: 500px;
+	width: 600px;
 	background-color: #c0c0c0;
 	border-right: dotted;
 	border-width: 1px;
 	padding-left: 10px;
 	margin: 10px;
+	word-wrap:break-word;
 
+ }
+
+ #special {
+ 	clear: left;
+ }
+
+ #scroll-wrap {
+ 	width: 100%;
+ 	height: 5px;
+ 	margin-top:0px;
+ 	padding: 3px;
+ 	border: solid 1px #ccc;
+ 	background-color: yellow;
+ }
+
+/* #scroll-wrap:hover {
+ 	height: 20px;
+ }*/
+
+ #speed {
+ 	top: 2px;
+ }
+
+ #elapsed {
+ 	height:5px;
+ 	width: 1%;
+ 	vertical-align: middle;
+ 	background-color: orange;
+ }
+
+ pre {
+ 	white-space: pre-wrap;
+ 	white-space: -moz-pre-wrap;
+ 	white-space: break-word;
+ }
+
+ .button {
+ 	display: inline-block;
+ 	height: 20px;
+ 	width: 20px;
+ 	padding: 1px 10px 1px 10px;
+ 	/*margin-right:10px;*/
+ 	font-size: 20px;
+    color: #FFF;
+ }
+
+ .button:active {
+ 	opacity: .5;
  }
 </style>
 
@@ -133,10 +192,11 @@ function update(){
 
 <!-- buttons -->
 <div id="top">
-	<button value=start name=start onClick="startTimer()">Start</button>
-	<button type=button value=stop name=stop onClick="stopTimer()">Stop</button>
-	<button type=button value=stop name=stop onClick="skip()">Skip</button>
-	<button type=button value=stop name=stop onClick="reset()">Reset</button>
+	<div class="button" value=start name=start onClick="startTimer()"> <i class="icon-play"></i> </div>
+	<div class="button" value=stop name=stop onClick="stopTimer()"><i class="icon-pause"></i></div>
+	<div class="button" value=stop name=stop onClick="back()"><i class="icon-step-backward"></i></div>
+	<div class="button" value=stop name=stop onClick="skip()"><i class="icon-step-forward"></i></div>
+	<div class="button" value=stop name=stop onClick="reset()"><i class="icon-stop"></i></div>
 	Speed: <input type="range" id="speed" min="0" max="50" step="1"  value="10" onChange="changeSpeed()"/><span id="speedval">10</span> ||
 	T: <span id="t">0</span>
 	Time: <span id="time">0</span> ||
@@ -145,6 +205,9 @@ function update(){
 
 </div>
 <div id="ReplayContainer">
+	<pre id = "special">
+		Events
+	</pre>
 
 	<pre id = "cssReplay">
 		CSS
@@ -154,9 +217,7 @@ function update(){
 		HTML
 	</pre>
 
-	<pre id = "special">
-		Events
-	</pre>
+	
 
 </div>
 
