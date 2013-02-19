@@ -102,7 +102,8 @@ var $revert = $('#revert').click(function () {
 
 $('#control .tab').click(function (event) {
   // event.preventDefault();
-  $('body').removeClass('source preview').addClass(this.hash.substr(1));
+  // $('body').removeClass('source preview').addClass(this.hash.substr(1));
+  $('body').addClass(this.hash.substr(1));
 
   if ($(this).is('.preview')) {
     $('#preview iframe').remove();
