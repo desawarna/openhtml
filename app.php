@@ -305,7 +305,7 @@ else if ($action == 'savereplay'){
 
   //populate sqlreplay array with replay data until savepoint
   $replayok = mysql_query("INSERT INTO replay_sessions (`url`, `time`, `session`) VALUES ('".mysql_real_escape_string($code_id)."', '".time()."',  '".mysql_real_escape_string($replay)."')");
-  $replayok = mysql_query($sqlreplay[$key]);
+  // $replayok = mysql_query($sqlreplay[$key]);
 
 }
 
