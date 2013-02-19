@@ -150,22 +150,22 @@ ini_set('max_execution_time', 300);
 
 }
 
-elseif($action == 'downloadsingle' && isset($_GET['url'])){
+elseif($action == 'downloadsingle'){
   
-  $url = $_GET['url'];
-  $rev = getMaxRevision($url);
+  $url = $request[0];
+  if(isset($request[1])) {
+    $rev = $request[1];
+  } else $rev = getMaxRevision($url);
   $ext = ".html";
   $query = "SELECT * FROM  `sandbox` WHERE  `url` =  '".$url."' AND  `revision` = '{$rev}'";
   $document = mysql_fetch_array(mysql_query($query));
   $originalHTML = $document['html'];
   list($document['html'], $document['javascript']) = formatCompletedCode($document['html'], $document['javascript'], $url, $rev);
-    //header('Content-Type: text/html');
-    //header('Content-Disposition: attachment; filename="' . $url . '-' . $rev . $ext . '"');
+    header('Content-Type: text/html');
+    header('Content-Disposition: attachment; filename="' . $url . "-" . $rev . "-" . $document['customname'] . $ext . '"');
   //header('Content-Disposition: attachment; filename="' . $code_id . ($revision == 1 ? '' : '.' . $revision) . $ext . '"');
- 
     echo $originalHTML ? $document['html'] : $document['javascript'];
-
-
+    exit;
 }
 
 
@@ -288,7 +288,6 @@ if (!$action) {
     $latest_revision = getMaxRevision($code_id);
     header('Location: ' . ROOT . $code_id . '/' . $latest_revision . '/edit');
     $edit_mode = false;
-
   }
 } else if ($action == 'logout') {
   // logger("logout");
@@ -479,7 +478,7 @@ else if ($action == 'save' || $action == 'clone') {
   $subaction = array_pop($request);
   // logger('view');
 
-  if ($action == 'latest') {
+  if ($action == 'latest') {    
     // find the latest revision and redirect to that.
     $code_id = $subaction;
     $latest_revision = getMaxRevision($code_id);
@@ -743,7 +742,9 @@ function defaultCode($not_found = false) {
 HERE_DOC;
   }
 
-  $javascript = '';
+      $javascript = "body {
+
+}";
 
   if (@$_REQUEST['js']) {
     $javascript = $_REQUEST['js'];
@@ -757,9 +758,7 @@ HERE_DOC;
     } else {
       // $javascript = "if (document.getElementById('hello')) {\n  document.getElementById('hello').innerHTML = 'Hello World - this was inserted using JavaScript';\n}\n";
       // $javascript = "h1 {\n  font-size: 60px;\n  font-weight: bold;\n  text-align: center;\n  color: orange;\n}";
-      $javascript = "body {
 
-}";
     }
   }
 

@@ -382,7 +382,7 @@ iframe {
     <tr data-type="spacer"><td colspan=3></td></tr>
       <?php endif ?>
     <tr data-url="<?=$url?>" <?=($firstTime ? ' class="parent" id="' : ' class="child ')  . $code . '">' ?>
-      <td class="url"><?=($firstTime) ? '<span class="rename">Download</span> ': ''?><?=($firstTime && $revision > 1) ? '<span class="action">▶</span> ': '<span class="inaction">&nbsp;</span>'?> <a href="<? echo ROOT . $url?>edit"><span<?=($firstTime ? ' class="first"' : '') . '>' . ($bin['customname'] ? $bin['customname'] : $bin['url']) ?></span> <span class="revision"><?=$bin['revision']?></span></a></td>
+      <td class="url"><?=($firstTime && $revision > 1) ? '<span class="action">▶</span> ': '<span class="inaction">&nbsp;</span>'?> <a href="<? echo ROOT . $url?>edit"><span<?=($firstTime ? ' class="first"' : '') . '>' . ($bin['customname'] ? $bin['customname'] : $bin['url']) ?></span> <span class="revision"><?=$bin['revision']?></span></a></td>
       <td class="created"><a pubdate="<?=$bin['created']?>" href="<? echo ROOT . $url?>edit"><?=getRelativeTime($bin['created'])?></a></td>
       <!--<td class="title"><a href="<?=$url?>edit"><?=substr($title, 0, 200)?></a></td>-->
     </tr>
@@ -395,8 +395,10 @@ iframe {
 </table>
 </div>
 <div id="preview">
-<h2>Preview</h2>
+<h2><span id="view">Preview</span><span id="download"></span></h2>
+
 <p id="viewing"></p>
+
 <iframe id="iframe" hidden></iframe>
 </div>
 <script type="text/javascript" src="<?php echo ROOT?>js/vendor/jquery.js"></script>
@@ -417,20 +419,6 @@ function collapsePages() {
         $(this).html('▶');
       }
   });
-
-  $('.rename').click(function(){
-    var url = $(this).parent().parent().attr('id');
-    var revision = $(this).siblings('a').children('.revision').text();
-    window.location.replace(url+"/downloadsingle?url="+url);
-
-    // console.log("download"+url+revision);
-    // $.get(url+"/downloadsingle", {
-    //       'method': 'downloadsingle',
-    //       'url': url,
-    //       'revision': revision
-    //     }, function(data){response=data; console.log(data);});
-
-  });
 }
 
 collapsePages();
@@ -438,6 +426,8 @@ collapsePages();
 function render(url) {
   iframe.src = url + 'quiet';
   iframe.removeAttribute('hidden');
+  view.innerHTML = '<a href="<? echo ROOT ?>'+url+'">Preview</a>';
+  download.innerHTML = ' | <a href='+url+'downloadsingle>Download</a>';
   viewing.innerHTML = '<?=$_SERVER['HTTP_HOST']?><?=ROOT?>' + url;
 }
 
@@ -470,6 +460,8 @@ var preview = document.getElementById('preview'),
     bins = document.getElementById('bins'),
     trs = document.getElementsByTagName('tr'),
     current = null,
+    download = document.getElementById('download'),
+    view = document.getElementById('view'),
     viewing = document.getElementById('viewing'),
     hoverTimer = null;
 
