@@ -188,7 +188,7 @@ function addTime(){
 	// document.getElementById("playval").innerHTML = (t*speed/1000);
 	document.getElementById("date").innerHTML = history[i-1]['stamp'];
 	var end = history.length;
-	var percent = t/parseInt(history[end-1]['clock'])*100;
+	var percent = t*speed/parseInt(history[end-1]['clock'])*100;
 	$("#elapsed").css("width", percent+"%");
 	
 }
@@ -228,7 +228,7 @@ function populate(){
 function update(){
 		// if(typeof history[i+1] != 'undefined'){
 		var end = history.length;
-		var percent = t/parseInt(history[end-1]['clock'])*100;
+		var percent = t*speed/parseInt(history[end-1]['clock'])*100;
 		$("#elapsed").css("width", percent+"%");	
 			
 		if(i < (history.length-1)){
