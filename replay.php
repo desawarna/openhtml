@@ -38,7 +38,7 @@ if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false
 
 #top {
 	background-color: orange;
-	width: 90%;
+	width: 100%;
 	border: solid 1px #ccc;
 	padding: 3px;
 }
@@ -60,7 +60,7 @@ if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false
  }
 
  #scroll-wrap {
- 	width: 90%;
+ 	width: 100%;
  	height: 5px;
  	margin-top:0px;
  	padding: 3px;
@@ -68,12 +68,19 @@ if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false
  	background-color: yellow;
  }
 
- #scroll-wrap:hover {
+/* #scroll-wrap:hover {
  	height: 20px;
- }
+ }*/
 
  #speed {
  	top: 2px;
+ }
+
+ #elapsed {
+ 	height:5px;
+ 	width: 1%;
+ 	vertical-align: middle;
+ 	background-color: orange;
  }
 
  pre {
@@ -120,6 +127,7 @@ if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false
 </div>
 <div id="scroll-wrap">
 	<div id="current"></div>
+	<div id="elapsed"></div>
 </div>
 
 <div id="ReplayContainer">
@@ -154,6 +162,7 @@ $history = retrieveReplay(mysql_real_escape_string($_GET['url']));
 // $history = retrieveReplay("ipabuc"); // tom's test
 $js_history = json_encode($history);
 $end = end($history);
+
 ?>
 
 var history = <?php echo $js_history; ?>;
@@ -178,6 +187,9 @@ function addTime(){
 	// document.getElementById("play").value = (t*speed/1000);
 	// document.getElementById("playval").innerHTML = (t*speed/1000);
 	document.getElementById("date").innerHTML = history[i-1]['stamp'];
+	var end = history.length;
+	var percent = t/parseInt(history[end-1]['clock'])*100;
+	$("#elapsed").css("width", percent+"%");
 	
 }
 
@@ -196,9 +208,8 @@ function back(){
 function reset(){
 	t = -1;
 	i = 0;
-	stopTimer();
 	update();
-	
+	stopTimer();	
 }
 
 function changeSpeed(){
@@ -216,6 +227,9 @@ function populate(){
 
 function update(){
 		// if(typeof history[i+1] != 'undefined'){
+		var end = history.length;
+		var percent = t/parseInt(history[end-1]['clock'])*100;
+		$("#elapsed").css("width", percent+"%");	
 			
 		if(i < (history.length-1)){
 			document.getElementById("cssReplay").innerHTML = history[i]['css'];
@@ -242,7 +256,7 @@ $("#scroll-wrap").click(function(pos){
 
 //debug
 	// var_dump($js_history);
-	//var_dump($history);
+	var_dump($history);
 	// var_dump($combined);
 $session = array();
 
