@@ -633,7 +633,7 @@ function getCustomName($code_id, $revision) {
   $sql = sprintf('select customname from sandbox where url="%s" and revision="%s"', mysql_real_escape_string($code_id),  mysql_real_escape_string($revision));
   $result = mysql_query($sql);
   $row = mysql_fetch_object($result);
-  return $row->customname ? $row->customname : "";
+  return $row ? $row->customname : "";
 }
 
 function formatCompletedCode($html, $javascript, $code_id, $revision) {
