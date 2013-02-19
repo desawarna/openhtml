@@ -112,7 +112,7 @@ function getFocusedPanel() {
 }
 
 function blurEvent(editor){
-  //if(sql.length > 50) { saveSnaps(); }
+  if(sql.length > 50) { saveSnaps(); }
 }
 
 function setupEditor(panel) {
