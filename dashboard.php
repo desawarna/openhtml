@@ -287,7 +287,6 @@ iframe {
   visibility: hidden;
   float: left;
   margin: 2px 0 10px 10px;
-  width: 120px;
 }
 
 
