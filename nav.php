@@ -13,7 +13,7 @@
 
       <?php else : ?>  
         <a id="save" title="Save a new revision" class="button light save group left" href="<?php echo $code_id_path?>save">Save</a>
-        <a id="view" target="<?php echo $code_id?>" class="tab button group light" href="<?php echo ROOT . $code_id?>">View</a>
+        <a id="view" target="<?php echo $code_id?>" class="tab button group light disabled" >View</a>
 
       <?php endif ?>
        

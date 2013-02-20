@@ -984,6 +984,16 @@ ie6, li {
   100% { background-color: #2ba6cb; }
 }
 
+.disabled {
+  color: #ccc;
+  cursor: default;
+}
+
+.disabled:hover {
+  background: #fff;
+  background: rgba(255, 255, 255, 0.3);
+}
+
 .button.download {
   padding-left: 24px;
 
