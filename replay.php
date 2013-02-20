@@ -36,24 +36,52 @@ if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false
 <!-- style -->
 <style type="text/css">
 
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
 #top {
+	position: fixed;
+	top: 0;
 	background-color: orange;
 	width: 100%;
 	border: solid 1px #ccc;
-	padding: 3px;
 }
 
-#cssReplay, #htmlReplay {
-	float: left;
-	width: 600px;
-	background-color: #c0c0c0;
-	border-right: dotted;
-	border-width: 1px;
-	padding-left: 10px;
-	margin: 10px;
-	word-wrap:break-word;
+#ReplayContainer {
+	box-sizing: border-box;
+	height: 100%;
+	padding-top: 43px;
+}
 
+.pane {
+	box-sizing: border-box;
+	float:left;
+	vertical-align: top;
+	display: inline-block;
+	height: 100%;
+	margin: 0;
+	background: none;
+	border-right: solid 3px #ccc;
+	border-width: 0 3px 0 0;
+	word-wrap:break-word;
+}
+
+#cssReplay {
+	width: 20%;
  }
+
+#htmlReplay {
+	width: 30%;
+ }
+
+#previewReplay {
+	padding: 5px;
+	border: none;
+	width: 50%;
+}
 
  #special {
  	clear: left;
@@ -62,9 +90,8 @@ if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false
  #scroll-wrap {
  	width: 100%;
  	height: 5px;
- 	margin-top:0px;
+ 	margin-top:7px;
  	padding: 3px;
- 	border: solid 1px #ccc;
  	background-color: yellow;
  }
 
@@ -82,6 +109,10 @@ if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false
  	vertical-align: middle;
  	background-color: orange;
  }
+
+ .top {
+position: absolute;
+}
 
  pre {
  	white-space: pre-wrap;
@@ -124,25 +155,29 @@ if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false
 	<input type="range" id="play" min="0" max="<?php echo $end['clock']/1000; ?>" step="1"  value="0" /> <?php echo $end['clock']/1000; ?>||
 	Current: <span id="playval">0</span> ||
 	Next Active: <span id="nextactive">0</span> Seconds -->
+	<div id="scroll-wrap">
+		<div id="current"></div>
+		<div id="elapsed"></div>
+	</div>
 </div>
-<div id="scroll-wrap">
-	<div id="current"></div>
-	<div id="elapsed"></div>
-</div>
+
+
 
 <div id="ReplayContainer">
 
-	<pre id = "cssReplay">
+	<pre id = "cssReplay" class="pane">
 		CSS
-	</pre>
-
-	<pre id = "htmlReplay">
+	</pre><pre id = "htmlReplay" class="pane">
 		HTML
 	</pre>
+
+	<div id = "previewReplay" class="pane">
+	</div>
 </div>
 
 <!-- script -->
 <script type="text/javascript" src="<?php echo ROOT?>js/vendor/jquery.js"></script>
+<script type="text/javascript" src="<?php echo ROOT?>js/vendor/jquery.scoped.js"></script>
 <script type="text/javascript">
 
 // Timer functions
@@ -190,7 +225,6 @@ function addTime(){
 	var end = history.length;
 	var percent = t*speed/parseInt(history[end-1]['clock'])*100;
 	$("#elapsed").css("width", percent+"%");
-	
 }
 
 function skip(){
@@ -234,10 +268,21 @@ function update(){
 		if(i < (history.length-1)){
 			document.getElementById("cssReplay").innerHTML = history[i]['css'];
 		 	document.getElementById("htmlReplay").innerHTML = history[i]['html'];
+		 	// document.getElementById("previewReplay").innerHTML = html_entity_decode(history[i]['html'])
+		 	document.getElementById("previewReplay").innerHTML = history[i]['live'];
 		 	document.getElementById("special").innerHTML = history[i]['special'];
+		 	$.scoped();
 		} else {stopTimer(); }
 	}
 }
+
+function html_entity_decode(str){
+ var tarea = document.createElement('textarea');
+ tarea.innerHTML = str; return tarea.value;
+ tarea.parentNode.removeChild(tarea);
+}
+
+
 
 $("#scroll-wrap").click(function(pos){
 	$("#current").offset({left:pos.pageX});
@@ -256,7 +301,7 @@ $("#scroll-wrap").click(function(pos){
 
 //debug
 	// var_dump($js_history);
-	var_dump($history);
+	//var_dump($history);
 	// var_dump($combined);
 $session = array();
 
@@ -295,16 +340,35 @@ function formatReplay($data) {
 
 	foreach($data as $key => $value){
 		$data[$key]['stamp'] = date("m/d/y h:i:s a", ($data[$key]['clock']/1000));
+		$data[$key]['live']	= formatCompletedCode($data[$key]['html'], $data[$key]['css']);
 		$data[$key]['html'] = htmlentities($data[$key]['html']);
 		$data[$key]['css'] = htmlentities($data[$key]['css']);
 		$data[$key]['clock'] -= $origTime;
-
-		
-		
 		//if((($data[$key]['clock'])-($data[$key-1]['clock'])) > 300) $session['clock'];
 	}
 
 	return $data;
 }
+
+function formatCompletedCode($html, $javascript) {
+
+  $javascript = preg_replace('@</script@', "<\/script", $javascript);
+
+  if ($html && stripos($html, '%code%') === false && strlen($javascript)) {
+    $parts = explode("</head>", $html);
+    $html = $parts[0];
+    $close = count($parts) == 2 ? '</head>' . $parts[1] : '';
+    $html .= "<style scoped>\n " . $javascript . "\n</style>\n" . $close;
+  } else if ($javascript) {
+    // removed the regex completely to try to protect $n variables in JavaScript
+    $htmlParts = explode("%code%", $html);
+    $html = $htmlParts[0] . $javascript . $htmlParts[1];
+
+    $html = preg_replace("/%code%/", $javascript, $html);
+  }
+
+  return array($html);
+}
+
 
 ?>
