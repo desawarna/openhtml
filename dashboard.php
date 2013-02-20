@@ -491,8 +491,38 @@ bins.onmouseover = function (event) {
   }
 };
 
+
+
+$('#sections').change(function(){
+
+  var section = $(this).val();
+  localStorage.setItem('section', section);
+
+  $.ajax({
+    type: "POST",
+    url: "<?php echo ROOT ?>list-dashboard-code.php",
+    data: 'section=' + section,
+    dataType: "html",
+    cache: false,
+    success: function(i) {
+
+        var user = localStorage.getItem('user');
+
+        if (user) {
+          $('#users').html(i).val(user).change();
+        } else {
+          $('#users').html(i).change();
+        }
+    } 
+  });
+
+});
+
+
 $('#users').change(function(){
+
   var member = $(this).val();
+  localStorage.setItem('user', member);
 
   $.ajax({
     type: "POST",
@@ -506,23 +536,15 @@ $('#users').change(function(){
 
     } 
   });
+  
 });
 
-$('#sections').change(function(){
-  var section = $(this).val();
 
-  $.ajax({
-    type: "POST",
-    url: "<?php echo ROOT ?>list-dashboard-code.php",
-    data: 'section=' + section,
-    dataType: "html",
-    cache: false,
-    success: function(i) {
+var section = localStorage.getItem('section');
 
-        $('#users').html(i).change();
-    } 
-  });
-});
+if (section) {
+  $('#sections').val(section).change();
+}
 
 
 
