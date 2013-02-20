@@ -13,7 +13,7 @@ $log->encrypt = true;   // set to true if password is md5 encrypted. Default is 
 if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false){
     //do something if NOT logged in. For example, redirect to login page or display message.
 
-  $pre = '<!DOCTYPE html><html><head><title>openHTML - Login</title><link rel="stylesheet" href="' . ROOT . 'css/style.css" type="text/css" /></head><body><div id="control"><div class="control"><div class="buttons"><div id="auth"><span id="logo">openHTML</span></div></div></div></div><div id="bin" class="stretch">';
+  $pre = '<!DOCTYPE html><html><head><meta charset=utf-8 /><title>openHTML - Login</title><link rel="stylesheet" href="' . ROOT . 'css/style.css" type="text/css" /></head><body><div id="control"><div class="control"><div class="buttons"><div id="auth"><span id="logo">openHTML</span></div></div></div></div><div id="bin" class="stretch">';
 
   $post = '</div></body></html>';
 
