@@ -18,7 +18,7 @@
       <?php endif ?>
        
         <div class="button group gap right tall">
-        <a id="options" class="title">Options</a>
+        <a id="options" class="title" href="#">Options</a>
             <a id="validatehtml" target="_blank" class="button group light" href="#">Validate HTML</a>
             <a id="validatecss" target="_blank" class="button group light" href="#">Validate CSS</a>
         <?php if ($ownership) :?>
