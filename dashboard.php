@@ -151,6 +151,7 @@ body {
 }
 
 #bins {
+  display: none;
   width: 35%;
   font-size: 13px;
   padding: 10px 0;
@@ -281,6 +282,15 @@ iframe {
   padding-top: 2px;
 }
 
+#sections,
+#users {
+  visibility: hidden;
+  float: left;
+  margin: 2px 0 10px 10px;
+  width: 120px;
+}
+
+
 
 </style>
 </head>
@@ -292,44 +302,30 @@ iframe {
 
       <!-- Dropdown for sections -->
       <span class="members">Section:</span>
-      <span class="members">
-          <?php
+      <?php
 
-          if (!empty($sections)) {
-            echo '<select id="sections">';
+      if (!empty($sections)) {
+        echo '<select id="sections">';
 
-            foreach ($sections as $section) {
-              echo '<option value="' .$section. '">' .$section. '</option>';
-            }
-            echo '</select>';
+        foreach ($sections as $section) {
+          echo '<option value="' .$section. '">' .$section. '</option>';
+        }
+        echo '</select>';
 
-          } else {
-            echo '<select id="sections"><option>No Sections</option></select>';
-          }
-          ?>
-        </select>
-      </span>
+      } else {
+        echo '<select id="sections"><option>No Sections</option></select>';
+      }
+      ?>
+      </select>
 
 
       <!-- Dropdown for users -->
       <span class="members">Users: </span>
-      <span class="members">
-          <?php
+      <select id="users">
 
-          if (!empty($members)) {
-           echo '<select id="users">';
 
-            foreach ($members as $member) {
-              echo '<option value="' .$member. '">' .$member. '</option>';
-            }
-            echo '</select>';
+      </select>
 
-          } else {
-            echo '<select id="users"><option>No users</option></select>';
-          }
-          ?>
-        </select>
-      </span>
       <div id="userinfo">
           <a id="account" class="button group light left" href="<?php echo ROOT?>list">Page List<?php //echo $is_owner?></a> 
           <div class="button group gap right tall">
@@ -347,49 +343,7 @@ iframe {
 <table>
 <tbody>
 
-  <?php
-  $last = null;
-  arsort($order);
-  foreach ($order as $key => $value) {
-    foreach ($bins[$key] as $bin) {
-      if ($bin == null) {break;}
-      $code = $bin['url'];
-      $revision = $bin['revision'];
-      $customName = $bin['customname'];
-
-      $url = formatURL($bin['url'], $bin['revision']);
-      preg_match('/<title>(.*?)<\/title>/', $bin['html'], $match);
-      preg_match('/<body.*?>(.*)/s', $bin['html'], $body);
-      $title = '';
-      if (count($body)) {
-        $title = $body[1];
-        if (get_magic_quotes_gpc() && $body[1]) {
-          $title = stripslashes($body[1]);
-        }
-        $title = trim(preg_replace('/\s+/', ' ', strip_tags($title)));
-      }
-      if (!$title && $bin['javascript']) {
-        $title = preg_replace('/\s+/', ' ', $bin['javascript']);
-      }
-
-      if (!$title && count($match)) {
-        $title = get_magic_quotes_gpc() ? stripslashes($match[1]) : $match[1];
-      }
-
-      $firstTime = $bin['url'] != $last;
-
-      if ($firstTime && $last !== null) : ?>
-    <tr data-type="spacer"><td colspan=3></td></tr>
-      <?php endif ?>
-    <tr data-url="<?=$url?>" <?=($firstTime ? ' class="parent" id="' : ' class="child ')  . $code . '">' ?>
-      <td class="url"><?=($firstTime && $revision > 1) ? '<span class="action">▶</span> ': '<span class="inaction">&nbsp;</span>'?> <a href="<? echo ROOT . $url?>edit"><span<?=($firstTime ? ' class="first"' : '') . '>' . ($bin['customname'] ? $bin['customname'] : $bin['url']) ?></span> <span class="revision"><?=$bin['revision']?></span></a></td>
-      <td class="created"><a pubdate="<?=$bin['created']?>" href="<? echo ROOT . $url?>edit"><?=getRelativeTime($bin['created'])?></a></td>
-      <!--<td class="title"><a href="<?=$url?>edit"><?=substr($title, 0, 200)?></a></td>-->
-    </tr>
-  <?php
-      $last = $bin['url'];
-    } 
-  } ?>
+ 
 
 </tbody>
 </table>
@@ -544,8 +498,12 @@ var section = localStorage.getItem('section');
 
 if (section) {
   $('#sections').val(section).change();
+} else {
+  $('#sections').change();
 }
 
+$('#sections, #users').css('visibility','visible').hide().fadeIn(1200);
+$('#bins').fadeIn(1200);
 
 
 </script>
