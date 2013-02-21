@@ -1,8 +1,10 @@
 // to allow for download button to be introduced via beta feature
 $('a.save').click(function (event) {
   event.preventDefault();
+ 
   saveCode('save', window.location.pathname.indexOf('/edit') !== -1);
-  
+
+
   return false;
 });
 
@@ -19,25 +21,33 @@ $('a.clone').click(function (event) {
   $form.submit();
 
   snapshot("Document Copied");
+
   return false;
 });
 
-$('#validate').click(function (event){
+$('#validatehtml').click(function (event){
   event.preventDefault();
-  validate();
+  validate("html");
+  snapshot("HTML Validated");
   return false;
 });
 
-function validate(){
+$('#validatecss').click(function (event){
+  event.preventDefault();
+  validate("css");
+  snapshot("CSS Validated");
+  return false;
+});
+
+function validate(type){
   var $form = $('#validateform')
-    .append('<input type="hidden" name="javascript" />')
-    .append('<input type="hidden" name="html_code" />');
+    .append('<input type="hidden" name="code" />')
+    .append('<input type="hidden" name="type" />');
 
-  $form.find('input[name=javascript]').val(editors.javascript.getCode());
-  $form.find('input[name=html_code]').val(editors.html.getCode());
+  if(type == "css") { $form.find('input[name=code]').val(editors.javascript.getCode()); }
+  else if (type == "html") { $form.find('input[name=code]').val(editors.html.getCode()); }
+  $form.find('input[name=type]').val(type);
   $form.submit();
-
-  snapshot("Valitator Activated");
 }
 
 function saveSnaps(){
@@ -55,9 +65,10 @@ function saveSnaps(){
     type: 'post',
     success: function (data) {
      sql.length = 0;
+     console.log("Success");
     },
       error: function () {
-
+        console.log("Error");
       }
 
   });
@@ -65,7 +76,7 @@ function saveSnaps(){
 }
 
 function saveCode(method, ajax, ajaxCallback) {
-
+  // $(this).addClass('saving');
   //record save timestamp
   snapshot("Document Saved");
   // create form and post to it
@@ -90,6 +101,8 @@ function saveCode(method, ajax, ajaxCallback) {
         ajaxCallback && ajaxCallback();
         sql.length = 0;
 
+        $('#save').removeClass('unsaved');
+
         if (window.history && window.history.pushState) {
           window.history.pushState(null, data.edit, data.edit);
 
@@ -109,7 +122,7 @@ function saveCode(method, ajax, ajaxCallback) {
 }
 
 $document.keydown(function (event) {
-  if (event.metaKey && event.which == 83) {
+  if ((event.metaKey && event.which == 83) || (event.ctrlKey && event.which == 83)) {
     if (event.shiftKey == false) {
       $('#save').click();
       event.preventDefault();

@@ -83,6 +83,8 @@ $post ='</div></body></html>';
   }//Try to change password
 }
 
+
+
 if ($action == 'downloadall' && isset($_GET['name'])){
 ini_set('max_execution_time', 300);
   connect();
@@ -304,6 +306,7 @@ else if ($action == 'savereplay'){
   //populate sqlreplay array with replay data until savepoint
   $replayok = mysql_query("INSERT INTO replay_sessions (`url`, `time`, `session`) VALUES ('".mysql_real_escape_string($code_id)."', '".time()."',  '".mysql_real_escape_string($replay)."')");
   // $replayok = mysql_query($sqlreplay[$key]);
+
 }
 
 else if ($action == 'save' || $action == 'clone') {
@@ -447,6 +450,7 @@ else if ($action == 'save' || $action == 'clone') {
     if (isset($_REQUEST['format']) && strtolower($_REQUEST['format']) == 'plain') {
       echo $url;
     } else {
+
       echo '{ "url" : "' . $url . '", "edit" : "' . $url . '/edit", "html" : "' . $url . '/edit", "javascript" : "' . $url . '/edit" }';
     }
 
@@ -757,6 +761,7 @@ HERE_DOC;
     } else {
       // $javascript = "if (document.getElementById('hello')) {\n  document.getElementById('hello').innerHTML = 'Hello World - this was inserted using JavaScript';\n}\n";
       // $javascript = "h1 {\n  font-size: 60px;\n  font-weight: bold;\n  text-align: center;\n  color: orange;\n}";
+
     }
   }
 

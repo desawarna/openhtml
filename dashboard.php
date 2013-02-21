@@ -151,6 +151,7 @@ body {
 }
 
 #bins {
+  display: none;
   width: 35%;
   font-size: 13px;
   padding: 10px 0;
@@ -281,6 +282,14 @@ iframe {
   padding-top: 2px;
 }
 
+#sections,
+#users {
+  visibility: hidden;
+  float: left;
+  margin: 2px 0 10px 10px;
+}
+
+
 
 </style>
 </head>
@@ -292,44 +301,30 @@ iframe {
 
       <!-- Dropdown for sections -->
       <span class="members">Section:</span>
-      <span class="members">
-          <?php
+      <?php
 
-          if (!empty($sections)) {
-            echo '<select id="sections">';
+      if (!empty($sections)) {
+        echo '<select id="sections">';
 
-            foreach ($sections as $section) {
-              echo '<option value="' .$section. '">' .$section. '</option>';
-            }
-            echo '</select>';
+        foreach ($sections as $section) {
+          echo '<option value="' .$section. '">' .$section. '</option>';
+        }
+        echo '</select>';
 
-          } else {
-            echo '<select id="sections"><option>No Sections</option></select>';
-          }
-          ?>
-        </select>
-      </span>
+      } else {
+        echo '<select id="sections"><option>No Sections</option></select>';
+      }
+      ?>
+      </select>
 
 
       <!-- Dropdown for users -->
       <span class="members">Users: </span>
-      <span class="members">
-          <?php
+      <select id="users">
 
-          if (!empty($members)) {
-           echo '<select id="users">';
 
-            foreach ($members as $member) {
-              echo '<option value="' .$member. '">' .$member. '</option>';
-            }
-            echo '</select>';
+      </select>
 
-          } else {
-            echo '<select id="users"><option>No users</option></select>';
-          }
-          ?>
-        </select>
-      </span>
       <div id="userinfo">
           <a id="account" class="button group light left" href="<?php echo ROOT?>list">Page List<?php //echo $is_owner?></a> 
           <div class="button group gap right tall">
@@ -347,56 +342,14 @@ iframe {
 <table>
 <tbody>
 
-  <?php
-  $last = null;
-  arsort($order);
-  foreach ($order as $key => $value) {
-    foreach ($bins[$key] as $bin) {
-      if ($bin == null) {break;}
-      $code = $bin['url'];
-      $revision = $bin['revision'];
-      $customName = $bin['customname'];
-
-      $url = formatURL($bin['url'], $bin['revision']);
-      preg_match('/<title>(.*?)<\/title>/', $bin['html'], $match);
-      preg_match('/<body.*?>(.*)/s', $bin['html'], $body);
-      $title = '';
-      if (count($body)) {
-        $title = $body[1];
-        if (get_magic_quotes_gpc() && $body[1]) {
-          $title = stripslashes($body[1]);
-        }
-        $title = trim(preg_replace('/\s+/', ' ', strip_tags($title)));
-      }
-      if (!$title && $bin['javascript']) {
-        $title = preg_replace('/\s+/', ' ', $bin['javascript']);
-      }
-
-      if (!$title && count($match)) {
-        $title = get_magic_quotes_gpc() ? stripslashes($match[1]) : $match[1];
-      }
-
-      $firstTime = $bin['url'] != $last;
-
-      if ($firstTime && $last !== null) : ?>
-    <tr data-type="spacer"><td colspan=3></td></tr>
-      <?php endif ?>
-    <tr data-url="<?=$url?>" <?=($firstTime ? ' class="parent" id="' : ' class="child ')  . $code . '">' ?>
-      <td class="url"><?=($firstTime) ? '<span class="rename">Download</span> ': ''?><?=($firstTime && $revision > 1) ? '<span class="action">▶</span> ': '<span class="inaction">&nbsp;</span>'?> <a href="<? echo ROOT . $url?>edit"><span<?=($firstTime ? ' class="first"' : '') . '>' . ($bin['customname'] ? $bin['customname'] : $bin['url']) ?></span> <span class="revision"><?=$bin['revision']?></span></a></td>
-      <td class="created"><a pubdate="<?=$bin['created']?>" href="<? echo ROOT . $url?>edit"><?=getRelativeTime($bin['created'])?></a></td>
-      <!--<td class="title"><a href="<?=$url?>edit"><?=substr($title, 0, 200)?></a></td>-->
-    </tr>
-  <?php
-      $last = $bin['url'];
-    } 
-  } ?>
-
 </tbody>
 </table>
 </div>
 <div id="preview">
-<h2>Preview</h2>
+<h2><span id="view">Preview</span><span id="download"></span></h2>
+
 <p id="viewing"></p>
+
 <iframe id="iframe" hidden></iframe>
 </div>
 <script type="text/javascript" src="<?php echo ROOT?>js/vendor/jquery.js"></script>
@@ -406,6 +359,7 @@ iframe {
 function collapsePages() {
 
   $('.child').hide();
+  $('.rename').hide();
 
   $('.action').click(function(){
       var id = $(this).closest('.parent').attr('id');
@@ -437,6 +391,8 @@ collapsePages();
 function render(url) {
   iframe.src = url + 'quiet';
   iframe.removeAttribute('hidden');
+  view.innerHTML = '<a href="<? echo ROOT ?>'+url+'">Preview</a>';
+  download.innerHTML = ' | <a href='+url+'downloadsingle>Download</a>';
   viewing.innerHTML = '<?=$_SERVER['HTTP_HOST']?><?=ROOT?>' + url;
 }
 
@@ -469,6 +425,8 @@ var preview = document.getElementById('preview'),
     bins = document.getElementById('bins'),
     trs = document.getElementsByTagName('tr'),
     current = null,
+    download = document.getElementById('download'),
+    view = document.getElementById('view'),
     viewing = document.getElementById('viewing'),
     hoverTimer = null;
 
@@ -498,8 +456,38 @@ bins.onmouseover = function (event) {
   }
 };
 
+
+
+$('#sections').change(function(){
+
+  var section = $(this).val();
+  localStorage.setItem('section', section);
+
+  $.ajax({
+    type: "POST",
+    url: "<?php echo ROOT ?>list-dashboard-code.php",
+    data: 'section=' + section,
+    dataType: "html",
+    cache: false,
+    success: function(i) {
+
+        var user = localStorage.getItem('user');
+
+        if (user) {
+          $('#users').html(i).val(user).change();
+        } else {
+          $('#users').html(i).change();
+        }
+    } 
+  });
+
+});
+
+
 $('#users').change(function(){
+
   var member = $(this).val();
+  localStorage.setItem('user', member);
 
   $.ajax({
     type: "POST",
@@ -510,27 +498,22 @@ $('#users').change(function(){
     success: function(i) {
       $("#bins tbody").html(i);
       collapsePages();
-
     } 
   });
+  
 });
 
-$('#sections').change(function(){
-  var section = $(this).val();
 
-  $.ajax({
-    type: "POST",
-    url: "<?php echo ROOT ?>list-dashboard-code.php",
-    data: 'section=' + section,
-    dataType: "html",
-    cache: false,
-    success: function(i) {
+var section = localStorage.getItem('section');
 
-        $('#users').html(i).change();
-    } 
-  });
-});
+if (section) {
+  $('#sections').val(section).change();
+} else {
+  $('#sections').change();
+}
 
+$('#sections, #users').css('visibility','visible').hide().fadeIn(1200);
+$('#bins').fadeIn(1200);
 
 
 </script>

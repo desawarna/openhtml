@@ -9,7 +9,7 @@ $log->encrypt = true;   // set to true if password is md5 encrypted. Default is 
 if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false){
     //do something if NOT logged in. For example, redirect to login page or display message.
 
-  $pre = '<!DOCTYPE html><html><head><meta charset=utf-8 /><title>openHTML - Login</title><link rel="stylesheet" href="' . ROOT . 'css/style.css" type="text/css" /></head><body><div id="control"><div class="control"><div class="buttons"><div id="auth"><span id="logo">openHTML</span></div></div></div></div><div id="bin" class="stretch">';
+  $pre = '<!DOCTYPE html><html><head><title>openHTML - Login</title><link rel="stylesheet" href="' . ROOT . 'css/style.css" type="text/css" /></head><body><div id="control"><div class="control"><div class="buttons"><div id="auth"><span id="logo">openHTML</span></div></div></div></div><div id="bin" class="stretch">';
 
   $post = '</div></body></html>';
 
@@ -47,7 +47,7 @@ if ($action == $home) {
 if ($action == 'changepassword'){
 
 
-$pre = '<!DOCTYPE html><html><head><meta charset=utf-8 /><title>openHTML - Login</title><link rel="stylesheet" href="' . ROOT . 'css/style.css" type="text/css" /></head><body><div id="control"><div class="control"><div class="buttons"><div id="auth"><span id="logo">openHTML</span></div></div></div></div><div id="bin" class="stretch">';
+$pre = '<!DOCTYPE html><html><head><title>openHTML - Login</title><link rel="stylesheet" href="' . ROOT . 'css/style.css" type="text/css" /></head><body><div id="control"><div class="control"><div class="buttons"><div id="auth"><span id="logo">openHTML</span></div></div></div></div><div id="bin" class="stretch">';
 $post ='</div></body></html>';
 
 
@@ -146,24 +146,6 @@ ini_set('max_execution_time', 300);
   readfile($zipname);
   exit;
 
-}
-
-elseif($action == 'downloadsingle'){
-  
-  $url = $request[0];
-  if(isset($request[1])) {
-    $rev = $request[1];
-  } else $rev = getMaxRevision($url);
-  $ext = ".html";
-  $query = "SELECT * FROM  `sandbox` WHERE  `url` =  '".$url."' AND  `revision` = '{$rev}'";
-  $document = mysql_fetch_array(mysql_query($query));
-  $originalHTML = $document['html'];
-  list($document['html'], $document['javascript']) = formatCompletedCode($document['html'], $document['javascript'], $url, $rev);
-    header('Content-Type: text/html');
-    header('Content-Disposition: attachment; filename="' . $url . "-" . $rev . "-" . $document['customname'] . $ext . '"');
-  //header('Content-Disposition: attachment; filename="' . $code_id . ($revision == 1 ? '' : '.' . $revision) . $ext . '"');
-    echo $originalHTML ? $document['html'] : $document['javascript'];
-    exit;
 }
 
 
@@ -280,12 +262,12 @@ if (!$action) {
   }
 } else if ($action == 'edit') {
   list($code_id, $revision) = getCodeIdParams($request);
-  $page_owner = getOwner($code_id);
   // logger('open');
   if ($revision == 'latest') {
     $latest_revision = getMaxRevision($code_id);
     header('Location: ' . ROOT . $code_id . '/' . $latest_revision . '/edit');
     $edit_mode = false;
+
   }
 } else if ($action == 'logout') {
   // logger("logout");
@@ -295,15 +277,25 @@ if (!$action) {
 
 else if ($action == 'savereplay'){
   list($code_id, $revision) = getCodeIdParams($request);
-  $replay = @$_POST['replay'];
+  $replay = json_decode(@$_POST['replay'], true);
   $custom_name = getCustomName($code_id, $revision);
   foreach($replay as $key => $index){
     $row[$key] = json_decode($replay[$key], true);
   }
 
+  $sqlreplay = Array();
   //populate sqlreplay array with replay data until savepoint
-  $replayok = mysql_query("INSERT INTO replay_sessions (`url`, `time`, `session`) VALUES ('".mysql_real_escape_string($code_id)."', '".time()."',  '".mysql_real_escape_string($replay)."')");
-  // $replayok = mysql_query($sqlreplay[$key]);
+  foreach($row as $key => $index){
+      if(!isset($row[$key]['special'])) $row[$key]['special'] = " ";
+  
+      $sqlreplay[$key] = "INSERT INTO  `replay` (`url` ,`customname` ,`time` ,`html` ,`css` ,`special`) VALUES ('".mysql_real_escape_string($code_id)."', '".mysql_real_escape_string($custom_name)."',  '".$row[$key]['clock']."',  '".mysql_real_escape_string($row[$key]['html'])."',  '".mysql_real_escape_string($row[$key]['css'])."', '".mysql_real_escape_string($row[$key]['special'])."')";
+  }
+
+ 
+  foreach($sqlreplay as $key => $index){
+    $replayok = mysql_query($sqlreplay[$key]);
+  }
+
 }
 
 else if ($action == 'save' || $action == 'clone') {
@@ -377,6 +369,10 @@ else if ($action == 'save' || $action == 'clone') {
       // entirely blank isn't going to be saved.
     } else {
       $ok = mysql_query($sql);
+      $replayok = mysql_query("INSERT INTO replay_sessions (`url`, `time`, `session`) VALUES ('".mysql_real_escape_string($code_id)."', '".time()."',  '".$replay."')");
+      // foreach($sqlreplay as $key => $index){
+      //   $replayok = mysql_query($sqlreplay[$key]);
+      // }
       
       
 
@@ -384,21 +380,14 @@ else if ($action == 'save' || $action == 'clone') {
         // first check they have write permission for this home
         $sql = sprintf('select * from ownership where name="%s" and `key`="%s"', mysql_real_escape_string($home), mysql_real_escape_string($_COOKIE['key']));
         $result = mysql_query($sql);
-        //if (mysql_num_rows($result) == 1) {
+        if (mysql_num_rows($result) == 1) {
           $sql = sprintf('insert into owners (name, url, revision) values ("%s", "%s", "%s")', mysql_real_escape_string($home), mysql_real_escape_string($code_id), mysql_real_escape_string($revision));
           $ok = mysql_query($sql);
 
 
-        //}
+        }
         // $code_id = $home . '/' . $code_id;
       }
-
-      $replayok = mysql_query("INSERT INTO replay_sessions (`url`, `time`, `session`) VALUES ('".mysql_real_escape_string($code_id)."', '".time()."',  '".mysql_real_escape_string($replay)."')");
-      // foreach($sqlreplay as $key => $index){
-      //   $replayok = mysql_query($sqlreplay[$key]);
-      // }
-
-
     }
 
     // error_log('saved: ' . $code_id . ' - ' . $revision . ' -- ' . $ok . ' ' . strlen($sql));
@@ -477,7 +466,7 @@ else if ($action == 'save' || $action == 'clone') {
   $subaction = array_pop($request);
   // logger('view');
 
-  if ($action == 'latest') {    
+  if ($action == 'latest') {
     // find the latest revision and redirect to that.
     $code_id = $subaction;
     $latest_revision = getMaxRevision($code_id);
@@ -575,15 +564,6 @@ function getCodeIdParams($request) {
   return array($code_id, $revision);
 }
 
-//Get Owner of current page that is being edited
-//Paremeter: document hash
-function getOwner($id){
-  $sql = "SELECT * FROM  `owners` WHERE  `url` =  '{$id}'";
-  $result = mysql_fetch_assoc(mysql_query($sql));
-  return $result['name'];
-
-}
-
 //Get the most recent document from the sandbox table
 //Parameter: url of the document
 function getMaxRevision($code_id) {
@@ -632,7 +612,7 @@ function getCustomName($code_id, $revision) {
   $sql = sprintf('select customname from sandbox where url="%s" and revision="%s"', mysql_real_escape_string($code_id),  mysql_real_escape_string($revision));
   $result = mysql_query($sql);
   $row = mysql_fetch_object($result);
-  return $row ? $row->customname : "";
+  return $row->customname ? $row->customname : "";
 }
 
 function formatCompletedCode($html, $javascript, $code_id, $revision) {
@@ -741,9 +721,7 @@ function defaultCode($not_found = false) {
 HERE_DOC;
   }
 
-      $javascript = "body {
-
-}";
+  $javascript = '';
 
   if (@$_REQUEST['js']) {
     $javascript = $_REQUEST['js'];
@@ -757,6 +735,9 @@ HERE_DOC;
     } else {
       // $javascript = "if (document.getElementById('hello')) {\n  document.getElementById('hello').innerHTML = 'Hello World - this was inserted using JavaScript';\n}\n";
       // $javascript = "h1 {\n  font-size: 60px;\n  font-weight: bold;\n  text-align: center;\n  color: orange;\n}";
+      $javascript = "body {
+
+}";
     }
   }
 
@@ -810,7 +791,7 @@ HERE_DOC;
 }
 
 function showSaved($name) {
-  $sql = sprintf('select * from owners where name="%s" and hidden="%s" order by url, revision desc', mysql_real_escape_string($name), "0");
+  $sql = sprintf('select * from owners where name="%s" order by url, revision desc', mysql_real_escape_string($name));
   $result = mysql_query($sql);
 
   $bins = array();

@@ -47,7 +47,11 @@ if ($action == $home) {
 if ($action == 'changepassword'){
 
 
+<<<<<<< HEAD
+$pre = '<!DOCTYPE html><html><head><title>openHTML - Login</title><link rel="stylesheet" href="' . ROOT . 'css/style.css" type="text/css" /></head><body><div id="control"><div class="control"><div class="buttons"><div id="auth"><span id="logo">openHTML</span></div></div></div></div><div id="bin" class="stretch">';
+=======
 $pre = '<!DOCTYPE html><html><head><meta charset=utf-8 /><title>openHTML - Login</title><link rel="stylesheet" href="' . ROOT . 'css/style.css" type="text/css" /></head><body><div id="control"><div class="control"><div class="buttons"><div id="auth"><span id="logo">openHTML</span></div></div></div></div><div id="bin" class="stretch">';
+>>>>>>> dev
 $post ='</div></body></html>';
 
 
@@ -83,6 +87,11 @@ $post ='</div></body></html>';
   }//Try to change password
 }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> dev
 if ($action == 'downloadall' && isset($_GET['name'])){
 ini_set('max_execution_time', 300);
   connect();
@@ -148,6 +157,8 @@ ini_set('max_execution_time', 300);
 
 }
 
+<<<<<<< HEAD
+=======
 elseif($action == 'downloadsingle'){
   
   $url = $request[0];
@@ -166,6 +177,7 @@ elseif($action == 'downloadsingle'){
     exit;
 }
 
+>>>>>>> dev
 
 $quiet = false;
 if ($action == 'quiet') {
@@ -295,15 +307,35 @@ if (!$action) {
 
 else if ($action == 'savereplay'){
   list($code_id, $revision) = getCodeIdParams($request);
+<<<<<<< HEAD
+  $replay = json_decode(@$_POST['replay'], true);
+=======
   $replay = @$_POST['replay'];
+>>>>>>> dev
   $custom_name = getCustomName($code_id, $revision);
   foreach($replay as $key => $index){
     $row[$key] = json_decode($replay[$key], true);
   }
 
+<<<<<<< HEAD
+  $sqlreplay = Array();
+  //populate sqlreplay array with replay data until savepoint
+  foreach($row as $key => $index){
+      if(!isset($row[$key]['special'])) $row[$key]['special'] = " ";
+  
+      $sqlreplay[$key] = "INSERT INTO  `replay` (`url` ,`customname` ,`time` ,`html` ,`css` ,`special`) VALUES ('".mysql_real_escape_string($code_id)."', '".mysql_real_escape_string($custom_name)."',  '".$row[$key]['clock']."',  '".mysql_real_escape_string($row[$key]['html'])."',  '".mysql_real_escape_string($row[$key]['css'])."', '".mysql_real_escape_string($row[$key]['special'])."')";
+  }
+
+ 
+  foreach($sqlreplay as $key => $index){
+    $replayok = mysql_query($sqlreplay[$key]);
+  }
+=======
   //populate sqlreplay array with replay data until savepoint
   $replayok = mysql_query("INSERT INTO replay_sessions (`url`, `time`, `session`) VALUES ('".mysql_real_escape_string($code_id)."', '".time()."',  '".mysql_real_escape_string($replay)."')");
   // $replayok = mysql_query($sqlreplay[$key]);
+>>>>>>> dev
+
 }
 
 else if ($action == 'save' || $action == 'clone') {
@@ -377,6 +409,13 @@ else if ($action == 'save' || $action == 'clone') {
       // entirely blank isn't going to be saved.
     } else {
       $ok = mysql_query($sql);
+<<<<<<< HEAD
+      $replayok = mysql_query("INSERT INTO replay_sessions (`url`, `time`, `session`) VALUES ('".mysql_real_escape_string($code_id)."', '".time()."',  '".$replay."')");
+      // foreach($sqlreplay as $key => $index){
+      //   $replayok = mysql_query($sqlreplay[$key]);
+      // }
+=======
+>>>>>>> dev
       
       
 
@@ -389,7 +428,11 @@ else if ($action == 'save' || $action == 'clone') {
           $ok = mysql_query($sql);
 
 
+<<<<<<< HEAD
+        }
+=======
         //}
+>>>>>>> dev
         // $code_id = $home . '/' . $code_id;
       }
 
@@ -447,6 +490,10 @@ else if ($action == 'save' || $action == 'clone') {
     if (isset($_REQUEST['format']) && strtolower($_REQUEST['format']) == 'plain') {
       echo $url;
     } else {
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
       echo '{ "url" : "' . $url . '", "edit" : "' . $url . '/edit", "html" : "' . $url . '/edit", "javascript" : "' . $url . '/edit" }';
     }
 
@@ -575,6 +622,8 @@ function getCodeIdParams($request) {
   return array($code_id, $revision);
 }
 
+<<<<<<< HEAD
+=======
 //Get Owner of current page that is being edited
 //Paremeter: document hash
 function getOwner($id){
@@ -584,6 +633,7 @@ function getOwner($id){
 
 }
 
+>>>>>>> dev
 //Get the most recent document from the sandbox table
 //Parameter: url of the document
 function getMaxRevision($code_id) {
@@ -757,6 +807,13 @@ HERE_DOC;
     } else {
       // $javascript = "if (document.getElementById('hello')) {\n  document.getElementById('hello').innerHTML = 'Hello World - this was inserted using JavaScript';\n}\n";
       // $javascript = "h1 {\n  font-size: 60px;\n  font-weight: bold;\n  text-align: center;\n  color: orange;\n}";
+<<<<<<< HEAD
+      $javascript = "body {
+
+}";
+=======
+
+>>>>>>> dev
     }
   }
 

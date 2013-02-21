@@ -4,6 +4,7 @@
 //= require "unsaved"
 var focusPanel = 'javascript';
 var editors = {};
+var activity;
 // var row = {};
 var sql = new Array();
 
@@ -84,16 +85,16 @@ var editorsReady = setInterval(function () {
 //   var session = editors[type].getSession(),
 //       renderer = editors[type].renderer;
 //   if (type == 'javascript') {
-//     session.setMode(new JavaScriptMode());    
+//     session.setMode(new JavaScriptMode());
 //   } else {
 //     session.setMode(new HTMLMode());
 //   }
-// 
+//
 //   editors[type].setHighlightActiveLine(false);
 //   session.setUseWrapMode(true);
 //   session.setUseSoftTabs(true);
 //   session.setWrapLimitRange(null, null);
-//   
+//
 //   renderer.setShowPrintMargin(false);
 //   renderer.setShowGutter(false);
 //   renderer.setHScrollBarAlwaysVisible(false);
@@ -102,15 +103,18 @@ var editorsReady = setInterval(function () {
 function focused(editor, event) {
   focusPanel = editor.id;
   snapshot(focusPanel);
-  console.log(focusPanel);
 }
 
 function getFocusedPanel() {
   return focusPanel;
 }
 
+function blurEvent(editor){
+  //if(sql.length > 50) { saveSnaps(); }
+}
+
 function setupEditor(panel) {
-  var e = editors[panel], 
+  var e = editors[panel],
       focusedPanel = sessionStorage.getItem('panel');
 
   // overhang from CodeMirror1
@@ -130,6 +134,7 @@ function setupEditor(panel) {
   e.setOption('onChange', changecontrol);
   e.setOption('onKeyEvent', keycontrol);
   e.setOption('onFocus', focused);
+  e.setOption('onBlur', blurEvent);
 
   e.id = panel;
 
@@ -150,7 +155,7 @@ function setupEditor(panel) {
       } else {
         $label.show().stop().animate({ opacity: 1 }, 250);
       }
-    });    
+    });   
   }
   
   populateEditor(panel);
@@ -185,23 +190,21 @@ function populateEditor(panel) {
   }
   
   if (changed) {
-    $(document).trigger('codeChange', [ /* revert triggered */ false, /* don't use fade */ true ]);    
+    $(document).trigger('codeChange', [ /* revert triggered */ false, /* don't use fade */ true ]);
   }
 }
 
 // work out the browser platform
 var ua = navigator.userAgent;
-if (/macintosh|mac os x/.test(ua)) { 
-  $.browser.platform = 'mac'; 
-} else if (/windows|win32/.test(ua)) { 
-  $.browser.platform = 'win'; 
-} else if (/linux/.test(ua)) { 
-  $.browser.platform = 'linux'; 
-} else { 
-  $.browser.platform = ''; 
-} 
-
-
+if (/macintosh|mac os x/.test(ua)) {
+  $.browser.platform = 'mac';
+} else if (/windows|win32/.test(ua)) {
+  $.browser.platform = 'win';
+} else if (/linux/.test(ua)) {
+  $.browser.platform = 'linux';
+} else {
+  $.browser.platform = '';
+}
 
 
 
@@ -214,6 +217,12 @@ function changecontrol(event) {
     // if(sql.length > 20){
     //   saveSnaps();
     // }
+    
+    // if (sql.length > 50) {
+    //   clearTimeout(activity);
+    //   activity = setTimeout(saveSnaps, 10000);
+    // }
+
 
     snapshot();
   // }
@@ -273,6 +282,33 @@ function snapshot(extra){
     // console.log(sql);
 
 }
+
+function changeFontSize(delta){
+
+  delta = parseInt(delta, 10);
+
+  var oldsize = $(".CodeMirror").css("font-size");
+  oldsize = parseInt(oldsize, 10);
+  
+  var newsize = oldsize + delta + "px";
+
+  if(delta === 0) newsize = "12px";
+
+  if(parseInt(newsize, 10) > 6) {
+    $(".CodeMirror").css("font-size", newsize);
+
+    editors.javascript.refresh();
+    editors.html.refresh();
+  }
+}
+
+
+$('.sizer').click(function(){
+
+  changeFontSize($(this).attr('data-delta'));
+
+});
+
 
 
 //= require "keycontrol"

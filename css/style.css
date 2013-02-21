@@ -161,6 +161,10 @@ div.code, #live, .resize {
   cursor: w-resize;
 }
 
+.sizer {
+  cursor: pointer;
+}
+
 .block {
   border: 0;
   position: absolute;
@@ -254,6 +258,11 @@ iframe.javascript {
   margin: 0px 0px;
   background: #fff;
   background: rgba(255, 255, 255, 0.3);
+}
+
+.button:hover {
+  background-color: #ccc;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 #control span {
@@ -412,10 +421,10 @@ div.tall:hover {
 }
 
 #control div.group .button {
-  padding-left: 24px;
+  padding-left: 8px;
   border: 0;
   display: block;
-  width: 70px;
+  width: 86px;
 }
 
 #control .group a {
@@ -925,26 +934,80 @@ ie6, li {
   color: white;
   /*font-weight: bold; */
   -webkit-transition: background-color 0.15s ease-in-out; 
-  -moz-transition: background-color 0.15s ease-in-out; 
+  -moz-transition: background-color 0.15s ease-in-out;
+  -ms-transition: background-color 0.15s ease-in-out;
   -o-transition: background-color 0.15s ease-in-out; 
   transition: background-color 0.15s ease-in-out; 
-  /* Hovers */ /* Sizes */ /* Colors */ /* Radii */ /* Layout */ /* Disabled ---------- */ 
+}
+
+.unsaved:hover {
+  background-color: #2180a4;
+}
+
+.saving {
+  -webkit-animation: pulsate 1.5s ease-out infinite;
+  -moz-animation: pulsate 1.5s ease-out infinite;
+  -ms-animation: pulsate 1.5s ease-out infinite;
+  -o-animation: pulsate 1.5s ease-out infinite;
+  animation: pulsate 1.5s ease-out infinite;
+/*   -webkit-animation-iteration-count: infinite;
+*/
+}
+
+@-webkit-keyframes pulsate {
+  0% { background-color: #2ba6cb; }
+  50% { background-color: #33c6fe; }
+  100% { background-color: #2ba6cb; }
+}
+
+@-moz-keyframes pulsate {
+  0% { background-color: #2ba6cb; }
+  50% { background-color: #33c6fe; }
+  100% { background-color: #2ba6cb; }
+}
+
+@-ms-keyframes pulsate {
+  0% { background-color: #2ba6cb; }
+  50% { background-color: #33c6fe; }
+  100% { background-color: #2ba6cb; }
+}
+
+@-o-keyframes pulsate {
+  0% { background-color: #2ba6cb; }
+  50% { background-color: #33c6fe; }
+  100% { background-color: #2ba6cb; }
+}
+
+@keyframes pulsate {
+  0% { background-color: #2ba6cb; }
+  50% { background-color: #33c6fe; }
+  100% { background-color: #2ba6cb; }
+}
+
+.disabled {
+  color: #ccc;
+  cursor: default;
+}
+
+.disabled:hover {
+  background: #fff;
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .button.download {
   padding-left: 24px;
 
 /*  background-image: url(/images/arrow_down_12x12.png);*/
-  background-image: url(../images/download.png);
+/*  background-image: url(../images/download.png);
   background-repeat: no-repeat;
-  background-position: 8px -33px;
+  background-position: 8px -33px;*/
 }
 
-.button.download:hover {
+/*.button.download:hover {
   background-image: url(../images/download.png);
   background-repeat: no-repeat;
   background-position: 8px 7px;
-}
+}*/
 
 /* attempt to get a live render preview in */
 #live {
@@ -1068,9 +1131,8 @@ details li, .details li {
 }
 
 #userinfo, #auth #logo {
- position: absolute;
- top: 13px;
- right: 30px;
+ float: right;
+ margin-left: 10px;
  width: 320px;
 }
 

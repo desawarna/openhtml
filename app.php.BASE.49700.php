@@ -1,5 +1,6 @@
 <?php
 include('config.php'); // contains DB & important versioning
+// include('logger.php'); // contains activity logger
 
 include('auth.php'); // contains user auth
 $log = new logmein(); // instantiate the class
@@ -9,7 +10,7 @@ $log->encrypt = true;   // set to true if password is md5 encrypted. Default is 
 if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false){
     //do something if NOT logged in. For example, redirect to login page or display message.
 
-  $pre = '<!DOCTYPE html><html><head><meta charset=utf-8 /><title>openHTML - Login</title><link rel="stylesheet" href="' . ROOT . 'css/style.css" type="text/css" /></head><body><div id="control"><div class="control"><div class="buttons"><div id="auth"><span id="logo">openHTML</span></div></div></div></div><div id="bin" class="stretch">';
+  $pre = '<!DOCTYPE html><html><head><title>openHTML - Login</title><link rel="stylesheet" href="' . ROOT . 'css/style.css" type="text/css" /></head><body><div id="control"><div class="control"><div class="buttons"><div id="auth"><span id="logo">openHTML</span></div></div></div></div><div id="bin" class="stretch">';
 
   $post = '</div></body></html>';
 
@@ -44,129 +45,6 @@ if ($action == $home) {
   $action = array_pop($request);
 }
 
-if ($action == 'changepassword'){
-
-
-$pre = '<!DOCTYPE html><html><head><meta charset=utf-8 /><title>openHTML - Login</title><link rel="stylesheet" href="' . ROOT . 'css/style.css" type="text/css" /></head><body><div id="control"><div class="control"><div class="buttons"><div id="auth"><span id="logo">openHTML</span></div></div></div></div><div id="bin" class="stretch">';
-$post ='</div></body></html>';
-
-
-  if(!isset($_POST['change'])){
-    
-    //display reset password form
-
-    $log->resetform($_SESSION['name'], "change", "loginformid", ROOT."changepassword", $pre, $post);
-
-  }else {  //Try to change password
-
-    connect();
-    $sql = "SELECT * FROM ownership WHERE name = '".$_SESSION['name']."'";
-    $query = mysql_query($sql);
-    $row = mysql_fetch_array($query);
-
-    if( ($row['key'] == sha1($_POST['oldpassword'])) ){
-      if( $_POST['newpassword'] == $_POST['verify'])
-      {
-        $log -> passwordreset(mysql_real_escape_string($_POST['username']), "ownership", "key", "name", $_POST['verify']);
-        echo $pre."<div class='loginformid'><h3>Success</h3><a href=".ROOT."logout>Return to openHTML</a></div>".$post;
-      } else {
-          $message = "<div class='warning'>Passwords do not match</div>";
-          $post =$message.$post; $log->resetform($_SESSION['name'], "change", "loginformid", ROOT."changepassword", $pre, $post);
-        }
-    } else { 
-        $message = "<div class='warning'>Incorrect Password</div>"; 
-        $post = $message.$post;
-        $log->resetform($_SESSION['name'], "change", "loginformid", ROOT."changepassword", $pre, $post); 
-      }
-
-    exit;
-  }//Try to change password
-}
-
-if ($action == 'downloadall' && isset($_GET['name'])){
-ini_set('max_execution_time', 300);
-  connect();
-    //retrieve data
-    $username = $_GET['name'];
-    $doc = getUserDocs($username);
-    $formattedDocs = Array();
-    $zip = new ZipArchive;
-    $zipname = $username.".zip";
-    $zip->open($zipname, ZipArchive::OVERWRITE);
-    $zip->addFromString("open.html", "<meta http-equiv='refresh' content='0; url=http://openhtml.info'>");
-    $zip->close();
-
-
-    //Format data
-    foreach($doc as $key => $page)
-    {
-      $javascript = $page['javascript'];
-      $html = $page['html'];
-      $code_id = $page['url'];
-      $revision =1;
-    if(isset($_GET['latest'])){
-      $revision = getMaxRevision($code_id);
-      if($revision != $page['revision']){
-        continue;
-      }
-    }
-
-      // strip escaping (replicated from getCode method):
-      $javascript = preg_replace('/\r/', '', $javascript);
-      $html = preg_replace('/\r/', '', $html);
-      $html = get_magic_quotes_gpc() ? stripslashes($html) : $html;
-      $javascript = get_magic_quotes_gpc() ? stripslashes($javascript) : $javascript;
-
-  
-      
-      $originalHTML = $html;
-      list($html, $javascript) = formatCompletedCode($html, $javascript, $code_id, $revision);
-      $formattedDocs['index'] = $key;
-      $formattedDocs['name'] = $code_id . "-" . $page['revision'] . "-" . $page['customname'] . '.html'; 
-      $formattedDocs['content'] = $html;
-
-      $res = $zip->open($zipname, ZipArchive::CREATE);
-
-      if ($res === TRUE) {
-        $html = $html."<!-- ".$page['created']."-->";
-        $zip->addFromString($formattedDocs['name'], $html);
-        //echo $formattedDocs['name']."  :   ";
-
-      }else {
-            echo 'failed';
-      }
-      $zip->close();
-
-    }
-
-   // echo filesize($zipname;
-  header('Content-Type: application/zip');
-  header('Content-disposition: attachment; filename="'.$zipname.'"');
-  header("Content-Length: ".filesize($zipname));
-  readfile($zipname);
-  exit;
-
-}
-
-elseif($action == 'downloadsingle'){
-  
-  $url = $request[0];
-  if(isset($request[1])) {
-    $rev = $request[1];
-  } else $rev = getMaxRevision($url);
-  $ext = ".html";
-  $query = "SELECT * FROM  `sandbox` WHERE  `url` =  '".$url."' AND  `revision` = '{$rev}'";
-  $document = mysql_fetch_array(mysql_query($query));
-  $originalHTML = $document['html'];
-  list($document['html'], $document['javascript']) = formatCompletedCode($document['html'], $document['javascript'], $url, $rev);
-    header('Content-Type: text/html');
-    header('Content-Disposition: attachment; filename="' . $url . "-" . $rev . "-" . $document['customname'] . $ext . '"');
-  //header('Content-Disposition: attachment; filename="' . $code_id . ($revision == 1 ? '' : '.' . $revision) . $ext . '"');
-    echo $originalHTML ? $document['html'] : $document['javascript'];
-    exit;
-}
-
-
 $quiet = false;
 if ($action == 'quiet') {
   $quiet = true;
@@ -199,8 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 if ($action) {
   connect();
 }
-
-
 
 if (!$action) {
   // do nothing and serve up the page
@@ -280,33 +156,18 @@ if (!$action) {
   }
 } else if ($action == 'edit') {
   list($code_id, $revision) = getCodeIdParams($request);
-  $page_owner = getOwner($code_id);
   // logger('open');
   if ($revision == 'latest') {
     $latest_revision = getMaxRevision($code_id);
     header('Location: ' . ROOT . $code_id . '/' . $latest_revision . '/edit');
     $edit_mode = false;
+
   }
 } else if ($action == 'logout') {
   // logger("logout");
   $log->logout();
 
-} 
-
-else if ($action == 'savereplay'){
-  list($code_id, $revision) = getCodeIdParams($request);
-  $replay = @$_POST['replay'];
-  $custom_name = getCustomName($code_id, $revision);
-  foreach($replay as $key => $index){
-    $row[$key] = json_decode($replay[$key], true);
-  }
-
-  //populate sqlreplay array with replay data until savepoint
-  $replayok = mysql_query("INSERT INTO replay_sessions (`url`, `time`, `session`) VALUES ('".mysql_real_escape_string($code_id)."', '".time()."',  '".mysql_real_escape_string($replay)."')");
-  // $replayok = mysql_query($sqlreplay[$key]);
-}
-
-else if ($action == 'save' || $action == 'clone') {
+} else if ($action == 'save' || $action == 'clone') {
 
   list($code_id, $revision) = getCodeIdParams($request);
 
@@ -315,11 +176,6 @@ else if ($action == 'save' || $action == 'clone') {
   $method = @$_POST['method'];
   $stream = isset($_POST['stream']) ? true : false;
   $streaming_key = '';
-  $replay = @$_POST['replay'];
-
-  // foreach($replay as $key => $index){
-  //   $row[$key] = json_decode($replay[$key], true);
-  // }
 
   if ($stream && isset($_COOKIE['streaming_key'])) {
     $streaming_key = $_COOKIE['streaming_key'];
@@ -334,7 +190,6 @@ else if ($action == 'save' || $action == 'clone') {
     //    views
   }
 
-
   // we're using stripos instead of == 'save' because the method *can* be "download,save" to support doing both
   if (stripos($method, 'save') !== false) {
 
@@ -348,57 +203,31 @@ else if ($action == 'save' || $action == 'clone') {
     if (!$code_id) {
       $code_id = generateCodeId();
       $revision = 1;
-      $custom_name = "Untitled Webpage";
-      
+      $custom_name = $code_id;
     } else {
       $revision = getMaxRevision($code_id);
-      
       $custom_name = getCustomName($code_id, $revision);
       $revision++;
     }
 
-
-    $sql = sprintf('insert into sandbox (javascript, html, created, last_viewed, url, revision, customname) values("%s", "%s", now(), now(), "%s", "%s", "%s")', mysql_real_escape_string($javascript), mysql_real_escape_string($html), mysql_real_escape_string($code_id), mysql_real_escape_string($revision), mysql_real_escape_string($custom_name));
-    
-    //$sqlreplay = Array();
-    //populate sqlreplay array with replay data until savepoint
-    // foreach($row as $key => $index){
-    //   //if(($row[$key]['html'] != "") && ($row[$key]['css'] != "")){
-    //     if(!isset($row[$key]['special'])) $row[$key]['special'] = " ";
-
-        
-    //    // $sqlreplay[$key] = "INSERT INTO  `replay` (`url` ,`customname` ,`time` ,`html` ,`css` ,`special`) VALUES ('".mysql_real_escape_string($code_id)."', '".mysql_real_escape_string($custom_name)."',  '".$row[$key]['clock']."',  '".mysql_real_escape_string($row[$key]['html'])."',  '".mysql_real_escape_string($row[$key]['css'])."', '".mysql_real_escape_string($row[$key]['special'])."')";
-    //   //}
-    // }
-
+    $sql = sprintf('insert into sandbox (javascript, html, created, last_viewed, url, revision, customname) values ("%s", "%s", now(), now(), "%s", "%s", "%s")', mysql_real_escape_string($javascript), mysql_real_escape_string($html), mysql_real_escape_string($code_id), mysql_real_escape_string($revision), mysql_real_escape_string($custom_name));
 
     // a few simple tests to pass before we save
     if (($html == '' && $html == $javascript)) {
       // entirely blank isn't going to be saved.
     } else {
       $ok = mysql_query($sql);
-      
-      
 
       if ($home) {
         // first check they have write permission for this home
         $sql = sprintf('select * from ownership where name="%s" and `key`="%s"', mysql_real_escape_string($home), mysql_real_escape_string($_COOKIE['key']));
         $result = mysql_query($sql);
-        //if (mysql_num_rows($result) == 1) {
+        if (mysql_num_rows($result) == 1) {
           $sql = sprintf('insert into owners (name, url, revision) values ("%s", "%s", "%s")', mysql_real_escape_string($home), mysql_real_escape_string($code_id), mysql_real_escape_string($revision));
           $ok = mysql_query($sql);
-
-
-        //}
+        }
         // $code_id = $home . '/' . $code_id;
       }
-
-      $replayok = mysql_query("INSERT INTO replay_sessions (`url`, `time`, `session`) VALUES ('".mysql_real_escape_string($code_id)."', '".time()."',  '".mysql_real_escape_string($replay)."')");
-      // foreach($sqlreplay as $key => $index){
-      //   $replayok = mysql_query($sqlreplay[$key]);
-      // }
-
-
     }
 
     // error_log('saved: ' . $code_id . ' - ' . $revision . ' -- ' . $ok . ' ' . strlen($sql));
@@ -413,18 +242,6 @@ else if ($action == 'save' || $action == 'clone') {
    **/
   if (stripos($method, 'download') !== false) {
     // strip escaping (replicated from getCode method):
-
-
-
-    if(isset($_POST['url'])){
-      $code_id = $_POST['url'];
-      $revision = $_POST['revision'];
-      $query = "select * from sandbox where url='{$code_id}' AND revision='{$revision}'";
-      $result = mysql_query($query);
-      $data = mysql_fetch_assoc($result);
-      $html = $data['html'];
-      $javascript = $data['javascript'];
-    }
     $javascript = preg_replace('/\r/', '', $javascript);
     $html = preg_replace('/\r/', '', $html);
     $html = get_magic_quotes_gpc() ? stripslashes($html) : $html;
@@ -447,9 +264,8 @@ else if ($action == 'save' || $action == 'clone') {
     if (isset($_REQUEST['format']) && strtolower($_REQUEST['format']) == 'plain') {
       echo $url;
     } else {
-      echo '{ "url" : "' . $url . '", "edit" : "' . $url . '/edit", "html" : "' . $url . '/edit", "javascript" : "' . $url . '/edit" }';
+      echo '{ "url" : "' . $url . '", "edit" : "' . $url . '/edit", "html" : "' . $url . '/edit", "js" : "' . $url . '/edit" }';
     }
-
 
     if (array_key_exists('callback', $_REQUEST)) {
       echo '")';
@@ -477,7 +293,7 @@ else if ($action == 'save' || $action == 'clone') {
   $subaction = array_pop($request);
   // logger('view');
 
-  if ($action == 'latest') {    
+  if ($action == 'latest') {
     // find the latest revision and redirect to that.
     $code_id = $subaction;
     $latest_revision = getMaxRevision($code_id);
@@ -575,64 +391,18 @@ function getCodeIdParams($request) {
   return array($code_id, $revision);
 }
 
-//Get Owner of current page that is being edited
-//Paremeter: document hash
-function getOwner($id){
-  $sql = "SELECT * FROM  `owners` WHERE  `url` =  '{$id}'";
-  $result = mysql_fetch_assoc(mysql_query($sql));
-  return $result['name'];
-
-}
-
-//Get the most recent document from the sandbox table
-//Parameter: url of the document
 function getMaxRevision($code_id) {
   $sql = sprintf('select max(revision) as rev from sandbox where url="%s"', mysql_real_escape_string($code_id));
   $result = mysql_query($sql);
   $row = mysql_fetch_object($result);
-
   return $row->rev ? $row->rev : 0;
-}
-
-//Get most recent edit index for replayer
-//Parameter: url of the document
-// function getMaxReplayIndex($code_id) {
-//   $sql = sprintf('select max(edit) as rev from replay where url="%s"', mysql_real_escape_string($code_id));
-//   $result = mysql_query($sql);
-//   $row = mysql_fetch_object($result);
-//   return $row->rev ? $row->rev : 0;
-// }
-
-//retrieve all final documents from a given user
-//Parameter: username
-//return: An array containing important document info (css, html, title, etc)
-function getUserDocs($username){
-  $files = Array();
-  $query = "SELECT * FROM owners where name='{$username}'";
-  $result = mysql_query($query);
-
-  while($doc = mysql_fetch_array($result)){
-
-    $page_query = "SELECT * FROM sandbox where url='".$doc['url']."'";
-    $page_result = mysql_query($page_query);
-
-    ini_set("memory_limit","256M");
-
-    while($file = mysql_fetch_array($page_result, MYSQL_ASSOC)){
-      $files[] = $file;
-    }
-    //$files[] = getMaxRevision($doc['url']);
-
-  }
-
-  return $files;
 }
 
 function getCustomName($code_id, $revision) {
   $sql = sprintf('select customname from sandbox where url="%s" and revision="%s"', mysql_real_escape_string($code_id),  mysql_real_escape_string($revision));
   $result = mysql_query($sql);
   $row = mysql_fetch_object($result);
-  return $row ? $row->customname : "";
+  return $row->customname ? $row->customname : "";
 }
 
 function formatCompletedCode($html, $javascript, $code_id, $revision) {
@@ -693,18 +463,18 @@ function getCode($code_id, $revision, $testonly = false) {
 }
 
 function checkOwner($code_id, $revision, $user) {
-  $sql = sprintf('select name from owners where url="%s" and revision="%s"', mysql_real_escape_string($code_id), mysql_real_escape_string($revision));
+	$sql = sprintf('select name from owners where url="%s" and revision="%s"', mysql_real_escape_string($code_id), mysql_real_escape_string($revision));
   $result = mysql_query($sql);
-  $row = mysql_fetch_object($result);
+	$row = mysql_fetch_object($result);
 
-  if($row != false){
-  
-    if ($row->name == $user) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+	if($row != false){
+	
+		if ($row->name == $user) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 }
 
@@ -741,9 +511,7 @@ function defaultCode($not_found = false) {
 HERE_DOC;
   }
 
-      $javascript = "body {
-
-}";
+  $javascript = '';
 
   if (@$_REQUEST['js']) {
     $javascript = $_REQUEST['js'];
@@ -757,6 +525,7 @@ HERE_DOC;
     } else {
       // $javascript = "if (document.getElementById('hello')) {\n  document.getElementById('hello').innerHTML = 'Hello World - this was inserted using JavaScript';\n}\n";
       // $javascript = "h1 {\n  font-size: 60px;\n  font-weight: bold;\n  text-align: center;\n  color: orange;\n}";
+      $javascript = "";
     }
   }
 
@@ -787,7 +556,7 @@ function generateCodeId($tries = 0) {
 }
 
 function generateURL() {
-  // generates 5 char word
+	// generates 5 char word
   $vowels = str_split('aeiou');
   $const = str_split('bcdfghjklmnpqrstvwxyz');
 
@@ -800,7 +569,7 @@ function generateURL() {
     }
   }
 
-  return $word;
+	return $word;
 }
 
 function googleAnalytics() {
@@ -810,7 +579,7 @@ HERE_DOC;
 }
 
 function showSaved($name) {
-  $sql = sprintf('select * from owners where name="%s" and hidden="%s" order by url, revision desc', mysql_real_escape_string($name), "0");
+  $sql = sprintf('select * from owners where name="%s" order by url, revision desc', mysql_real_escape_string($name));
   $result = mysql_query($sql);
 
   $bins = array();
@@ -849,7 +618,37 @@ function showSaved($name) {
 
 function showDashboard($name) {
 
-  
+  $sql = sprintf('select * from ownership where section="%s" order by name', mysql_real_escape_string($name));
+  $result = mysql_query($sql);
+  while ($member = mysql_fetch_object($result)) {
+    $members[] = $member->name;
+  }
+
+  $sql = sprintf('select * from owners where name="%s" order by url, revision desc', mysql_real_escape_string($members[0]));
+  $result = mysql_query($sql);
+
+  $bins = array();
+  $order = array();
+
+  while ($saved = mysql_fetch_object($result)) {
+    $sql = sprintf('select * from sandbox where url="%s" and revision="%s"', mysql_real_escape_string($saved->url), mysql_real_escape_string($saved->revision));
+    $binresult = mysql_query($sql);
+    $bin = mysql_fetch_array($binresult);
+
+    if (!isset($bins[$saved->url])) {
+      $bins[$saved->url] = array();
+    }
+
+    $bins[$saved->url][] = $bin;
+
+    if (isset($order[$saved->url])) {
+      if (@strtotime($order[$saved->url]) < @strtotime($bin['created'])) {
+        $order[$saved->url] = $bin['created'];
+      }
+    } else {
+      $order[$saved->url] = $bin['created'];
+    }
+  }
 
   include_once('dashboard.php');
 
@@ -866,26 +665,6 @@ function formatURL($code_id, $revision) {
     $code_id_path = $code_id . '/';
   }
   return $code_id_path;
-}
-function validate($code, $type){
-
-  if($type == "html") $url="http://validator.w3.org/check";
-  else if ($type == "css") $url = "http://jigsaw.w3.org/css-validator/validator";
-  $handle = curl_init();
-  curl_setopt_array(
-    $handle,
-    array(
-      CURLOPT_URL => $url,
-      CURLOPT_POSTFIELDS => "fragment=".$code,//"&output=soap12",
-      CURLOPT_RETURNTRANSFER => true
-    )
-  );
-
-  $curl_response = curl_exec($handle);
-  curl_close($handle);
-
-  echo "<script> alert({$curl_response});</script>";
-  return $curl_response;  
 }
 
 ?>

@@ -1,0 +1,2 @@
+# Set MIME-type for all files in /style
+ForceType text/css

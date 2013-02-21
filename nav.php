@@ -3,28 +3,40 @@
     <div class="buttons">
       <a id="account" class="tab button gap" href="<?php echo ROOT?>">New Page</a>
 
-       <?php if ($code_id) : ?>
-          <a id="save" title="Save a new revision" class="button light save group left" href="<?php echo $code_id_path?>save">Save</a>
-        <?php else : ?>
-          <a id="save" class="tab button light save group left" href="<?php echo ROOT?>save">Save</a>
-        <?php endif ?>
-      <a id="view" target="<?php echo $code_id?>" class="tab button group light" href="http://<?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?>">View</a>
+      <?php if ($ownership && $code_id) :?>
+        <a id="save" title="Save a new revision" class="button light save group left" href="<?php echo $code_id_path?>save">Save</a>
+        <a id="view" target="<?php echo $code_id?>" class="tab button group light" href="<?php echo ROOT . $code_id?>">View</a>
+      
+      <?php elseif($code_id && !($ownership)) : ?>
+        <a id="clone" title="Create a new copy" class="button clone group light left" href="<?php echo ROOT?>clone">Copy <?php echo $page_owner; ?>'s Page</a>
+        <a id="view" target="<?php echo $code_id?>" class="tab button group light" href="<?php echo ROOT . $code_id?>">View</a>
 
+      <?php else : ?>  
+        <a id="save" title="Save a new revision" class="button light save group left" href="<?php echo $code_id_path?>save">Save</a>
+        <a id="view" target="<?php echo $code_id?>" class="tab button group light disabled" >View</a>
+
+      <?php endif ?>
        
-
+        <div class="button group gap right tall">
+        <a id="options" class="title" href="#">Options</a>
+            <a id="validatehtml" target="_blank" class="button group light" href="#">Validate HTML</a>
+            <a id="validatecss" target="_blank" class="button group light" href="#">Validate CSS</a>
         <?php if ($ownership) :?>
-                <div class="button group gap right tall">
-                <a id="options" class="title">Options</a>
-                <a id="save" title="Save a new revision" class="button light save group" href="<?php echo $code_id_path?>save">Save</a>
-                <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
+                
+              <a id="Rename" class ="button group rename light">Rename</a>
+              <a id="download" title="Save to drive" class="button download group light" href="<?php echo ROOT?>download">Download</a>
+              <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
+              <a id="Delete" class ="button group delete light">Delete</a>
+                
 
             <?php else : ?>
-                <div class="button group gap right short">
-                <a id="options" class="title">Options</a>
-                <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
+               
+              <a id="download" title="Save to drive" class="button download group light" href="<?php echo ROOT?>download">Download</a>
+              <a id="clone" title="Create a new copy" class="button clone group light" href="<?php echo ROOT?>clone">Copy</a>
+                
             <?php endif ?>
-           <a id="download" title="Save to drive" class="button download group light" href="<?php echo ROOT?>download">Download</a>
-           <a id="validate" target="_blank" class="button group light" href="#">Validate</a>
+           
+
 
       </div> 
       
@@ -64,6 +76,16 @@
         <input type="checkbox" data-panel="live" data-uri="live" id="showlive"><label for="showlive">Preview</label>
       </span>
 
+      <span id="zoomout" class="button light group left sizer" data-delta="-3">
+        -
+      </span>
+      <span id="reset" class="button light group sizer" data-delta="0">
+        =
+      </span>
+      <span id="zoomin" class="button light group right sizer" data-delta="3">
+        +
+      </span>
+
       <div id="userinfo">
         <a id="account" class="button group light left" href="<?php echo ROOT?>list">Page List<?php //echo $is_owner?></a> 
         <!--<a id="account" class="button group light" href="<?php echo ROOT?>list"><?php echo $_SESSION['name']; ?></a> -->
@@ -79,3 +101,45 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript" src="<?php echo ROOT?>js/vendor/jquery.js"></script>
+<script type="text/javascript">
+$('.rename').click(function(){
+  var currentName = "<?php echo getCustomName($code_id, $revision); ?>";
+  var newName = prompt('What would you like to name this page?', currentName);
+
+  if ((newName) && (newName !== currentName)) {
+    var url = "<?php echo $code_id ?>";
+    var revision = "<?php echo $revision ?>";
+    var maxLength = 22;
+
+    $.post("../update.php", {
+        customName: newName,
+        url: url,
+        revision: revision
+      }).done(function(){
+        location.reload();
+      });
+  }
+});
+
+$('.delete').click(function(){
+  var state = confirm("Are you sure you want to delete this page?");
+  if(state == true){
+    
+    var url = "<?php echo $code_id ?>";
+    $.post("../update.php", {
+        Delete: true,
+        url: url,
+      }).done(function(){
+        
+        window.location.replace("../list");
+      });
+
+  }
+});
+
+
+</script>
+
+

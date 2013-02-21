@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS `owners` (
   `name` char(255) NOT NULL,
   `url` char(255) NOT NULL,
   `revision` int(11) default 1,
+  `hidden` int(1) NOT NULL default 0,
   
   PRIMARY KEY  (`id`),
   KEY `name_url` (`name`, `url`, `revision`)
@@ -53,9 +54,9 @@ CREATE TABLE IF NOT EXISTS `pagenames` (
 );
 
 CREATE TABLE IF NOT EXISTS `replay_sessions` (
-  `url` varchar(5) NOT NULL,
+  `url` varchar(99) NOT NULL,
   `time` int(10) NOT NULL,
-  `session` mediumtext NOT NULL
+  `session` longtext NOT NULL
 )
 
 CREATE TABLE IF NOT EXISTS `groups` (
