@@ -133,10 +133,6 @@ html, body {
  	height: 100%;
  }*/
 
- #pause {
- 	display: none;
- }
-
 #date {
 	margin-left: 20px;
 }
@@ -185,7 +181,6 @@ position: absolute;
 <div id="top">
 	<div id="controls">
 		<span id="play" title="Play" class="button" value=start name=start> <i class="icon-play"></i> </span>
-		<!-- <span id="pause" title="Pause" class="button" value=stop name=stop><i class="icon-pause"></i></span> -->
 		<!-- <span id="stop" class="button" title="Stop" value=stop name=stop onClick="reset()"><i class="icon-stop"></i></span> -->
 		<span class="button" title="Skip Back" value=stop name=stop onClick="back()"><i class="icon-step-backward"></i></span>
 		<span class="button" title="Skip Forward" value=stop name=stop onClick="skip()"><i class="icon-step-forward"></i></span>
@@ -233,7 +228,7 @@ position: absolute;
 // Timer functions
 
 //variables
-var t, timer, i, speed, play;
+var t, timer, i, speed;
 t = 0;
 i = 0;
 speed = 10;
@@ -261,6 +256,7 @@ function stopTimer(){
 	console.log("Stop");
 	self.clearInterval(timer);
 	timer = null;
+	$("#play").css("display", "inline-block");
 }
 
 function addTime(){
@@ -336,6 +332,17 @@ function html_entity_decode(str){
 
 $("#scroll-wrap").click(function(pos){
 	$("#current").offset({left:pos.pageX});
+$("#play").toggle(function(){
+	startTimer();
+	$("#play").html("<i class='icon-pause'></i>");
+}, function(){
+	stopTimer();
+	$("#play").html("<i class='icon-play'></i>");
+});
+
+$("#stop").click(function(){
+	$("#play").css("display", "inline-block");
+});
 });
 
 </script>
