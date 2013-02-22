@@ -355,6 +355,23 @@ $("#play").toggle(function(){
 $("#stop").click(function(){
 	$("#play").css("display", "inline-block");
 });
+
+$("#speed").toggle(function(){
+	speed = 50;
+	$(this).text("10x");
+}, function(){
+	speed = 5;
+	$(this).text("1x");
+});
+
+$("#speedup").click(function(){
+	speed += 5;
+	document.getElementById("speedval").innerHTML = speed;
+});
+
+$("#speeddown").click(function(){
+	speed -= 5;
+	document.getElementById("speedval").innerHTML = speed;
 });
 
 </script>
