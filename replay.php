@@ -29,9 +29,8 @@ if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false
 <html>
 <!-- containers / styling -->
 <head>
-	<link rel="stylesheet" href="./css/site.css">
-	<link rel="stylesheet" href="./css/prettify.css">
 	<link rel="stylesheet" href="./css/font-awesome.css">
+	<link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
 
 <!-- style -->
 <style type="text/css">
@@ -45,15 +44,15 @@ html, body {
 #top {
 	position: fixed;
 	top: 0;
-	height:35px;
+	width: 100%;
+	height: 35px;
 	/*padding-top:5px;*/
 	/*padding-bottom: 5px;*/
 	background-color: #222;
 	color: white;
 	font-weight: bolder;
 	font-size: 16px;
-	width: 100%;
-	
+	font-family: proxima-nova,"Helvetica Neue",Helvetica,Arial,sans-serif;	
 }
 
 #controls {
@@ -80,7 +79,16 @@ html, body {
 	background: none;
 	border-right: solid 3px #ccc;
 	border-width: 0 3px 0 0;
-	word-wrap:break-word;
+	word-wrap: break-word;
+}
+
+.code {
+	padding: 10px;
+	font-family: 'Inconsolata', sans-serif;
+	font-size: 16px;
+ 	white-space: pre-wrap;
+ 	white-space: -moz-pre-wrap;
+ 	white-space: break-word;
 }
 
 #cssReplay {
@@ -141,12 +149,6 @@ html, body {
 position: absolute;
 }
 
- pre {
- 	white-space: pre-wrap;
- 	white-space: -moz-pre-wrap;
- 	white-space: break-word;
- }
-
  .button {
  	display: inline-block;
  	height: 20px;
@@ -202,13 +204,13 @@ position: absolute;
 
 <div id="ReplayContainer">
 
-	<pre id = "cssReplay" class="pane">
+	<pre id="cssReplay" class="pane code">
 		CSS
-	</pre><pre id = "htmlReplay" class="pane">
+	</pre><pre id="htmlReplay" class="pane code">
 		HTML
 	</pre>
 
-	<div id = "previewReplay" class="pane">
+	<div id="previewReplay" class="pane">
 	</div>
 </div>
 
