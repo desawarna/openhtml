@@ -230,9 +230,8 @@ position: absolute;
 //variables
 var t, timer, i, speed;
 t = 0;
-i = 0;
-speed = 10;
-play = 0;
+frame = 0;
+speed = 5;
 
 //retrieve php variables
 <?php
@@ -247,20 +246,21 @@ $end = end($history);
 
 var history = <?php echo $js_history; ?>;
 console.log(history);
+var end = history.length;
 
 function startTimer(){
 	timer = self.setInterval("addTime()", 1)
 }
 
 function stopTimer(){
-	console.log("Stop");
 	self.clearInterval(timer);
-	timer = null;
 	$("#play").css("display", "inline-block");
+
+	console.log("Stop");
 }
 
 function addTime(){
-	t++;
+	t += speed;
 	populate();
 	// document.getElementById("t").innerHTML = t;
 	// document.getElementById("time").innerHTML = (history[i+1]['clock']/1000);
@@ -274,20 +274,21 @@ function addTime(){
 }
 
 function skip(){
-	t = (history[i]['clock'])/speed;
+	frame++;
+	t = (history[frame]['clock']);
 	populate();
 	
 }
 
 function back(){
-	i = i-2;
-	t = (history[i]['clock'])/speed;
+	frame--;
+	t = (history[frame]['clock']);
 	populate();
 }
 
 function reset(){
 	t = -1;
-	i = 0;
+	frame = 0;
 	update();
 	stopTimer();	
 }
@@ -300,23 +301,34 @@ function changeSpeed(){
 
 
 function populate(){
-	 if((t*speed) >= history[i]['clock']){
+	if((t) >= history[frame]['clock']){
+	 	frame++;
 	 	update();
-	 	i++;
-	 }
+	 	
+	}
+
+	if((t) <= history[frame-1]['clock']){
+	 	frame--;
+	 	update();
+	 	
+	}
+
+}
 
 function update(){
-		// if(typeof history[i+1] != 'undefined'){
 		var end = history.length;
 		var percent = t*speed/parseInt(history[end-1]['clock'])*100;
 		$("#elapsed").css("width", percent+"%");	
 			
-		if(i < (history.length-1)){
-			document.getElementById("cssReplay").innerHTML = history[i]['css'];
-		 	document.getElementById("htmlReplay").innerHTML = history[i]['html'];
-		 	// document.getElementById("previewReplay").innerHTML = html_entity_decode(history[i]['html'])
-		 	document.getElementById("previewReplay").innerHTML = history[i]['live'];
-		 	document.getElementById("special").innerHTML = history[i]['special'];
+		if(frame <= (history.length-1)){
+			document.getElementById("cssReplay").innerHTML = history[frame]['css'];
+		 	document.getElementById("htmlReplay").innerHTML = history[frame]['html'];
+		 	document.getElementById("previewReplay").innerHTML = history[frame]['live'];
+
+		 	if(history[frame]['special']){
+			 	//document.getElementById("special").innerHTML = history[frame]['special'];
+		 	}
+
 		 	$.scoped();
 		} else {stopTimer(); }
 	}
