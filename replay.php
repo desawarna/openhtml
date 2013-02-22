@@ -180,10 +180,9 @@ position: absolute;
 <!-- buttons -->
 <div id="top">
 	<div id="controls">
-		<span id="play" title="Play" class="button" value=start name=start> <i class="icon-play"></i> </span>
-		<!-- <span id="stop" class="button" title="Stop" value=stop name=stop onClick="reset()"><i class="icon-stop"></i></span> -->
-		<span class="button" title="Skip Back" value=stop name=stop onClick="back()"><i class="icon-step-backward"></i></span>
-		<span class="button" title="Skip Forward" value=stop name=stop onClick="skip()"><i class="icon-step-forward"></i></span>
+		<span id="play" title="Play" class="button"> <i class="icon-play"></i> </span>
+		<span id="skipBackward" class="button"><i class="icon-step-backward"></i></span>
+		<span id="skipForward" class="button"><i class="icon-step-forward"></i></span>
 		<!-- <span id="speeddown" title="Slow Down" class="button"><i class="icon-fast-backward"></i></span>
 		<span id="speedup" title="Speed Up" class="button"><i class="icon-fast-forward"></i></span> -->
 		<!-- Speed: <span id="speedval">5</span> || -->
@@ -192,13 +191,6 @@ position: absolute;
 		<span id="date">Date</span>
 		<!-- <span id="special">Events</span> -->
 	</div>
-	
-	<!-- T: <span id="t">0</span>
-	Time: <span id="time">0</span> ||
-	<input type="range" id="play" min="0" max="<?php //echo $end['clock']/1000; ?>" step="1"  value="0" /> <?php //echo $end['clock']/1000; ?>||
-	Current: <span id="playval">0</span> ||
-	Next Active: <span id="nextactive">0</span> Seconds -->
-
 
 	<div id="scroll-wrap">
 		<div id="current"></div>
@@ -228,150 +220,27 @@ position: absolute;
 // Timer functions
 
 //variables
-var t, timer, i, speed;
-t = 0;
-frame = 0;
-speed = 5;
+var timer,
+	i,
+	t,
+	speed,
+	frame;
+
+
+	t = 0;
+	speed = 5;
+	frame = 0;
 
 //retrieve php variables
 <?php
-date_default_timezone_set('America/New_York');
-$history = retrieveReplay(mysql_real_escape_string($_GET['url']));
 
-// $history = retrieveReplay("ibubiw"); // ankur's test
-// $history = retrieveReplay("ipabuc"); // tom's test
-$js_history = json_encode($history);
-$end = end($history);
+date_default_timezone_set('America/New_York');
+$history = json_encode(retrieveReplay(mysql_real_escape_string($_GET['url'])));
 
 ?>
 
-var history = <?php echo $js_history; ?>;
-console.log(history);
+var history = <?php echo $history; ?>;
 var end = history.length;
-
-function startTimer(){
-	timer = self.setInterval("addTime()", 1);
-	if(frame = history.length) {reset();};
-}
-
-function stopTimer(){
-	self.clearInterval(timer);
-	//$("#play").html("<i class='icon-play'></i>");
-
-	console.log("Stop");
-}
-
-function addTime(){
-	t += speed;
-	populate();
-	// document.getElementById("t").innerHTML = t;
-	// document.getElementById("time").innerHTML = (history[i+1]['clock']/1000);
-	// document.getElementById("nextactive").innerHTML = ((history[i+1]['clock'])-(t*speed))/1000;
-	// document.getElementById("play").value = (t*speed/1000);
-	// document.getElementById("playval").innerHTML = (t*speed/1000);
-	document.getElementById("date").innerHTML = history[frame]['stamp'];
-	updateElapsed();
-}
-
-function skip(){
-	if(frame < history.length-1){
-		frame++;
-		t = (history[frame]['clock']);
-		populate();
-	}
-}
-
-function back(){
-	if(frame > 0 ){
-		frame--;
-		t = (history[frame]['clock']);
-		populate();
-	}
-}
-
-function reset(){
-	t = -1;
-	frame = 1;
-	update();
-	
-}
-
-function changeSpeed(){
-	speed = document.getElementById("speed").value;
-	document.getElementById("speedval").innerHTML = speed;
-}
-
-
-
-function populate(){
-	if((t) >= history[frame]['clock']){
-	 	frame++;
-	 	update();
-	 	
-	}
-
-	// if((t) < history[frame]['clock']){
-	//  	frame--;
-	//  	update();
-	 	
-	// }
-
-}
-
-function update(){
-		
-		var end = history.length;
-			
-		if(frame < (history.length)){
-			document.getElementById("cssReplay").innerHTML = history[frame]['css'];
-		 	document.getElementById("htmlReplay").innerHTML = history[frame]['html'];
-		 	document.getElementById("previewReplay").innerHTML = history[frame]['live'];
-
-		 	if(history[frame]['special']){
-			 	//document.getElementById("special").innerHTML = history[frame]['special'];
-		 	}
-
-		 	$.scoped();
-		} else {
-			console.log(frame);
-			$("#play").click();
-		}
-
-	updateElapsed();
-}
-
-function updateElapsed(){
-	var percent = ((t)/parseInt(history[end-1]['clock']))*100;
-	if(percent >= 100) {percent = 100};
-	$("#elapsed").css("width", percent+"%");
-}
-
-function html_entity_decode(str){
- var tarea = document.createElement('textarea');
- tarea.innerHTML = str; return tarea.value;
- tarea.parentNode.removeChild(tarea);
-}
-
-$("#scroll-wrap").click(function(pos){
-		var newpercent = ((pos.pageX-$(this).offset().left)/($(this).width()));
-		t = newpercent*history[end-1]['clock'];
-
-		for(index = 1; index < history.length; index++){
-			 if((t > history[index-1]['clock']) && (t <= history[index]['clock'])){
-				frame = index;
-				update();
-				break;
-			}
-		}
-		console.log(frame);
-	});
-
-
-
-$("#scroll-wrap").mousemove(function(e){
-	
-
-});
 
 $("#play").toggle(function(){
 	startTimer();
@@ -381,8 +250,24 @@ $("#play").toggle(function(){
 	$("#play").html("<i class='icon-play'></i>");
 });
 
-$("#stop").click(function(){
-	$("#play").css("display", "inline-block");
+$('#skipBackward').click(function(){
+
+	if(frame > 0 ){
+		frame--;
+		t = (history[frame]['clock']);
+		populate();
+	}
+
+});
+
+$('#skipForward').click(function(){
+
+	if(frame < history.length-1){
+		frame++;
+		t = (history[frame]['clock']);
+		populate();
+	}
+
 });
 
 $("#speed").toggle(function(){
@@ -402,6 +287,102 @@ $("#speeddown").click(function(){
 	speed -= 5;
 	document.getElementById("speedval").innerHTML = speed;
 });
+
+$("#scroll-wrap").click(function(pos){
+
+	var newpercent = ((pos.pageX-$(this).offset().left)/($(this).width()));
+	t = newpercent*history[end-1]['clock'];
+
+	for(index = 1; index < history.length; index++){
+		 if((t > history[index-1]['clock']) && (t <= history[index]['clock'])){
+			frame = index;
+			update();
+			break;
+		}
+	}
+
+});
+
+function startTimer() {
+	timer = self.setInterval(addTime, 1);
+	if (frame == history.length) {
+		reset();
+	};
+
+}
+
+function stopTimer(){
+	self.clearInterval(timer);
+}
+
+function addTime(){
+
+	t += speed;
+	populate();
+	// document.getElementById("t").innerHTML = t;
+	// document.getElementById("time").innerHTML = (history[i+1]['clock']/1000);
+	// document.getElementById("nextactive").innerHTML = ((history[i+1]['clock'])-(t*speed))/1000;
+	// document.getElementById("play").value = (t*speed/1000);
+	// document.getElementById("playval").innerHTML = (t*speed/1000);
+	updateElapsed();
+}
+
+function reset(){
+	t = -1;
+	frame = 1;
+	update();
+}
+
+function changeSpeed(){
+	speed = document.getElementById("speed").value;
+	document.getElementById("speedval").innerHTML = speed;
+}
+
+function populate(){
+
+	if(t >= history[frame]['clock']){
+	 	frame++;
+	 	update();
+	}
+
+	// if((t) < history[frame]['clock']){
+	//  	frame--;
+	//  	update();
+	// }
+
+}
+
+function update(){
+			
+	if (frame < history.length) {
+		document.getElementById("cssReplay").innerHTML = history[frame]['css'];
+	 	document.getElementById("htmlReplay").innerHTML = history[frame]['html'];
+	 	document.getElementById("previewReplay").innerHTML = history[frame]['live'];
+		document.getElementById("date").innerHTML = history[frame]['stamp'];
+
+	 	// if(history[frame]['special']){
+		 // 	document.getElementById("special").innerHTML = history[frame]['special'];
+	 	// }
+
+	 	$.scoped();
+		updateElapsed();
+
+	} else {
+		$("#play").click();
+	}
+}
+
+function updateElapsed(){
+	var percent = ((t)/parseInt(history[end-1]['clock']))*100;
+	if(percent >= 100) {percent = 100};
+	$("#elapsed").css("width", percent+"%");
+}
+
+function html_entity_decode(str){
+ var tarea = document.createElement('textarea');
+ tarea.innerHTML = str; return tarea.value;
+ tarea.parentNode.removeChild(tarea);
+}
 
 </script>
 
@@ -438,9 +419,8 @@ function retrieveReplay($url) {
 	
 	$history = str_replace('][', ',', $history);
 	$history = json_decode($history, true);
-
-
 	$history = formatReplay($history);
+
 	return $history;
 }
 
