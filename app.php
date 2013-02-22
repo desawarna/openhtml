@@ -653,7 +653,7 @@ function formatCompletedCode($html, $javascript, $code_id, $revision) {
     $html = $parts[0];
     $close = count($parts) == 2 ? '</head>' . $parts[1] : '';
     $html .= "<style>\n" . $javascript . "\n</style>\n" . $close;
-  } else if ($javascript) {
+  } else if ($javascript && $html) {
     // removed the regex completely to try to protect $n variables in JavaScript
     $htmlParts = explode("%code%", $html);
     $html = $htmlParts[0] . $javascript . $htmlParts[1];
