@@ -414,7 +414,7 @@ $session = array();
 //Retrieves replay history from the database
 function retrieveReplay($url) {
 
-
+	$history = "";
 
 	$sql = "SELECT session FROM replay_sessions WHERE url = '" . mysql_real_escape_string($url) . "' ORDER BY time ASC";
 	$result = mysql_query($sql);
