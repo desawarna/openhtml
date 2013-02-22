@@ -45,20 +45,34 @@ html, body {
 #top {
 	position: fixed;
 	top: 0;
-	background-color: orange;
+	height:35px;
+	/*padding-top:5px;*/
+	/*padding-bottom: 5px;*/
+	background-color: #222;
+	color: white;
+	font-weight: bolder;
+	font-size: 16px;
 	width: 100%;
-	border: solid 1px #ccc;
+	
+}
+
+#controls {
+	width: 400px;
+	margin-top: 7px;
+	display: inline-block;
+	float: left;
 }
 
 #ReplayContainer {
 	box-sizing: border-box;
 	height: 100%;
-	padding-top: 43px;
+	padding-top: 33px;
 }
 
 .pane {
 	box-sizing: border-box;
 	float:left;
+	overflow: scroll;
 	vertical-align: top;
 	display: inline-block;
 	height: 100%;
@@ -84,31 +98,48 @@ html, body {
 }
 
  #special {
+ 	float: right;
+ 	padding-right: 5px;
  	clear: left;
  }
 
  #scroll-wrap {
- 	width: 100%;
- 	height: 5px;
- 	margin-top:7px;
- 	padding: 3px;
- 	background-color: yellow;
+ 	box-sizing: border-box;
+ 	height: 100%;
+ 	/*width: 40%;*/
+ 	margin-left: 400px;
+ 	/*margin-top: 7px;*/
+ 	/*padding: 3px;*/
+ 	background-color: #DEF1FC;
+ 	border: solid 3px #222;
  }
 
 /* #scroll-wrap:hover {
- 	height: 20px;
- }*/
-
- #speed {
+ 	height: 15px;
+ }
+*/
+ #speed_range {
  	top: 2px;
  }
 
  #elapsed {
- 	height:5px;
- 	width: 1%;
+ 	height: 100%;
+ 	width: 0%;
  	vertical-align: middle;
- 	background-color: orange;
+ 	background-color: #2ba6cb;
  }
+/*
+ #elapsed:hover {
+ 	height: 100%;
+ }*/
+
+ #pause {
+ 	display: none;
+ }
+
+#date {
+	margin-left: 20px;
+}
 
  .top {
 position: absolute;
@@ -123,11 +154,21 @@ position: absolute;
  .button {
  	display: inline-block;
  	height: 20px;
- 	width: 20px;
- 	padding: 1px 10px 1px 10px;
- 	/*margin-right:10px;*/
- 	font-size: 20px;
+ 	width: 40px;
+ 	background-color: rgba(255, 255, 255, 0.35);
+ 	/*border: solid 1px rgba(255, 255, 255, 0.8);*/
+ 	border-radius: 5px;
+ 	/*padding-top: 5px;*/
+ 	margin-left: 5px;
+ 	text-align: center;
+ 	font-size: 14px;
     color: #FFF;
+    cursor: pointer;
+ }
+
+ .button:hover {
+ 	color: #2ba6cb;
+ 	background-color: rgba(255, 255, 255, 0.98);
  }
 
  .button:active {
@@ -142,19 +183,28 @@ position: absolute;
 
 <!-- buttons -->
 <div id="top">
-	<div class="button" value=start name=start onClick="startTimer()"> <i class="icon-play"></i> </div>
-	<div class="button" value=stop name=stop onClick="stopTimer()"><i class="icon-pause"></i></div>
-	<div class="button" value=stop name=stop onClick="back()"><i class="icon-step-backward"></i></div>
-	<div class="button" value=stop name=stop onClick="skip()"><i class="icon-step-forward"></i></div>
-	<div class="button" value=stop name=stop onClick="reset()"><i class="icon-stop"></i></div>
-	Speed: <span id="speedval">10</span>  <input type="range" id="speed" min="0" max="50" step="1"  value="10" onChange="changeSpeed()"/>
-	Event: <span id="special">Events</span>
-	Date: <span id="date">cdas</span>
+	<div id="controls">
+		<span id="play" title="Play" class="button" value=start name=start> <i class="icon-play"></i> </span>
+		<!-- <span id="pause" title="Pause" class="button" value=stop name=stop><i class="icon-pause"></i></span> -->
+		<!-- <span id="stop" class="button" title="Stop" value=stop name=stop onClick="reset()"><i class="icon-stop"></i></span> -->
+		<span class="button" title="Skip Back" value=stop name=stop onClick="back()"><i class="icon-step-backward"></i></span>
+		<span class="button" title="Skip Forward" value=stop name=stop onClick="skip()"><i class="icon-step-forward"></i></span>
+		<!-- <span id="speeddown" title="Slow Down" class="button"><i class="icon-fast-backward"></i></span>
+		<span id="speedup" title="Speed Up" class="button"><i class="icon-fast-forward"></i></span> -->
+		<!-- Speed: <span id="speedval">5</span> || -->
+		<span id="speed" class="button">1x</span>
+		<!-- <input type="range" id="speed_range" min="0" max="50" step="1"  value="10" onChange="changeSpeed()"/> -->
+		<span id="date">Date</span>
+		<!-- <span id="special">Events</span> -->
+	</div>
+	
 	<!-- T: <span id="t">0</span>
 	Time: <span id="time">0</span> ||
-	<input type="range" id="play" min="0" max="<?php echo $end['clock']/1000; ?>" step="1"  value="0" /> <?php echo $end['clock']/1000; ?>||
+	<input type="range" id="play" min="0" max="<?php //echo $end['clock']/1000; ?>" step="1"  value="0" /> <?php //echo $end['clock']/1000; ?>||
 	Current: <span id="playval">0</span> ||
 	Next Active: <span id="nextactive">0</span> Seconds -->
+
+
 	<div id="scroll-wrap">
 		<div id="current"></div>
 		<div id="elapsed"></div>
