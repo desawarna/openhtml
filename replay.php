@@ -237,6 +237,7 @@ speed = 5;
 <?php
 date_default_timezone_set('America/New_York');
 $history = retrieveReplay(mysql_real_escape_string($_GET['url']));
+
 // $history = retrieveReplay("ibubiw"); // ankur's test
 // $history = retrieveReplay("ipabuc"); // tom's test
 $js_history = json_encode($history);
@@ -249,12 +250,13 @@ console.log(history);
 var end = history.length;
 
 function startTimer(){
-	timer = self.setInterval("addTime()", 1)
+	timer = self.setInterval("addTime()", 1);
+	if(frame = history.length) {reset();};
 }
 
 function stopTimer(){
 	self.clearInterval(timer);
-	$("#play").css("display", "inline-block");
+	//$("#play").html("<i class='icon-play'></i>");
 
 	console.log("Stop");
 }
@@ -267,28 +269,31 @@ function addTime(){
 	// document.getElementById("nextactive").innerHTML = ((history[i+1]['clock'])-(t*speed))/1000;
 	// document.getElementById("play").value = (t*speed/1000);
 	// document.getElementById("playval").innerHTML = (t*speed/1000);
-	document.getElementById("date").innerHTML = history[frame-1]['stamp'];
+	document.getElementById("date").innerHTML = history[frame]['stamp'];
 	updateElapsed();
 }
 
 function skip(){
-	frame++;
-	t = (history[frame]['clock']);
-	populate();
-	
+	if(frame < history.length-1){
+		frame++;
+		t = (history[frame]['clock']);
+		populate();
+	}
 }
 
 function back(){
-	frame--;
-	t = (history[frame]['clock']);
-	populate();
+	if(frame > 0 ){
+		frame--;
+		t = (history[frame]['clock']);
+		populate();
+	}
 }
 
 function reset(){
 	t = -1;
-	frame = 0;
+	frame = 1;
 	update();
-	stopTimer();	
+	
 }
 
 function changeSpeed(){
@@ -305,11 +310,11 @@ function populate(){
 	 	
 	}
 
-	if((t) <= history[frame-1]['clock']){
-	 	frame--;
-	 	update();
+	// if((t) < history[frame]['clock']){
+	//  	frame--;
+	//  	update();
 	 	
-	}
+	// }
 
 }
 
@@ -317,7 +322,7 @@ function update(){
 		
 		var end = history.length;
 			
-		if(frame <= (history.length-1)){
+		if(frame < (history.length)){
 			document.getElementById("cssReplay").innerHTML = history[frame]['css'];
 		 	document.getElementById("htmlReplay").innerHTML = history[frame]['html'];
 		 	document.getElementById("previewReplay").innerHTML = history[frame]['live'];
@@ -327,7 +332,11 @@ function update(){
 		 	}
 
 		 	$.scoped();
-		} else {stopTimer(); }
+		} else {
+			console.log(frame);
+			$("#play").click();
+		}
+
 	updateElapsed();
 }
 
@@ -418,17 +427,14 @@ function retrieveReplay($url) {
 
 	$sql = "SELECT session FROM replay_sessions WHERE url = '" . mysql_real_escape_string($url) . "' ORDER BY time ASC";
 	$result = mysql_query($sql);
-		
 
+	if(!mysql_num_rows($result)){
+		exit;
+	}	
+		
 	while ($row = mysql_fetch_assoc($result, MYSQL_ASSOC)) {
 		$history .= $row['session'];
-	}
-
-	// foreach($history as $key => $value){
-	// 	$java_object .= $history[$key]["session"];
-	// }
-
-
+	}	
 	
 	$history = str_replace('][', ',', $history);
 	$history = json_decode($history, true);
