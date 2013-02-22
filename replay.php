@@ -267,10 +267,8 @@ function addTime(){
 	// document.getElementById("nextactive").innerHTML = ((history[i+1]['clock'])-(t*speed))/1000;
 	// document.getElementById("play").value = (t*speed/1000);
 	// document.getElementById("playval").innerHTML = (t*speed/1000);
-	document.getElementById("date").innerHTML = history[i-1]['stamp'];
-	var end = history.length;
-	var percent = t*speed/parseInt(history[end-1]['clock'])*100;
-	$("#elapsed").css("width", percent+"%");
+	document.getElementById("date").innerHTML = history[frame-1]['stamp'];
+	updateElapsed();
 }
 
 function skip(){
@@ -316,9 +314,8 @@ function populate(){
 }
 
 function update(){
+		
 		var end = history.length;
-		var percent = t*speed/parseInt(history[end-1]['clock'])*100;
-		$("#elapsed").css("width", percent+"%");	
 			
 		if(frame <= (history.length-1)){
 			document.getElementById("cssReplay").innerHTML = history[frame]['css'];
@@ -331,7 +328,13 @@ function update(){
 
 		 	$.scoped();
 		} else {stopTimer(); }
-	}
+	updateElapsed();
+}
+
+function updateElapsed(){
+	var percent = ((t)/parseInt(history[end-1]['clock']))*100;
+	if(percent >= 100) {percent = 100};
+	$("#elapsed").css("width", percent+"%");
 }
 
 function html_entity_decode(str){
@@ -340,10 +343,27 @@ function html_entity_decode(str){
  tarea.parentNode.removeChild(tarea);
 }
 
-
-
 $("#scroll-wrap").click(function(pos){
-	$("#current").offset({left:pos.pageX});
+		var newpercent = ((pos.pageX-$(this).offset().left)/($(this).width()));
+		t = newpercent*history[end-1]['clock'];
+
+		for(index = 1; index < history.length; index++){
+			 if((t > history[index-1]['clock']) && (t <= history[index]['clock'])){
+				frame = index;
+				update();
+				break;
+			}
+		}
+		console.log(frame);
+	});
+
+
+
+$("#scroll-wrap").mousemove(function(e){
+	
+
+});
+
 $("#play").toggle(function(){
 	startTimer();
 	$("#play").html("<i class='icon-pause'></i>");
