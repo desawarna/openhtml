@@ -252,8 +252,8 @@ $("#play").toggle(function(){
 
 $('#skipBackward').click(function(){
 
-	if(frame > 0 ){
-		frame--;
+	if (frame > 1) {
+		frame = frame - 2;
 		t = (history[frame]['clock']);
 		populate();
 	}
@@ -262,7 +262,7 @@ $('#skipBackward').click(function(){
 
 $('#skipForward').click(function(){
 
-	if(frame < history.length-1){
+	if (frame < history.length-1) {
 		frame++;
 		t = (history[frame]['clock']);
 		populate();
@@ -278,28 +278,57 @@ $("#speed").toggle(function(){
 	$(this).text("1x");
 });
 
-$("#speedup").click(function(){
-	speed += 5;
-	document.getElementById("speedval").innerHTML = speed;
-});
+// $("#speedup").click(function(){
+// 	speed += 5;
+// 	document.getElementById("speedval").innerHTML = speed;
+// });
 
-$("#speeddown").click(function(){
-	speed -= 5;
-	document.getElementById("speedval").innerHTML = speed;
-});
+// $("#speeddown").click(function(){
+// 	speed -= 5;
+// 	document.getElementById("speedval").innerHTML = speed;
+// });
 
-$("#scroll-wrap").click(function(pos){
+$("#scroll-wrap").click(function(pos) {
 
 	var newpercent = ((pos.pageX-$(this).offset().left)/($(this).width()));
 	t = newpercent*history[end-1]['clock'];
 
-	for(index = 1; index < history.length; index++){
-		 if((t > history[index-1]['clock']) && (t <= history[index]['clock'])){
+	for(index = 1; index < history.length; index++) {
+		 if((t > history[index-1]['clock']) && (t <= history[index]['clock'])) {
 			frame = index;
 			update();
 			break;
 		}
 	}
+
+});
+
+$('body').keyup(function(e) {
+
+   if (e.keyCode == 32){
+       // user has pressed space
+       $('#play').click();
+   }
+
+   if (e.keyCode == 39){
+       // user has pressed right arrow
+       $('#skipForward').click();
+   }
+
+   if (e.keyCode == 37){
+       // user has pressed left arrow
+       $('#skipBackward').click();
+   }
+
+   if ((e.keyCode == 38) && ($('#speed').text() == "1x")) {
+       // user has pressed up arrow
+       $('#speed').click();
+   }
+
+   if ((e.keyCode == 40) && ($('#speed').text() == "10x")) {
+       // user has pressed down arrow
+       $('#speed').click();
+   }
 
 });
 
@@ -340,7 +369,7 @@ function changeSpeed(){
 
 function populate(){
 
-	if(t >= history[frame]['clock']){
+	if (t >= history[frame]['clock']){
 	 	frame++;
 	 	update();
 	}
