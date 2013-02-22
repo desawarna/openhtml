@@ -450,7 +450,10 @@ function formatReplay($data) {
 		$data[$key]['html'] = htmlentities($data[$key]['html']);
 		$data[$key]['css'] = htmlentities($data[$key]['css']);
 		$data[$key]['clock'] -= $origTime;
-		//if((($data[$key]['clock'])-($data[$key-1]['clock'])) > 300) $session['clock'];
+		// if((($data[$key]['clock'])-($data[$key-1]['clock'])) > 300) {
+		// 	$session['end'] = $data[$key-1]['clock'];
+		// 	$session['start'] = $data[$key]['clock'];
+		// }
 	}
 
 	return $data;
