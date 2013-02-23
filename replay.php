@@ -83,6 +83,10 @@ html, body {
 	word-wrap: break-word;
 }
 
+.highlight {
+	background-color: #DEF1FC;
+}
+
 .code {
 	padding: 10px;
 	font-family: 'Inconsolata', sans-serif;
@@ -393,7 +397,20 @@ function update(){
 		document.getElementById("date").innerHTML = history[frame]['stamp'];
 
 	 	if(history[frame]['special']){
-	 		toastr.success(history[frame]['special'], history[frame]['stamp']);
+	 		console.log(history[frame]['special']);
+
+			var event = history[frame]['special'];
+
+			if (event == 'html') {
+				$('.pane').removeClass('highlight');
+				$('#htmlReplay').addClass('highlight');
+			} else if (event == 'javascript') {
+				$('.pane').removeClass('highlight');
+				$('#cssReplay').addClass('highlight');
+			} else {
+	 			toastr.success(history[frame]['special'], history[frame]['stamp']);
+			}
+
 	 	}
 
 	 	$.scoped();
