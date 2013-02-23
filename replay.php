@@ -120,6 +120,7 @@ html, body {
  	/*padding: 3px;*/
  	background-color: #DEF1FC;
  	border: solid 3px #222;
+ 	cursor: pointer;
  }
 
 /* #scroll-wrap:hover {
