@@ -220,30 +220,22 @@ position: absolute;
 <script type="text/javascript" src="<?php echo ROOT?>js/vendor/jquery.scoped.js"></script>
 <script type="text/javascript">
 
-// Timer functions
-
-//variables
-var timer,
-	i,
-	t,
-	speed,
-	frame;
-
-
-	t = 0;
-	speed = 5;
-	frame = 0;
-
-//retrieve php variables
+// retrieve php variables
 <?php
 
-date_default_timezone_set('America/New_York');
-$history = json_encode(retrieveReplay(mysql_real_escape_string($_GET['url'])));
+	date_default_timezone_set('America/New_York');
+	$history = json_encode(retrieveReplay(mysql_real_escape_string($_GET['url'])));
 
 ?>
 
 var history = <?php echo $history; ?>;
 var end = history.length;
+
+var timer,
+	i,
+	t = 0,
+	speed = 5,
+	frame = 0;
 
 $("#play").toggle(function(){
 	startTimer();
@@ -336,6 +328,7 @@ $('body').keyup(function(e) {
 });
 
 function startTimer() {
+
 	timer = self.setInterval(addTime, 1);
 	if (frame == history.length) {
 		reset();
