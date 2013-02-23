@@ -29,7 +29,8 @@ if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false
 <html>
 <!-- containers / styling -->
 <head>
-	<link rel="stylesheet" href="./css/font-awesome.css">
+	<link rel="stylesheet" href="<?php echo ROOT?>/css/font-awesome.css">
+	<link rel="stylesheet" href="<?php echo ROOT?>/css/toastr.css">
 	<link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
 
 <!-- style -->
@@ -174,6 +175,11 @@ position: absolute;
  	opacity: .5;
  }
 
+ #toast-container > div {
+ 	width: 200px;
+ 	opacity: 1;
+ }
+
 </style>
 
 </head>
@@ -218,6 +224,7 @@ position: absolute;
 <!-- script -->
 <script type="text/javascript" src="<?php echo ROOT?>js/vendor/jquery.js"></script>
 <script type="text/javascript" src="<?php echo ROOT?>js/vendor/jquery.scoped.js"></script>
+<script type="text/javascript" src="<?php echo ROOT?>js/vendor/toastr.js"></script>
 <script type="text/javascript">
 
 // retrieve php variables
@@ -385,9 +392,9 @@ function update(){
 	 	document.getElementById("previewReplay").innerHTML = history[frame]['live'];
 		document.getElementById("date").innerHTML = history[frame]['stamp'];
 
-	 	// if(history[frame]['special']){
-		 // 	document.getElementById("special").innerHTML = history[frame]['special'];
-	 	// }
+	 	if(history[frame]['special']){
+	 		toastr.success(history[frame]['special'], history[frame]['stamp']);
+	 	}
 
 	 	$.scoped();
 		updateElapsed();
