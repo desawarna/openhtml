@@ -78,7 +78,7 @@ html, body {
 	-ms-box-sizing: border-box;
 	box-sizing: border-box;
 	float:left;
-	overflow: scroll;
+	overflow: auto;
 	vertical-align: top;
 	display: inline-block;
 	height: 100%;
