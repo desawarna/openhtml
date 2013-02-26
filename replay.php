@@ -64,12 +64,18 @@ html, body {
 }
 
 #ReplayContainer {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
 	box-sizing: border-box;
 	height: 100%;
 	padding-top: 33px;
 }
 
 .pane {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
 	box-sizing: border-box;
 	float:left;
 	overflow: scroll;
@@ -117,6 +123,9 @@ html, body {
  }
 
  #scroll-wrap {
+ 	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
  	box-sizing: border-box;
  	height: 100%;
  	/*width: 40%;*/
