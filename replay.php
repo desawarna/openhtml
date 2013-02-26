@@ -160,8 +160,8 @@ html, body {
 	margin-left: 20px;
 }
 
- .top {
-position: absolute;
+.top {
+	position: absolute;
 }
 
  .button {
@@ -191,6 +191,10 @@ position: absolute;
  #toast-container > div {
  	width: 200px;
  	opacity: 1;
+ }
+
+ .toast-top-right {
+ 	top: 45px;
  }
 
 </style>
