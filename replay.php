@@ -254,6 +254,11 @@ html, body {
 
 var history = <?php echo $history; ?>;
 var end = history.length;
+var processed = sessionize(history);
+sessions = processed["sessions"];
+history = processed["history"];
+
+console.log(sessions);
 
 var timer,
 	i,
@@ -273,7 +278,7 @@ $('#skipBackward').click(function(){
 
 	if (frame > 1) {
 		frame = frame - 2;
-		t = (history[frame]['clock']);
+		t = (history[frame]['playTime']);
 		populate();
 	}
 
@@ -282,8 +287,8 @@ $('#skipBackward').click(function(){
 $('#skipForward').click(function(){
 
 	if (frame < history.length-1) {
-		frame++;
-		t = (history[frame]['clock']);
+		// frame++;
+		t = (history[frame]['playTime']);
 		populate();
 	}
 
@@ -310,10 +315,10 @@ $("#speed").toggle(function(){
 $("#scroll-wrap").click(function(pos) {
 
 	var newpercent = ((pos.pageX-$(this).offset().left)/($(this).width()));
-	t = newpercent*history[end-1]['clock'];
+	t = newpercent*history[end-1]['playTime'];
 
 	for(index = 1; index < history.length; index++) {
-		 if((t > history[index-1]['clock']) && (t <= history[index]['clock'])) {
+		 if((t > history[index-1]['playTime']) && (t <= history[index]['playTime'])) {
 			frame = index;
 			update();
 			break;
@@ -369,8 +374,8 @@ function addTime(){
 	t += speed;
 	populate();
 	// document.getElementById("t").innerHTML = t;
-	// document.getElementById("time").innerHTML = (history[i+1]['clock']/1000);
-	// document.getElementById("nextactive").innerHTML = ((history[i+1]['clock'])-(t*speed))/1000;
+	// document.getElementById("time").innerHTML = (history[i+1]['playTime']/1000);
+	// document.getElementById("nextactive").innerHTML = ((history[i+1]['playTime'])-(t*speed))/1000;
 	// document.getElementById("play").value = (t*speed/1000);
 	// document.getElementById("playval").innerHTML = (t*speed/1000);
 	updateElapsed();
@@ -389,12 +394,12 @@ function changeSpeed(){
 
 function populate(){
 
-	if (t >= history[frame]['clock']){
+	if (t >= history[frame]['playTime']){
 	 	frame++;
 	 	update();
 	}
 
-	// if((t) < history[frame]['clock']){
+	// if((t) < history[frame]['playTime']){
 	//  	frame--;
 	//  	update();
 	// }
@@ -435,7 +440,7 @@ function update(){
 }
 
 function updateElapsed(){
-	var percent = ((t)/parseInt(history[end-1]['clock']))*100;
+	var percent = ((t)/parseInt(history[end-1]['playTime']))*100;
 	if(percent >= 100) {percent = 100};
 	$("#elapsed").css("width", percent+"%");
 }
@@ -445,6 +450,42 @@ function html_entity_decode(str){
  tarea.innerHTML = str; return tarea.value;
  tarea.parentNode.removeChild(tarea);
 }
+
+function sessionize(data){
+	var timeout = 5*60*1000;
+	var session = 0;
+	var sessions = new Array();
+	sessions[0] = new Array();
+	var deadtime = 0;
+	var gap;
+
+	for (i=0; i<data.length; i++) {
+
+		sessions[session].push(data[i]);
+		
+		// if(i < data.length-1){
+			
+			gap = (i > 0) ? (data[i]['clock'] - data[i-1]['clock']) : 0;
+
+			if (gap > timeout) {
+				session++;
+				sessions[session] = new Array();
+
+				deadtime += gap;
+			}
+		// }
+		// if(i < data.length-1){
+		data[i]['playTime'] = data[i]['clock'] - deadtime;
+		// }
+
+	}
+
+	return {
+		"sessions": sessions,
+		"history": data
+	};
+}
+
 
 </script>
 
@@ -503,9 +544,10 @@ function formatReplay($data) {
 		// 	$session['start'] = $data[$key]['clock'];
 		// }
 	}
-
 	return $data;
 }
+
+
 
 function formatCompletedCode($html, $javascript) {
 
