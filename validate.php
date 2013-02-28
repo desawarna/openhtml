@@ -1,4 +1,6 @@
 <?php
+  
+
 
 function validate($code, $type){
 
@@ -10,10 +12,12 @@ function validate($code, $type){
     curl_setopt_array(
       $handle,
       array(
+        CURLOPT_USERAGENT => $_SERVER['HTTP_USER_AGENT'],
         CURLOPT_URL => $url,
         CURLOPT_POSTFIELDS => "fragment=".urlencode($code),
         // CURLOPT_POSTFIELDS => "fragment=".$code."&output=soap12",
         CURLOPT_RETURNTRANSFER => true
+
       )
     );
 
