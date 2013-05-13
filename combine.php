@@ -30,6 +30,7 @@
 		// 		'"html":'		. 	$r["html"] . ', ' .
 		// 		'"css":' 		. 	$r["css"] . ', ' .
 		// 		'"special":'	.	$r["special"] . '} <br>';
+		if ($r["url"] == "") continue;
 		$url = $r["url"];
 
 // Add JSON to row once all input has been combined for a single url
