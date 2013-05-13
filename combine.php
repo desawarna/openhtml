@@ -66,6 +66,7 @@
 
 	foreach ($pages as $key => $value) {
 		// if ($pages[$key]['url'] == "") $pages[$key]['url'] = "UNDEFINED";
+		echo $key . ": " . $value;
 		 $query = "INSERT INTO replay_combined (url, time, session) VALUES ('{$pages[$key]['url']}', '{$pages[$key]['time']}', '{$pages[$key]['session']}')";
 
 		 // VALUES ({$pages[$key]['url']}, {$pages[$key]['time']}, {$pages[$key]['session']})
