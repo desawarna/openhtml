@@ -60,12 +60,12 @@
 
 //Export Sorted Data into a duplicate table to merge old data set and new data set
 	mysql_query("CREATE TABLE replay_combined LIKE replay_sessions");
-	mysql_query("INSERT INTO replay_combined SELECT * FROM replay_sessions");
+	// mysql_query("INSERT INTO replay_combined SELECT * FROM replay_sessions");
 
 	echo "Number of rows in Old Data: " . count($pages);
 
 	foreach ($pages as $key => $value) {
-		if ($pages[$key]['url'] == "") $pages[$key]['url'] = "UNDEFINED";
+		// if ($pages[$key]['url'] == "") $pages[$key]['url'] = "UNDEFINED";
 		 $query = "INSERT INTO replay_combined (url, time, session) VALUES ('{$pages[$key]['url']}', '{$pages[$key]['time']}', '{$pages[$key]['session']}')";
 
 		 // VALUES ({$pages[$key]['url']}, {$pages[$key]['time']}, {$pages[$key]['session']})
