@@ -67,7 +67,8 @@
 	foreach ($pages as $key => $value) {
 		// if ($pages[$key]['url'] == "") $pages[$key]['url'] = "UNDEFINED";
 		echo $key . ": " . $value;
-		 $query = "INSERT INTO replay_combined (url, time, session) VALUES ('{$pages[$key]['url']}', '{$pages[$key]['time']}', '{$pages[$key]['session']}')";
+		$query = sprintf("INSERT INTO replay_combined (url, time, session) VALUES ('%s', '%s', '%s')", mysql_real_escape_string($value['url']), mysql_real_escape_string($value['time']), mysql_real_escape_string($value['session']) );
+		// $query = "INSERT INTO replay_combined (url, time, session) VALUES ('{$value['url']}', '{$value['time']}', '{$value['session']}')";
 
 		 // VALUES ({$pages[$key]['url']}, {$pages[$key]['time']}, {$pages[$key]['session']})
 		$run = mysql_query($query);
