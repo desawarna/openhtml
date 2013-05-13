@@ -34,10 +34,10 @@
 		$url = $r["url"];
 
 // Add JSON to row once all input has been combined for a single url
-		if($i != 0 && $purl != $url){
+		if(($i != 0 && $purl != $url) || $i > 30){
 			$combined = substr_replace($combined, "", -2);
 			$combined .= "]";
-			$pages[$purl] = array(
+			$pages[] = array(
 									"url" => $purl,
 									"time" => $ptime,
 									"session" => $combined
@@ -66,7 +66,7 @@
 
 	foreach ($pages as $key => $value) {
 		// if ($pages[$key]['url'] == "") $pages[$key]['url'] = "UNDEFINED";
-		echo $key . ": " . $value;
+		echo $key . ": " . $value . "\n";
 		$query = sprintf("INSERT INTO replay_combined (url, time, session) VALUES ('%s', '%s', '%s')", mysql_real_escape_string($value['url']), mysql_real_escape_string($value['time']), mysql_real_escape_string($value['session']) );
 		// $query = "INSERT INTO replay_combined (url, time, session) VALUES ('{$value['url']}', '{$value['time']}', '{$value['session']}')";
 
