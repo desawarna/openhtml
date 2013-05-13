@@ -34,7 +34,7 @@
 		$url = $r["url"];
 
 // Add JSON to row once all input has been combined for a single url
-		if(($i != 0 && $purl != $url) || $i > 30){
+		if(($i != 0 && $purl != $url) || $i > 100){
 			$combined = substr_replace($combined, "", -2);
 			$combined .= "]";
 			$pages[] = array(
