@@ -1,5 +1,8 @@
 <?php
 
+	set_time_limit(0);
+	ini_set("memory_limit", "400M");
+
 //Variables
 	$pages = array(); // Contains a Row each entry which includes consolidated data for each page from the old data set
 	$combined = "[";
