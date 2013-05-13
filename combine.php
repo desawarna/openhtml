@@ -67,7 +67,7 @@
 
 		 // VALUES ({$pages[$key]['url']}, {$pages[$key]['time']}, {$pages[$key]['session']})
 		$run = mysql_query($query);
-		echo $query;
+		// echo $query;
 	}
 
 
