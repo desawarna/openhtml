@@ -520,7 +520,6 @@ function retrieveReplay($url) {
 	}	
 		
 	while ($row = mysql_fetch_assoc($result, MYSQL_ASSOC)) {
-		error_log($row['session']);
 		$history .= $row['session'];
 	}	
 	
