@@ -520,14 +520,12 @@ function retrieveReplay($url) {
 	}	
 		
 	while ($row = mysql_fetch_assoc($result, MYSQL_ASSOC)) {
+		error_log($row['session']);
 		$history .= $row['session'];
 	}	
 	
-	echo '<script>console.log(\'first: ' . $history . '\');</script>';
 	$history = str_replace('][', ',', $history);
-	echo '<script>console.log(\'str_replace: ' . $history . '\');</script>';
 	$history = json_decode($history, true);
-	echo '<script>console.log(\'json_decode: ' . $history . '\');</script>';
 	$history = formatReplay($history);
 
 	return $history;
