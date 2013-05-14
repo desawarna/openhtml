@@ -1,5 +1,7 @@
 <?php
 
+set_time_limit(0);
+
 //loginto sql
 
 include('config.php'); // contains DB & important versioning
