@@ -523,11 +523,11 @@ function retrieveReplay($url) {
 		$history .= $row['session'];
 	}	
 	
-	echo '<script>console.log("first: ' . $history . '");</script>';
+	echo '<script>console.log(\'first: ' . $history . '\');</script>';
 	$history = str_replace('][', ',', $history);
-	echo '<script>console.log("str_replace: ' . $history . '");</script>';
+	echo '<script>console.log(\'str_replace: ' . $history . '\');</script>';
 	$history = json_decode($history, true);
-	echo '<script>console.log("json_decode: ' . $history . '");</script>';
+	echo '<script>console.log(\'json_decode: ' . $history . '\');</script>';
 	$history = formatReplay($history);
 
 	return $history;
