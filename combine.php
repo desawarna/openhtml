@@ -46,11 +46,10 @@
 			$combined = "[";
 		}
 
-		$combined .= '{
-				"clock":"'		. 	$r["time"] . '", ' .
-				'"html":"'		. 	$r["html"] . '", ' .
-				'"css":"' 		. 	$r["css"] . '", ' .
-				'"special":"'	.	$r["special"] . '"}, ';
+		$combined .= '{"clock":"'.$r["time"].'", '.
+				'"html":"'.$r["html"].'", '.
+				'"css":"'.$r["css"].'", '.
+				'"special":"'.$r["special"].'"}, ';
 		$ptime = $r["time"];
 		$purl = $r["url"];
 		$i++;
