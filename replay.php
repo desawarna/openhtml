@@ -515,7 +515,7 @@ function retrieveReplay($url) {
 	$result = mysql_query($sql);
 
 	if(!mysql_num_rows($result)){
-		echo "no rows found";
+		error_log("no rows returned");
 		exit;
 	}	
 		
@@ -523,13 +523,13 @@ function retrieveReplay($url) {
 		$history .= $row['session'];
 	}	
 	
-	echo "$history: " . $history;
+	error_log("$history: " . $history);
 	$history = str_replace('][', ',', $history);
-	echo "str_replace: " . $history;
+	error_log("str_replace: " . $history);
 	$history = json_decode($history, true);
-	echo "json_decode: " . $history;
+	error_log("json_decode: " . $history);
 	$history = formatReplay($history);
-	echo "formatreplay: " . $history;
+	error_log("formatreplay: " . $history);
 
 	return $history;
 }
