@@ -38,18 +38,18 @@
 			$combined = substr_replace($combined, "", -2);
 			$combined .= "]";
 			$pages[] = array(
-									"url" => $purl,
-									"time" => $ptime,
-									"session" => $combined
-								);
+								"url" => $purl,
+								"time" => $ptime,
+								"session" => $combined
+							);
 
 			$combined = "[";
 		}
 
-		$combined .= '{"clock":"'.$r["time"].'", '.
-				'"html":"'.$r["html"].'", '.
-				'"css":"'.$r["css"].'", '.
-				'"special":"'.$r["special"].'"}, ';
+		$combined .= '{"clock":'.$r["time"].','.
+				'"html":"'.$r["html"].'",'.
+				'"css":"'.$r["css"].'",'.
+				'"special":"'.$r["special"].'"},';
 		$ptime = $r["time"];
 		$purl = $r["url"];
 		$i++;
