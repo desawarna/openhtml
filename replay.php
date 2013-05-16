@@ -524,8 +524,9 @@ function retrieveReplay($url) {
 	}	
 	
 	$history = str_replace('][', ',', $history);
-	$history = json_decode($history, true);
-	$history = formatReplay($history);
+	
+	// $history = json_decode($history, true);
+	// $history = formatReplay($history);
 
 	return $history;
 }
