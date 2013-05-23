@@ -527,7 +527,7 @@ function retrieveReplay($url) {
 		// error_log(serialize(json_decode($row['session'])));
 	}	
 	
-	$history = str_replace('][', ',', $history);
+	// $history = str_replace('][', ',', $history);
 	error_log($history);
 	// $history = $historyarray;
 	$history = json_decode($history, true);
