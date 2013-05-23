@@ -531,7 +531,7 @@ function retrieveReplay($url) {
 	error_log($history);
 	// $history = $historyarray;
 	$history = json_decode($history, true);
-	$history = formatReplay($history);
+	// $history = formatReplay($history);
 
 	return $history;
 }
