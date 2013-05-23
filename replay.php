@@ -521,16 +521,16 @@ function retrieveReplay($url) {
 	}	
 		
 	while ($row = mysql_fetch_assoc($result, MYSQL_ASSOC)) {
-		$historyarray[] = json_decode($row['session']);
+		$history .= $row['session'];
+		// $historyarray[] = json_decode($row['session']);
 		// array_merge($historyarray, json_decode($row['session']));
 		// error_log(serialize(json_decode($row['session'])));
-
 	}	
 	
-	// $history = str_replace('][', ',', $history);
-	$history = $historyarray;
-	// $history = json_decode($history, true);
-	error_log(serialize($history));
+	$history = str_replace('][', ',', $history);
+	error_log($history);
+	// $history = $historyarray;
+	$history = json_decode($history, true);
 	$history = formatReplay($history);
 
 	return $history;
