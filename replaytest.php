@@ -1,7 +1,7 @@
 <?php
 
 set_time_limit(500);
-
+ini_set("memory_limit","999M");
 
 //loginto sql
 
