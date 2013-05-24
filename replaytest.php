@@ -46,6 +46,7 @@ function retrieveReplay($url) {
 		
 	while ($row = mysql_fetch_assoc($result, MYSQL_ASSOC)) {
 		$history .= $row['session'];
+		set_time_limit(500);
 		// $historyarray[] = json_decode($row['session']);
 		// array_merge($historyarray, json_decode($row['session']));
 		// error_log(serialize(json_decode($row['session'])));
