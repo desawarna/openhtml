@@ -513,7 +513,7 @@ function retrieveReplay($url) {
 	$history = "";
 	$historyarray = array();
 
-	$sql = "SELECT session FROM replay_combined WHERE url = '" . mysql_real_escape_string($url) . "' ORDER BY time ASC";
+	$sql = "SELECT session FROM replay_sessions WHERE url = '" . mysql_real_escape_string($url) . "' ORDER BY time ASC";
 	$result = mysql_query($sql);
 
 	if(!mysql_num_rows($result)){
