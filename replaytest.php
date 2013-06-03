@@ -29,7 +29,8 @@ if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false
 
  $url = $_GET['url'];
     $out =  retrieveReplay($url);
-    echo serialize($out)."cs";
+    // var_dump($out);
+    echo json_encode($out[80][css]);
 
 function retrieveReplay($url) {
 
@@ -52,7 +53,7 @@ function retrieveReplay($url) {
 		// error_log(serialize(json_decode($row['session'])));
 	}	
 	
-	// $history = str_replace('][', ',', $history);
+	$history = str_replace('][', ',', $history);
 	error_log($history);
 	// $history = $historyarray;
 	$history = json_decode($history, true);

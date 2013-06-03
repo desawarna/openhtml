@@ -454,6 +454,7 @@ function html_entity_decode(str){
  tarea.parentNode.removeChild(tarea);
 }
 
+//
 function sessionize(data){
 	var timeout = 5*60*1000;
 	var session = 0;
@@ -512,8 +513,9 @@ function retrieveReplay($url) {
 
 	$history = "";
 	$historyarray = array();
+	$final = array();
 
-	$sql = "SELECT session FROM replay_sessions WHERE url = '" . mysql_real_escape_string($url) . "' ORDER BY time ASC";
+	$sql = "SELECT session FROM replay_combined WHERE url = '" . mysql_real_escape_string($url) . "' ORDER BY time ASC";
 	$result = mysql_query($sql);
 
 	if(!mysql_num_rows($result)){
@@ -523,15 +525,19 @@ function retrieveReplay($url) {
 		
 	while ($row = mysql_fetch_assoc($result, MYSQL_ASSOC)) {
 		$history .= $row['session'];
-		// $historyarray[] = json_decode($row['session']);
+		// $historyarray[] = $row['session'];
 		// array_merge($historyarray, json_decode($row['session']));
 		// error_log(serialize(json_decode($row['session'])));
 	}	
 	
-	// $history = str_replace('][', ',', $history);
-	error_log($history);
 	// $history = $historyarray;
-	$history = json_decode($history, true);
+	$history = str_replace('][', ',', $history);
+	// $history = str_replace('",{', '"}, {', $history);
+	error_log($history);
+	$history = json_decode(utf8_encode($history), true);
+	// $historyarray = implode(", ", $historyarray);
+	// $historyarray = json_decode($historyarray);
+	// error_log($historyarray);
 	$history = formatReplay($history);
 
 	return $history;
