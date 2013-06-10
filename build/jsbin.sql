@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `pagenames` (
   PRIMARY KEY (`url`)
 );
 
-CREATE TABLE IF NOT EXISTS `replay_sessions` (
+CREATE TABLE IF NOT EXISTS `replay_combined` (
   `url` varchar(99) NOT NULL,
   `time` int(10) NOT NULL,
   `session` longtext NOT NULL
