@@ -114,7 +114,6 @@ html, body {
  }
 
 #previewReplay {
-	padding: 5px;
 	border: none;
 	width: 50%;
 }
@@ -237,8 +236,8 @@ html, body {
 		HTML
 	</pre>
 
-	<div id="previewReplay" class="pane">
-	</div>
+	<iframe name="previewReplay" id="previewReplay" class="pane" frameborder="0"></iframe>
+
 </div>
 
 <!-- script -->
@@ -414,7 +413,13 @@ function update(){
 	if (frame < history.length) {
 		document.getElementById("cssReplay").innerHTML = history[frame]['css'];
 	 	document.getElementById("htmlReplay").innerHTML = history[frame]['html'];
-	 	document.getElementById("previewReplay").innerHTML = history[frame]['live'];
+
+	 	// document.getElementById("previewReplay").firstChild.innerHTML = history[frame]['live'];
+
+	 	var doc = previewReplay.document.open("text/html", "replace");
+	 	doc.write(history[frame]['live']);
+	 	doc.close();
+
 		document.getElementById("date").innerHTML = history[frame]['stamp'];
 
 	 	if(history[frame]['special']){
@@ -448,11 +453,6 @@ function updateElapsed(){
 	$("#elapsed").css("width", percent+"%");
 }
 
-function html_entity_decode(str){
- var tarea = document.createElement('textarea');
- tarea.innerHTML = str; return tarea.value;
- tarea.parentNode.removeChild(tarea);
-}
 
 //
 function sessionize(data){
@@ -568,11 +568,14 @@ function formatReplay($data) {
 function formatCompletedCode($html, $javascript) {
 
   $javascript = preg_replace('@</script@', "<\/script", $javascript);
+  // $javascript = str_replace("body", ".b0dyc0nt41n3r", $javascript);
+  // $javascript = str_replace("html", ".b0dyc0nt41n3r", $javascript);
+
 
   if ($html && stripos($html, '%code%') === false && strlen($javascript)) {
     $parts = explode("</head>", $html);
     $html = $parts[0];
-    $close = count($parts) == 2 ? '</head>' . $parts[1] : '';
+    $close = count($parts) == 2 ? '</head>' . $parts[1]: '';
     $html .= "<style scoped>\n " . $javascript . "\n</style>\n" . $close;
   } else if ($javascript && $html) {
     // removed the regex completely to try to protect $n variables in JavaScript
