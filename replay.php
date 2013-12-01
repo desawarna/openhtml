@@ -524,17 +524,20 @@ function retrieveReplay($url) {
 	}	
 		
 	while ($row = mysql_fetch_assoc($result, MYSQL_ASSOC)) {
-		$history .= $row['session'];
+		$history .= substr($row['session'], 1, -1) . "},";
 		// $historyarray[] = $row['session'];
 		// array_merge($historyarray, json_decode($row['session']));
 		// error_log(serialize(json_decode($row['session'])));
 	}	
 	
 	// $history = $historyarray;
-	$history = str_replace('][', ',', $history);
+	// $history = str_replace('][', ',', $history);
 	// $history = str_replace('",{', '"}, {', $history);
-	error_log($history);
-	$history = json_decode(utf8_encode($history), true);
+	$history = "[" . substr($history, 0, -1) . "]";
+	$history = str_replace("\n", '\n', $history);
+	$history = str_replace("}}", "}", $history);
+	$history = utf8_encode($history);
+	$history = json_decode($history, true);
 	// $historyarray = implode(", ", $historyarray);
 	// $historyarray = json_decode($historyarray);
 	// error_log($historyarray);
