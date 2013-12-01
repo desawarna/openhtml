@@ -348,7 +348,7 @@ iframe {
 </table>
 </div>
 <div id="preview">
-<h2><span id="view">Preview</span><span id="download"></span></h2>
+<h2><span id="view">Preview</span><span id="download"></span><span id="replay"></span></h2>
 
 <p id="viewing"></p>
 
@@ -379,8 +379,9 @@ collapsePages();
 function render(url) {
   iframe.src = url + 'quiet';
   iframe.removeAttribute('hidden');
-  view.innerHTML = '<a href="<? echo ROOT ?>'+url+'">Preview</a>';
+  view.innerHTML = '<a href="<? echo ROOT ?>'+url+'">View</a>';
   download.innerHTML = ' | <a href='+url+'downloadsingle>Download</a>';
+  replay.innerHTML = ' | <a href="<? echo ROOT ?>replay.php?url=' + url.substring(0, 6) + '" target="_blank">Replay</a>';
   viewing.innerHTML = '<?=$_SERVER['HTTP_HOST']?><?=ROOT?>' + url;
 }
 
@@ -416,6 +417,7 @@ var preview = document.getElementById('preview'),
     download = document.getElementById('download'),
     view = document.getElementById('view'),
     viewing = document.getElementById('viewing'),
+    replay = document.getElementById('replay'),
     hoverTimer = null;
 
 // this is some nasty code - just because I couldn't be
