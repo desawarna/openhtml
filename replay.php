@@ -35,6 +35,7 @@ if($log->logincheck(@$_SESSION['loggedin'], "ownership", "key", "name") == false
 	<link rel="stylesheet" href="<?php echo ROOT?>/css/font-awesome.css">
 	<link rel="stylesheet" href="<?php echo ROOT?>/css/toastr.css">
 	<link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+	<title>openHTML Replayer</title>
 
 <!-- style -->
 <style type="text/css">
@@ -250,23 +251,41 @@ html, body {
 <?php
 
 	date_default_timezone_set('America/New_York');
-	$history = json_encode(retrieveReplay(mysql_real_escape_string($_GET['url'])));
+  $url = mysql_real_escape_string($_GET['url']);
+  $history = json_encode(retrieveReplay($url));
 
 ?>
 
+var url = "<?php echo $url ?>";
 var history = <?php echo $history; ?>;
 var end = history.length;
 var processed = sessionize(history);
 sessions = processed["sessions"];
 history = processed["history"];
 
-console.log(sessions);
+console.log(history);
+
+for (shot in history) {
+	if (history[shot]['special']) {
+		console.log(history[shot]['special']);
+	}
+}
 
 var timer,
 	i,
 	t = 0,
 	speed = 5,
 	frame = 0;
+
+document.title = url + " - openHTML Replayer";
+
+if (history.length) {
+	document.getElementById("cssReplay").innerHTML = history[1]['css'];
+	document.getElementById("htmlReplay").innerHTML = history[1]['html'];
+	var doc = previewReplay.document.open("text/html", "replace");
+	doc.write(history[1]['live']);
+	doc.close();
+}
 
 $("#play").toggle(function(){
 	startTimer();
@@ -411,36 +430,46 @@ function populate(){
 function update(){
 			
 	if (frame < history.length) {
-		document.getElementById("cssReplay").innerHTML = history[frame]['css'];
-	 	document.getElementById("htmlReplay").innerHTML = history[frame]['html'];
+		// console.log(history[frame]);
 
-	 	// document.getElementById("previewReplay").firstChild.innerHTML = history[frame]['live'];
+		// if (history[frame]['html'] || history[frame]['css']) {
 
-	 	var doc = previewReplay.document.open("text/html", "replace");
-	 	doc.write(history[frame]['live']);
-	 	doc.close();
-
-		document.getElementById("date").innerHTML = history[frame]['stamp'];
-
-	 	if(history[frame]['special']){
-	 		console.log(history[frame]['special']);
-
-			var event = history[frame]['special'];
-
-			if (event == 'html') {
-				$('.pane').removeClass('highlight');
-				$('#htmlReplay').addClass('highlight');
-			} else if (event == 'javascript') {
-				$('.pane').removeClass('highlight');
-				$('#cssReplay').addClass('highlight');
-			} else {
-	 			toastr.success(history[frame]['special'], history[frame]['stamp']);
+			if (history[frame]['css']) {
+			  document.getElementById("cssReplay").innerHTML = history[frame]['css'];
 			}
 
-	 	}
+			if (history[frame]['html']) {
+			  document.getElementById("htmlReplay").innerHTML = history[frame]['html'];
+			}
 
-	 	$.scoped();
-		updateElapsed();
+		 	// document.getElementById("previewReplay").firstChild.innerHTML = history[frame]['live'];
+
+		 	var doc = previewReplay.document.open("text/html", "replace");
+		 	doc.write(history[frame]['live']);
+		 	doc.close();
+
+			document.getElementById("date").innerHTML = history[frame]['stamp'];
+
+		 	if(history[frame]['special']){
+		 		// console.log(history[frame]['special']);
+
+				var event = history[frame]['special'];
+
+				if (event == 'html') {
+					$('.pane').removeClass('highlight');
+					$('#htmlReplay').addClass('highlight');
+				} else if (event == 'javascript') {
+					$('.pane').removeClass('highlight');
+					$('#cssReplay').addClass('highlight');
+				} else {
+					// console.log(history[frame]['special']);
+		 			toastr.success(history[frame]['special'], history[frame]['stamp']);
+				}
+		 	}	
+
+		 	$.scoped();
+			updateElapsed();
+		// }
 
 	} else {
 		$("#play").click();
@@ -515,16 +544,21 @@ function retrieveReplay($url) {
 	$historyarray = array();
 	$final = array();
 
-	$sql = "SELECT session FROM replay_combined WHERE url = '" . mysql_real_escape_string($url) . "' ORDER BY time ASC";
+	$sql = "SELECT session FROM replay_sessions WHERE url = '" . mysql_real_escape_string($url) . "' ORDER BY time ASC";
 	$result = mysql_query($sql);
 
 	if(!mysql_num_rows($result)){
-		error_log("no rows returned");
+		header("Location: replay2.php?url=$url");
 		exit;
 	}	
 		
 	while ($row = mysql_fetch_assoc($result, MYSQL_ASSOC)) {
-		$history .= substr($row['session'], 1, -1) . "},";
+
+
+
+		if ($row['session']) {
+			$history .= substr($row['session'], 1, -1) . "},";
+		}
 		// $historyarray[] = $row['session'];
 		// array_merge($historyarray, json_decode($row['session']));
 		// error_log(serialize(json_decode($row['session'])));
@@ -534,13 +568,15 @@ function retrieveReplay($url) {
 	// $history = str_replace('][', ',', $history);
 	// $history = str_replace('",{', '"}, {', $history);
 	$history = "[" . substr($history, 0, -1) . "]";
-	$history = str_replace("\n", '\n', $history);
+	// $history = str_replace("\n", '\n', $history);
 	$history = str_replace("}}", "}", $history);
 	$history = utf8_encode($history);
+	error_log($history);
 	$history = json_decode($history, true);
 	// $historyarray = implode(", ", $historyarray);
 	// $historyarray = json_decode($historyarray);
 	// error_log($historyarray);
+
 	$history = formatReplay($history);
 
 	return $history;
