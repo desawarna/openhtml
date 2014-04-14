@@ -1,0 +1,21 @@
+{
+  "name": "openhtml",
+  "version": "1.0.0",
+  "authors": [
+    "Thomas Park <thomas@thomaspark.me>"
+  ],
+  "license": "MIT",
+  "homepage": "http://openhtml.org",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.0",
+    "bootstrap": "~3.1.1"
+  }
+}

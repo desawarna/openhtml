@@ -1,0 +1,103 @@
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+h1 {
+  font-size: 60px;
+  font-weight: 300;
+}
+
+h2 {
+  font-size: 40px;
+  font-weight: 300;
+}
+
+h3 {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+a,
+a:hover {
+  color: #d35400;
+}
+
+#splash {
+  padding: 4em 0;
+  background-color: #2887CA;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 300;
+  text-align: center;
+}
+
+.organizations a {
+  display: inline-block;
+  margin: 4em 1em 0;
+}
+
+.organizations img {
+  width: 80px;
+}
+
+#menu {
+  padding: 1em;
+  text-align: center;
+  background-color: #2573B9;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+#menu.affix {
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+#menu.affix + section {
+  margin-top: 54px;
+}
+
+#menu a {
+  margin: 2em;
+  color: #fff;
+}
+
+.openhtml {
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+section {
+  padding: 8em 0;
+}
+
+section:nth-child(even) {
+  background-color: #F4F8FA;
+}
+
+section h2 {
+  margin-top: 0;
+}
+
+@media (max-width: 767px) {
+
+  #menu a {
+    margin: 0.5em;
+  }
+}
+
+@media (max-width: 991px) {
+
+  section {
+    padding: 4em 2em;
+  }
+
+  section .row > div {
+    margin-bottom: 2em;
+  }
+}
