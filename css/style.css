@@ -14,10 +14,10 @@ h2 {
   font-weight: 300;
 }
 
-h3 {
-  margin: 0 0 10px;
-  font-size: 14px;
-  font-weight: bold;
+cite {
+  display: block;
+  margin-bottom: 2em;
+  font-size: 13px;
 }
 
 a,
