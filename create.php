@@ -23,7 +23,7 @@ $loginform = '	<!DOCTYPE html>
 						<body>
 							<div id="control"><div class="control"><div class="buttons"><div id="auth"><span id="logo">openHTML</span></div></div></div></div><div id="bin" class="stretch">
 
-								<form name="createformname" method="post" id="createformname" class="loginformid" enctype="application/x-www-form-urlencoded" action="/openhtml/create.php">
+								<form name="createformname" method="post" id="createformname" class="loginformid" enctype="application/x-www-form-urlencoded" action="/create.php">
 										<h1>Create Account</h1>
 										<div><label for="username">Username (required)</label>
 										<input name="username" id="username" type="text" maxlength="20" autofocus></div>
