@@ -90,11 +90,11 @@ function getRelativeTime($date) {
 /* Font via http://robey.lag.net/2010/06/21/mensch-font.html */
 @font-face {
   font-family: 'MenschRegular';
-  src: url('/openhtml/font/mensch-webfont.eot');
-  src: url('/openhtml/font/mensch-webfont.eot?#iefix') format('eot'),
-       url('/openhtml/font/mensch-webfont.woff') format('woff'),
-       url('/openhtml/font/mensch-webfont.ttf') format('truetype'),
-       url('/openhtml/font/mensch-webfont.svg#webfont0UwCC656') format('svg');
+  src: url('/font/mensch-webfont.eot');
+  src: url('/font/mensch-webfont.eot?#iefix') format('eot'),
+       url('/font/mensch-webfont.woff') format('woff'),
+       url('/font/mensch-webfont.ttf') format('truetype'),
+       url('/font/mensch-webfont.svg#webfont0UwCC656') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -273,7 +273,7 @@ iframe {
   font-family: "Helvetica Neue", Helvetica, Arial;
   position: fixed;
   
-  background: url(/openhtml/images/jsbin-bg.gif) repeat-x 0 -10px;
+  background: url(/images/jsbin-bg.gif) repeat-x 0 -10px;
   background-attachment:fixed;
 }
 
@@ -342,11 +342,13 @@ iframe {
 <table>
 <tbody>
 
+ 
+
 </tbody>
 </table>
 </div>
 <div id="preview">
-<h2><span id="view">Preview</span><span id="download"></span></h2>
+<h2><span id="view">Preview</span><span id="download"></span><span id="replay"></span></h2>
 
 <p id="viewing"></p>
 
@@ -370,20 +372,6 @@ function collapsePages() {
         $(this).html('▶');
       }
   });
-
-  $('.rename').click(function(){
-    var url = $(this).parent().parent().attr('id');
-    var revision = $(this).siblings('a').children('.revision').text();
-
-
-    // console.log("download"+url+revision);
-    $.post(url+"/save", {
-          'method': 'download',
-          'url': url,
-          'revision': revision
-        }, function(data){response=data;});
-
-  });
 }
 
 collapsePages();
@@ -391,8 +379,9 @@ collapsePages();
 function render(url) {
   iframe.src = url + 'quiet';
   iframe.removeAttribute('hidden');
-  view.innerHTML = '<a href="<? echo ROOT ?>'+url+'">Preview</a>';
+  view.innerHTML = '<a href="/'+url+'">View</a>';
   download.innerHTML = ' | <a href='+url+'downloadsingle>Download</a>';
+  replay.innerHTML = ' | <a href="./replay.php?url=' + url.substring(0, 6) + '" target="_blank">Replay</a>';
   viewing.innerHTML = '<?=$_SERVER['HTTP_HOST']?><?=ROOT?>' + url;
 }
 
@@ -428,6 +417,7 @@ var preview = document.getElementById('preview'),
     download = document.getElementById('download'),
     view = document.getElementById('view'),
     viewing = document.getElementById('viewing'),
+    replay = document.getElementById('replay'),
     hoverTimer = null;
 
 // this is some nasty code - just because I couldn't be
@@ -498,6 +488,7 @@ $('#users').change(function(){
     success: function(i) {
       $("#bins tbody").html(i);
       collapsePages();
+
     } 
   });
   

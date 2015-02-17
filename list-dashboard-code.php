@@ -30,7 +30,7 @@ if(isset($_POST['section'])){
             echo '<option>No users</option>';
           }
   
- exit();
+ exit(); 
 }
 
 if(isset($_POST['member'])) {
